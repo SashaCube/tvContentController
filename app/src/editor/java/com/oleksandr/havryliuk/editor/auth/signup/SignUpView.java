@@ -16,8 +16,8 @@ public class SignUpView implements SignUpContract.ISignUpView {
 
     @Override
     public void init(View root) {
-        signUpBtn = root.findViewById(R.id.signup_btn);
-        signInTv = root.findViewById(R.id.signin_txt);
+        signUpBtn = root.findViewById(R.id.sign_up_btn);
+        signInTv = root.findViewById(R.id.sign_in_txt);
         loginEt = root.findViewById(R.id.login_et);
         emailEt = root.findViewById(R.id.email_et);
         passwordEt = root.findViewById(R.id.password_et);

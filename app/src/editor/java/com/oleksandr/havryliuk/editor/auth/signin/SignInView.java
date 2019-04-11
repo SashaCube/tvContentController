@@ -28,7 +28,7 @@ public class SignInView implements SignInContract.ISignInView {
     public void init(View root) {
         googleImg = root.findViewById(R.id.google_signIn_button);
         signInBtn = root.findViewById(R.id.signin_btn);
-        signUpTv = root.findViewById(R.id.signup_txt);
+        signUpTv = root.findViewById(R.id.sign_up_txt);
         forgotPasswordTv = root.findViewById(R.id.forgot_password_txt);
         loginEt = root.findViewById(R.id.login_et);
         passwordEt = root.findViewById(R.id.password_et);
