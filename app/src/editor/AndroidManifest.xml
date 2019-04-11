@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.oleksandr.havryliuk.tvcontentcontroller.MainActivity"
+            android:name="com.oleksandr.havryliuk.editor.MainActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>
