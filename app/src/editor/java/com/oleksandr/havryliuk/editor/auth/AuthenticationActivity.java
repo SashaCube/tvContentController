@@ -7,9 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.auth.forgotpassword.ForgotPasswordFragment;
 import com.oleksandr.havryliuk.editor.auth.signin.SignInFragment;
-import com.oleksandr.havryliuk.editor.auth.signup.SignUpFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
@@ -22,45 +20,17 @@ public class AuthenticationActivity extends AppCompatActivity {
         if (Auth.isUserAuth()) {
             startMainActivity();
         } else {
-            showSignIn();
+            showFragment(new SignInFragment(), SignInFragment.class.getName());
         }
     }
 
-    public void showSignIn() {
+    public void showFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
-                SignInFragment.class.getName())) {
-            getSupportFragmentManager().popBackStackImmediate(SignInFragment.class.getName(), 0);
+        if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(), tag)) {
+            getSupportFragmentManager().popBackStackImmediate(tag, 0);
         } else {
-            Fragment fragment = new SignInFragment();
             transaction.replace(R.id.fragment, fragment)
-                    .addToBackStack(SignInFragment.class.getName())
-                    .commit();
-        }
-    }
-
-    public void showSignUp() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
-                SignUpFragment.class.getName())) {
-            getSupportFragmentManager().popBackStackImmediate(SignUpFragment.class.getName(), 0);
-        } else {
-            Fragment fragment = new SignUpFragment();
-            transaction.replace(R.id.fragment, fragment)
-                    .addToBackStack(SignUpFragment.class.getName())
-                    .commit();
-        }
-    }
-
-    public void showForgotPassword() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
-                ForgotPasswordFragment.class.getName())) {
-            getSupportFragmentManager().popBackStackImmediate(ForgotPasswordFragment.class.getName(), 0);
-        } else {
-            Fragment fragment = new ForgotPasswordFragment();
-            transaction.replace(R.id.fragment, fragment)
-                    .addToBackStack(ForgotPasswordFragment.class.getName())
+                    .addToBackStack(tag)
                     .commit();
         }
     }

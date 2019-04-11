@@ -3,6 +3,8 @@ package com.oleksandr.havryliuk.editor.auth.signin;
 import android.text.TextUtils;
 
 import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
+import com.oleksandr.havryliuk.editor.auth.forgotpassword.ForgotPasswordFragment;
+import com.oleksandr.havryliuk.editor.auth.signup.SignUpFragment;
 
 public class SignInPresenter implements SignInContract.ISignInPresenter {
 
@@ -46,11 +48,13 @@ public class SignInPresenter implements SignInContract.ISignInPresenter {
 
     @Override
     public void showSignUp() {
-        ((AuthenticationActivity) fragment.getActivity()).showSignUp();
+        ((AuthenticationActivity) fragment.getActivity()).showFragment(new SignUpFragment(),
+                SignUpFragment.class.getName());
     }
 
     @Override
     public void showForgotPassword() {
-        ((AuthenticationActivity) fragment.getActivity()).showForgotPassword();
+        ((AuthenticationActivity) fragment.getActivity()).showFragment(new ForgotPasswordFragment(),
+                ForgotPasswordFragment.class.getName());
     }
 }

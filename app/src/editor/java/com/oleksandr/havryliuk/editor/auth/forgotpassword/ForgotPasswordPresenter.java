@@ -3,6 +3,7 @@ package com.oleksandr.havryliuk.editor.auth.forgotpassword;
 import android.text.TextUtils;
 
 import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
+import com.oleksandr.havryliuk.editor.auth.signin.SignInFragment;
 
 public class ForgotPasswordPresenter implements ForgotPasswordContract.IForgotPasswordPresenter {
 
@@ -21,7 +22,8 @@ public class ForgotPasswordPresenter implements ForgotPasswordContract.IForgotPa
 
     @Override
     public void showSignIn() {
-        ((AuthenticationActivity) fragment.getActivity()).showSignIn();
+        ((AuthenticationActivity) fragment.getActivity()).showFragment(new SignInFragment(),
+                SignInFragment.class.getName());
     }
 
     private void validateInput() {

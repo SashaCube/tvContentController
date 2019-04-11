@@ -3,6 +3,7 @@ package com.oleksandr.havryliuk.editor.auth.signup;
 import android.text.TextUtils;
 
 import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
+import com.oleksandr.havryliuk.editor.auth.signin.SignInFragment;
 
 public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
 
@@ -21,7 +22,7 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
 
     @Override
     public void showSignIn() {
-        ((AuthenticationActivity) fragment.getActivity()).showSignIn();
+        ((AuthenticationActivity) fragment.getActivity()).showFragment(new SignInFragment(), SignInFragment.class.getName());
     }
 
     private void validateInput() {
