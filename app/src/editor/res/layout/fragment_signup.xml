@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="40dp"
@@ -19,7 +20,7 @@
 
         <TextView
             android:layout_marginTop="30dp"
-            android:text="Sing Up"
+            android:text="@string/sign_up"
             android:textSize="20sp"
             android:fontFamily="casual"
             android:textColor="@color/diamond"
@@ -49,7 +50,7 @@
 
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:hint="Username"
+                android:hint="@string/username"
                 android:inputType="text"
                 android:nextFocusDown="@+id/password_et"
                 android:nextFocusForward="@+id/password_et" />
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:nextFocusDown="@+id/signin_btn"
@@ -101,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:inputType="textPassword"
@@ -128,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:hint="Confirm Password"
+                android:hint="@string/confirm_password"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:inputType="textPassword"
@@ -150,13 +151,13 @@
             android:textStyle="normal"
             android:fontFamily="casual"
             android:textAllCaps="false"
-            android:text="Register" />
+            android:text="@string/register" />
 
         <TextView
             android:id="@+id/forgot_password_txt"
             android:gravity="right"
             android:layout_marginTop="15dp"
-            android:text="Fogot Password?"
+            android:text="@string/forgot_password"
             android:textSize="12dp"
             android:textColor="@color/dark_sky_blue"
             android:layout_width="match_parent"
@@ -198,7 +199,7 @@
             android:gravity="right"
             android:textSize="12sp"
             android:layout_weight="1"
-            android:text="have an account ?"
+            android:text="@string/have_an_account"
             android:textColor="@color/slate_gray"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
@@ -208,7 +209,7 @@
             android:gravity="left"
             android:layout_weight="1"
             android:textSize="12dp"
-            android:text=" LOGIN HERE"
+            android:text="@string/login_here"
             android:textColor="@color/slate_gray"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
