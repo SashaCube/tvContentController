@@ -9,9 +9,23 @@ import android.view.ViewGroup;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 public class NewPostFragment extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_post, container, false);
+        View root = inflater.inflate(R.layout.fragment_new_post, container, false);
+
+        initView(root);
+        initPresenter();
+
+        return root;
+    }
+
+    public void initView(View root){
+
+    }
+
+    public void initPresenter(){
+
     }
 }
