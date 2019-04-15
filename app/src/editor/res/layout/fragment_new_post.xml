@@ -38,4 +38,77 @@
         android:layout_width="match_parent"
         style="@style/Separator"/>
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:hint="@string/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseInput"/>
+
+            <EditText
+                android:hint="@string/about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseInput"/>
+
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_margin="@dimen/large_dimen"
+                android:layout_width="@dimen/default_width"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <View
+                android:layout_width="match_parent"
+                style="@style/Separator"/>
+
+            <TextView
+                android:text="@string/add_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/SmallTitle"/>
+
+            <ImageView
+                android:layout_width="@dimen/large_icon_size"
+                android:layout_height="@dimen/large_icon_size"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/large_dimen"
+                android:src="@drawable/ic_add_image"/>
+
+            <View
+                android:layout_width="match_parent"
+                style="@style/Separator"/>
+
+            <TextView
+                android:text="@string/add_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/SmallTitle"/>
+
+            <EditText
+                android:hint="@string/new_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseInput"/>
+
+
+            <View
+                android:layout_marginTop="@dimen/large_dimen"
+                android:layout_width="match_parent"
+                style="@style/Separator"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 </LinearLayout>
