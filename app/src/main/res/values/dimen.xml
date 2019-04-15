@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="default_text_size">16sp</dimen>
+    <dimen name="large_text_size">20sp</dimen>
+
+    <dimen name="zero_dimen">0dp</dimen>
+    <dimen name="small_dimen">8dp</dimen>
+    <dimen name="default_dimen">12dp</dimen>
+    <dimen name="large_dimen">20dp</dimen>
+    <dimen name="large_negative_dimen">-35dp</dimen>
+    <dimen name="large_x_dimen">60dp</dimen>
+
+    <dimen name="small_icon_size">24dp</dimen>
+    <dimen name="default_icon_size">44dp</dimen>
+    <dimen name="large_icon_size">70dp</dimen>
+
+    <dimen name="card_width">280dp</dimen>
+
+    <dimen name="small_separator">0.5dp</dimen>
+    <dimen name="large_separator">1.5dp</dimen>
+    <dimen name="border_size">3dp</dimen>
+
+</resources>

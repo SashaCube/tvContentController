@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/independence">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:padding="@dimen/default_dimen"
+        android:layout_width="@dimen/card_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/round_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="@dimen/large_dimen"
+            android:text="@string/sign_up"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Title"/>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/default_dimen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_white_rectungle">
+
+            <ImageView
+                android:src="@drawable/ic_user"
+                android:contentDescription="@string/username"
+                style="@style/SmallIcon"/>
+
+            <EditText
+                android:id="@+id/login_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/username"
+                android:nextFocusDown="@+id/password_et"
+                android:nextFocusForward="@+id/password_et"
+                android:inputType="text"
+                style="@style/Input"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/large_dimen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_white_rectungle">
+
+            <ImageView
+                android:src="@drawable/ic_email_black_24dp"
+                android:contentDescription="@string/email"
+                style="@style/SmallIcon"/>
+
+            <EditText
+                android:id="@+id/email_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/email"
+                android:nextFocusDown="@+id/signin_btn"
+                android:nextFocusForward="@+id/signin_btn"
+                android:inputType="textEmailAddress"
+                style="@style/Input"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/large_dimen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_white_rectungle">
+
+            <ImageView
+                android:src="@drawable/ic_lock"
+                android:contentDescription="@string/password"
+                style="@style/SmallIcon"/>
+
+            <EditText
+                android:id="@+id/password_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:nextFocusDown="@+id/signin_btn"
+                android:nextFocusForward="@+id/signin_btn"
+                style="@style/Input"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/large_dimen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_white_rectungle">
+
+            <ImageView
+                android:src="@drawable/ic_lock"
+                android:contentDescription="@string/password"
+                style="@style/SmallIcon"/>
+
+            <EditText
+                android:id="@+id/confirm_password_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:nextFocusDown="@+id/signin_btn"
+                android:nextFocusForward="@+id/signin_btn"
+                style="@style/Input"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/sign_up_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/register"
+            style="@style/Button"/>
+
+        <TextView
+            android:id="@+id/forgot_password_txt"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/large_dimen"
+            android:text="@string/forgot_password"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/dark_sky_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="@dimen/large_icon_size"
+        android:layout_height="@dimen/large_icon_size"
+        android:layout_alignTop="@+id/layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/large_negative_dimen"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        app:civ_border_color="@color/dark_sky_blue"
+        app:civ_border_width="@dimen/border_size"
+        app:civ_circle_background_color="@color/dark_sky_blue" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_marginBottom="@dimen/large_x_dimen"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/card_width"
+        style="@style/Separator"/>
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/separator"
+        android:layout_marginTop="@dimen/small_dimen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:gravity="end"
+            android:layout_weight="1"
+            android:text="@string/have_an_account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/SmallText"/>
+
+        <TextView
+            android:id="@+id/sign_in_txt"
+            android:gravity="start"
+            android:layout_weight="1"
+            android:text="@string/login_here"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/SmallText"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
