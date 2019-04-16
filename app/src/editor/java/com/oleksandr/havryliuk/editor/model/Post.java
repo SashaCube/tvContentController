@@ -1,27 +1,34 @@
 package com.oleksandr.havryliuk.editor.model;
 
+import android.net.Uri;
+
 import java.util.Date;
 
 public class Post {
 
-    public static boolean ACTIVE = true;
-    public static boolean NOT_ACTIVE = false;
+    public final static boolean ACTIVE = true;
+    public final static boolean NOT_ACTIVE = false;
+
+    public final static String NEWS = "News";
+    public final static String AD = "AD";
+    public final static String IMAGE = "Image";
+    public final static String TEXT = "Text";
 
     private String title;
     private String about;
     private Date createDate;
-    private Type type;
-    private String imageURL;
+    private String type;
+    private Uri imageUri;
     private String text;
     private boolean state;
     private long duration;
 
-    public Post(String title, String about, Date createDate, Type type, String imageURL, String text, boolean state, long duration) {
+    public Post(String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
         this.title = title;
         this.about = about;
         this.createDate = createDate;
         this.type = type;
-        this.imageURL = imageURL;
+        this.imageUri = imageUri;
         this.text = text;
         this.state = state;
         this.duration = duration;
@@ -51,20 +58,20 @@ public class Post {
         this.createDate = createDate;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public Uri getImageUri() {
+        return imageUri;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
     public String getText() {

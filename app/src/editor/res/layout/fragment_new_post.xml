@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -13,20 +12,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
-            android:gravity="center"
+            style="@style/Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/new_post"
-            android:textStyle="bold"
             android:layout_margin="@dimen/default_dimen"
-            style="@style/Title"/>
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/new_post"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        style="@style/Separator"/>
+        style="@style/Separator"
+        android:layout_width="match_parent" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -38,63 +37,89 @@
             android:orientation="vertical">
 
             <EditText
-                android:hint="@string/title"
+                android:id="@+id/title_edit_text"
+                style="@style/BaseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BaseInput"/>
+                android:hint="@string/title"
+                android:maxLines="1" />
 
             <EditText
-                android:hint="@string/about"
+                android:id="@+id/about_edit_text"
+                style="@style/BaseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BaseInput"/>
+                android:hint="@string/about" />
 
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_margin="@dimen/large_dimen"
                 android:layout_width="@dimen/default_width"
                 android:layout_height="@dimen/default_icon_size"
-                android:spinnerMode="dropdown"/>
-
-            <View
-                android:layout_width="match_parent"
-                style="@style/Separator"/>
-
-            <TextView
-                android:text="@string/add_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/SmallTitle"/>
-
-            <ImageView
-                android:layout_width="@dimen/large_icon_size"
-                android:layout_height="@dimen/large_icon_size"
-                android:layout_gravity="center"
                 android:layout_margin="@dimen/large_dimen"
-                android:src="@drawable/ic_add_image"/>
+                android:spinnerMode="dropdown" />
 
-            <View
-                android:layout_width="match_parent"
-                style="@style/Separator"/>
-
-            <TextView
-                android:text="@string/add_text"
+            <LinearLayout
+                android:id="@+id/add_image_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/SmallTitle"/>
+                android:orientation="vertical">
 
-            <EditText
-                android:hint="@string/new_post"
+                <View
+                    style="@style/Separator"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_image" />
+
+                <ImageView
+                    android:id="@+id/add_image_view"
+                    android:layout_width="@dimen/large_icon_size"
+                    android:layout_height="@dimen/large_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/large_dimen"
+                    android:src="@drawable/ic_add_image" />
+
+                <TextView
+                    android:id="@+id/image_error_text_view"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_red_dark"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/add_text_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BaseInput"/>
+                android:orientation="vertical">
+
+                <View
+                    style="@style/Separator"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_text" />
+
+                <EditText
+                    android:id="@+id/text_edit_text"
+                    style="@style/BaseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/new_post" />
+            </LinearLayout>
 
 
             <View
-                android:layout_marginTop="@dimen/large_dimen"
+                style="@style/Separator"
                 android:layout_width="match_parent"
-                style="@style/Separator"/>
+                android:layout_marginTop="@dimen/large_dimen" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,28 +127,29 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/duration"
-                    android:layout_weight="2"
+                    style="@style/SmallTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SmallTitle"/>
+                    android:layout_weight="2"
+                    android:text="@string/duration" />
 
                 <TextView
-                    android:text="5"
+                    android:id="@+id/duration_value_text_view"
+                    style="@style/SmallTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SmallTitle"/>
+                    android:text="5" />
 
 
                 <SeekBar
-                    android:layout_weight="1"
-                    android:id="@+id/seekBar"
+                    android:id="@+id/duration_seek_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/large_dimen"
                     android:layout_marginTop="@dimen/large_dimen"
                     android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_weight="1"
                     android:max="10"
-                    android:progress="5"/>
+                    android:progress="5" />
 
             </LinearLayout>
 
@@ -134,37 +160,39 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/state"
-                    android:layout_weight="1"
+                    style="@style/SmallTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/SmallTitle"/>
+                    android:layout_weight="1"
+                    android:text="@string/state" />
 
                 <Switch
-                    android:paddingEnd="@dimen/large_x_dimen"
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/large_dimen"
-                    android:layout_marginLeft="@dimen/large_dimen"
-                    android:layout_marginRight="@dimen/large_dimen"
+                    android:id="@+id/state_switch"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/large_dimen"
+                    android:layout_marginTop="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_weight="1"
+                    android:paddingEnd="@dimen/large_x_dimen" />
 
             </LinearLayout>
 
             <View
-                android:layout_marginTop="@dimen/large_dimen"
+                style="@style/Separator"
                 android:layout_width="match_parent"
-                style="@style/Separator"/>
+                android:layout_marginTop="@dimen/large_dimen" />
 
             <TextView
-                android:gravity="center"
-                android:text="@string/done"
+                android:id="@+id/done_button"
+                style="@style/ButtonLight"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/large_x_dimen"
                 android:layout_marginRight="@dimen/large_x_dimen"
                 android:layout_marginBottom="@dimen/large_dimen"
-                android:layout_height="wrap_content"
-                style="@style/ButtonLight"/>
+                android:gravity="center"
+                android:text="@string/done" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
