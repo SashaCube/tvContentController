@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_purple"
+        android:background="@drawable/background"
         android:orientation="horizontal">
 
         <TextView
@@ -21,16 +21,6 @@
             android:textStyle="bold"
             android:layout_margin="@dimen/default_dimen"
             style="@style/Title"/>
-
-
-        <ImageView
-            android:id="@+id/sort_icon"
-            android:layout_width="@dimen/small_icon_size"
-            android:layout_height="@dimen/small_icon_size"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/default_dimen"
-            android:src="@drawable/ic_sort"
-            android:contentDescription="@string/sort" />
 
     </LinearLayout>
 
@@ -64,8 +54,7 @@
                 android:id="@+id/spinner"
                 android:layout_margin="@dimen/large_dimen"
                 android:layout_width="@dimen/default_width"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
+                android:layout_height="@dimen/default_icon_size"
                 android:spinnerMode="dropdown"/>
 
             <View
@@ -107,6 +96,75 @@
                 android:layout_width="match_parent"
                 style="@style/Separator"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/duration"
+                    android:layout_weight="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SmallTitle"/>
+
+                <TextView
+                    android:text="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SmallTitle"/>
+
+
+                <SeekBar
+                    android:layout_weight="1"
+                    android:id="@+id/seekBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/large_dimen"
+                    android:layout_marginTop="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:max="10"
+                    android:progress="5"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/state"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/SmallTitle"/>
+
+                <Switch
+                    android:paddingEnd="@dimen/large_x_dimen"
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/large_dimen"
+                    android:layout_marginLeft="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="@dimen/large_dimen"
+                android:layout_width="match_parent"
+                style="@style/Separator"/>
+
+            <TextView
+                android:gravity="center"
+                android:text="@string/done"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/large_x_dimen"
+                android:layout_marginRight="@dimen/large_x_dimen"
+                android:layout_marginBottom="@dimen/large_dimen"
+                android:layout_height="wrap_content"
+                style="@style/ButtonLight"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
