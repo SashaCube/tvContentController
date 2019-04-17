@@ -13,6 +13,7 @@ public class Post {
     public final static String AD = "AD";
     public final static String IMAGE = "Image";
     public final static String TEXT = "Text";
+    public final static String ALL = "All";
 
     private String title;
     private String about;
