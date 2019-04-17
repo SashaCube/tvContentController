@@ -2,12 +2,10 @@ package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oleksandr.havryliuk.editor.all_posts.fragment.AllPostsAllFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 public class AllPostsFragment extends Fragment{
@@ -28,11 +26,11 @@ public class AllPostsFragment extends Fragment{
 
     private void initView(View root){
         view = new AllPostsView();
-        view.init(root, getFragmentManager());
+        view.init(root);
     }
 
     private void initPresenter(){
         presenter = new AllPostsPresenter(view, this);
-        view.setPresenter(presenter);
+        view.setPresenter(presenter, getFragmentManager());
     }
 }

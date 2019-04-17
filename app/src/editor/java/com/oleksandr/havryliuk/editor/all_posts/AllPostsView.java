@@ -21,7 +21,7 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
     private TabLayout tabLayout;
 
     @Override
-    public void init(View root, FragmentManager fragmentManager) {
+    public void init(View root) {
 
         viewPager = root.findViewById(R.id.view_pager);
         tabLayout = root.findViewById(R.id.tab_layout);
@@ -30,9 +30,6 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
         tabLayout.addTab(tabLayout.newTab().setText(NEWS));
         tabLayout.addTab(tabLayout.newTab().setText(AD));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        adapterViewPager = new PostsPagerAdapter(fragmentManager);
-        viewPager.setAdapter(adapterViewPager);
 
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -65,8 +62,10 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
     }
 
     @Override
-    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter) {
+    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter, FragmentManager fragmentManager) {
         this.presenter = presenter;
+        adapterViewPager = new PostsPagerAdapter(fragmentManager, presenter);
+        viewPager.setAdapter(adapterViewPager);
     }
 
 
