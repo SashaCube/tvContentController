@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "809129879562",
+    "firebase_url": "https://tvcontentcontroller-86760.firebaseio.com",
+    "project_id": "tvcontentcontroller-86760",
+    "storage_bucket": "tvcontentcontroller-86760.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809129879562:android:44df3edcb12c1f92",
+        "android_client_info": {
+          "package_name": "com.oleksandr.havryliuk.tvcontentcontroller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809129879562-rk005mudd2r6364onjndog0k0ih02ol9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oleksandr.havryliuk.tvcontentcontroller",
+            "certificate_hash": "d0938d9f44069dcb420c28e1ba6ca223a597468c"
+          }
+        },
+        {
+          "client_id": "809129879562-hoevesrdi6kiaac1iq3ddfb52orjufoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrGNAjQcQIwjksYIuMxH2sHTHsR6zB1p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809129879562-hoevesrdi6kiaac1iq3ddfb52orjufoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
