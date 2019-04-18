@@ -15,12 +15,18 @@ public interface AllPostsContract {
 
         void setPresenter(IAllPostsPresenter presenter, FragmentManager fragmentManager);
 
+        void updatePosts();
+
     }
 
     interface IAllPostsPresenter {
 
-        void clickEditButton(Post post);
-
         List<Post> getPosts(String type);
+
+        void clickDelete(Post post);
+
+        void clickEdit(Post post);
+
+        void clickSetPost(Post oldPost);
     }
 }

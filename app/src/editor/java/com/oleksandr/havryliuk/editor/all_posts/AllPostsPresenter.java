@@ -1,7 +1,6 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.editor.repository.Repository;
@@ -16,20 +15,16 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     private AllPostsContract.IAllPostsView view;
     private Fragment fragment;
+    private volatile Repository repository;
 
     public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
         this.view = view;
         this.fragment = fragment;
-    }
-
-    @Override
-    public void clickEditButton(Post post) {
-        Toast.makeText(fragment.getContext(), "Edit " + post.getTitle(), Toast.LENGTH_LONG).show();
+        repository = Repository.getInstance();
     }
 
     @Override
     public List<Post> getPosts(String type) {
-        Repository repository = Repository.getInstance();
 
         switch (type) {
             case ALL:
@@ -41,5 +36,23 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
         }
 
         return null;
+    }
+
+    @Override
+    public void clickDelete(Post post) {
+        repository.deletePost(post);
+        view.updatePosts();
+    }
+
+    @Override
+    public void clickEdit(Post post) {
+        //TODO: open constructor
+        view.updatePosts();
+    }
+
+    @Override
+    public void clickSetPost(Post post) {
+        repository.setPost(post);
+        view.updatePosts();
     }
 }

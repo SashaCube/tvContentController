@@ -1,6 +1,8 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ public class AllPostsItemFragment extends Fragment {
     private AllPostsContract.IAllPostsPresenter presenter;
     private PostsAdapter adapter;
     private String type;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,23 +30,44 @@ public class AllPostsItemFragment extends Fragment {
         return root;
     }
 
+
     @Override
-    public void onStart() {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onStart();
-        adapter.setPresenter(presenter);
-        adapter.setPosts(presenter.getPosts(type));
+        adapter.setPresenter(presenter, type);
     }
 
     private void initView(View root) {
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
+        recyclerView = root.findViewById(R.id.recycler_view);
         adapter = new PostsAdapter(root.getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
     }
 
-    public void init(String type, AllPostsContract.IAllPostsPresenter presenter) {
+    public AllPostsItemFragment init(String type, AllPostsContract.IAllPostsPresenter presenter) {
         this.type = type;
         this.presenter = presenter;
+        return this;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.update();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void update() {
+        if (adapter != null) {
+            recyclerView.post(new Runnable()
+            {
+                @Override
+                public void run() {
+                    adapter.update();
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 }

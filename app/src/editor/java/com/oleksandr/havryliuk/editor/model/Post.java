@@ -3,6 +3,7 @@ package com.oleksandr.havryliuk.editor.model;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.Random;
 
 public class Post {
 
@@ -15,6 +16,7 @@ public class Post {
     public final static String TEXT = "Text";
     public final static String ALL = "All";
 
+    private int id;
     private String title;
     private String about;
     private Date createDate;
@@ -24,7 +26,8 @@ public class Post {
     private boolean state;
     private long duration;
 
-    public Post(String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+    public Post(int id, String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+        this.id = id;
         this.title = title;
         this.about = about;
         this.createDate = createDate;
@@ -33,6 +36,26 @@ public class Post {
         this.text = text;
         this.state = state;
         this.duration = duration;
+    }
+
+    public Post(String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+        this.id = (new Random()).nextInt();
+        this.title = title;
+        this.about = about;
+        this.createDate = createDate;
+        this.type = type;
+        this.imageUri = imageUri;
+        this.text = text;
+        this.state = state;
+        this.duration = duration;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

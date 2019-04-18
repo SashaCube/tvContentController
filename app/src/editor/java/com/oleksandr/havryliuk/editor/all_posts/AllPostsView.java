@@ -2,7 +2,6 @@ package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -16,7 +15,7 @@ import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
 public class AllPostsView implements AllPostsContract.IAllPostsView {
 
     private AllPostsContract.IAllPostsPresenter presenter;
-    private FragmentStatePagerAdapter adapterViewPager;
+    private PostsPagerAdapter adapterViewPager;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -67,6 +66,11 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
         this.presenter = presenter;
         adapterViewPager = new PostsPagerAdapter(fragmentManager, presenter);
         viewPager.setAdapter(adapterViewPager);
+    }
+
+    @Override
+    public void updatePosts() {
+        adapterViewPager.update();
     }
 
 
