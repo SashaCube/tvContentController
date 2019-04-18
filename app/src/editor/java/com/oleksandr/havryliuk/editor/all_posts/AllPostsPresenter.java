@@ -31,7 +31,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     public List<Post> getPosts(String type) {
         Repository repository = Repository.getInstance();
 
-        switch(type){
+        switch (type) {
             case ALL:
                 return repository.getAllPosts();
             case NEWS:

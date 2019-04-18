@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
-public class AllPostsFragment extends Fragment{
+public class AllPostsFragment extends Fragment {
 
     private AllPostsContract.IAllPostsView view;
     private AllPostsContract.IAllPostsPresenter presenter;
@@ -24,12 +24,12 @@ public class AllPostsFragment extends Fragment{
         return root;
     }
 
-    private void initView(View root){
+    private void initView(View root) {
         view = new AllPostsView();
         view.init(root);
     }
 
-    private void initPresenter(){
+    private void initPresenter() {
         presenter = new AllPostsPresenter(view, this);
         view.setPresenter(presenter, getFragmentManager());
     }

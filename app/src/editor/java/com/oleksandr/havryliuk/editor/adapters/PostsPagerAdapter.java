@@ -1,10 +1,11 @@
-package com.oleksandr.havryliuk.editor.all_posts;
+package com.oleksandr.havryliuk.editor.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.oleksandr.havryliuk.editor.all_posts.fragment.AllPostsItemFragment;
+import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
+import com.oleksandr.havryliuk.editor.all_posts.AllPostsItemFragment;
 
 import static com.oleksandr.havryliuk.editor.model.Post.AD;
 import static com.oleksandr.havryliuk.editor.model.Post.ALL;

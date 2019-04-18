@@ -29,6 +29,8 @@
     <string name="duration">Duration</string>
     <string name="state">State</string>
     <string name="done">Done</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
 
     <string-array name="type_list">

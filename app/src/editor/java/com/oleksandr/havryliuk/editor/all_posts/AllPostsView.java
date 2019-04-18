@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.oleksandr.havryliuk.editor.adapters.PostsPagerAdapter;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import static com.oleksandr.havryliuk.editor.model.Post.AD;
@@ -35,7 +36,7 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getText().toString()){
+                switch (tab.getText().toString()) {
                     case ALL:
                         viewPager.setCurrentItem(0);
                         break;

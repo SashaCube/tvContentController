@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AllPostsContract {
 
-    interface IAllPostsView{
+    interface IAllPostsView {
 
         void init(View root);
 
@@ -17,7 +17,7 @@ public interface AllPostsContract {
 
     }
 
-    interface IAllPostsPresenter{
+    interface IAllPostsPresenter {
 
         void clickEditButton(Post post);
 
