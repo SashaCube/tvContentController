@@ -1,17 +1,21 @@
-package com.oleksandr.havryliuk.editor.new_post;
+package com.oleksandr.havryliuk.editor.edit_post;
 
 import android.net.Uri;
 import android.view.View;
 
-public interface NewPostContract {
+import com.oleksandr.havryliuk.editor.model.Post;
 
-    interface INewPostView {
+public interface EditPostContract {
 
-        void setPresenter(INewPostPresenter presenter);
+    interface IEditPostView {
+
+        void setPresenter(IEditPostPresenter presenter);
 
         void init(View root);
 
         void setImage(Uri uri);
+
+        void setEditPost(Post post);
 
         void hideAddImageLayout();
 
@@ -34,12 +38,18 @@ public interface NewPostContract {
         void hideTextError();
     }
 
-    interface INewPostPresenter {
+    interface IEditPostPresenter {
+
+        void initEditPost(Post post);
 
         void setImageClick();
 
         void setTypeClick(String type);
 
-        void doneClick(String title, String about, String text, int duration, boolean state);
+        void saveClick(String title, String about, String text, int duration, boolean state);
+
+        void cancelClick();
+
+        String getResult();
     }
 }

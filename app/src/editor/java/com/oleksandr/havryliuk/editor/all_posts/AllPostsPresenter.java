@@ -3,7 +3,9 @@ package com.oleksandr.havryliuk.editor.all_posts;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
+import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.editor.repository.Repository;
 
@@ -41,20 +43,19 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
             case AD:
                 return sortedPosts(repository.getPostsByType(AD));
         }
-
         return null;
     }
 
     @Override
     public void clickDelete(final Post post) {
         repository.deletePost(post);
+        Toast.makeText(fragment.getContext(), post.getTitle() + " deleted successfully", Toast.LENGTH_SHORT).show();
         view.updatePosts();
     }
 
     @Override
     public void clickEdit(Post post) {
-        //TODO: open constructor
-        view.updatePosts();
+        ((MainActivity) fragment.getActivity()).openEditPostFragment(post);
     }
 
     @Override

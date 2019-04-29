@@ -33,6 +33,11 @@
     <string name="edit">Edit</string>
     <string name="sort_by_title">Sort by title</string>
     <string name="sort_by_date">Sort by date</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="text">Text</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
 
     <string-array name="type_list">
         <item>News</item>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_dimen"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/edit_post"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/Separator"
+        android:layout_width="match_parent" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/title_edit_text"
+                style="@style/BaseInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/about_edit_text"
+                style="@style/BaseInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/about" />
+
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="@dimen/default_width"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_margin="@dimen/large_dimen"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:id="@+id/add_image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/Separator"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_image" />
+
+                <ImageView
+                    android:id="@+id/add_image_view"
+                    android:layout_width="@dimen/large_icon_size"
+                    android:layout_height="@dimen/large_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/large_dimen"
+                    android:src="@drawable/ic_add_image" />
+
+                <TextView
+                    android:id="@+id/image_error_text_view"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_red_dark"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/add_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/Separator"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_text" />
+
+                <EditText
+                    android:id="@+id/text_edit_text"
+                    style="@style/BaseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text" />
+            </LinearLayout>
+
+
+            <View
+                style="@style/Separator"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/large_dimen" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/duration" />
+
+                <TextView
+                    android:id="@+id/duration_value_text_view"
+                    style="@style/SmallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5" />
+
+
+                <SeekBar
+                    android:id="@+id/duration_seek_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/large_dimen"
+                    android:layout_marginTop="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_weight="1"
+                    android:max="10"
+                    android:progress="5" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/SmallTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/state" />
+
+                <Switch
+                    android:id="@+id/state_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/large_dimen"
+                    android:layout_marginTop="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_weight="1"
+                    android:paddingEnd="@dimen/large_x_dimen" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/Separator"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/large_dimen" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/save_button"
+                    style="@style/ButtonLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_marginBottom="@dimen/large_dimen"
+                    android:gravity="center"
+                    android:text="@string/save" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/cancel_button"
+                    style="@style/ButtonLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/large_dimen"
+                    android:layout_marginRight="@dimen/large_dimen"
+                    android:layout_marginBottom="@dimen/large_dimen"
+                    android:gravity="center"
+                    android:text="@string/cancel" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

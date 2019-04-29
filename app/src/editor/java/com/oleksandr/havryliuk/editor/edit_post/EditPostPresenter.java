@@ -1,28 +1,36 @@
-package com.oleksandr.havryliuk.editor.new_post;
+package com.oleksandr.havryliuk.editor.edit_post;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.editor.repository.Repository;
 
-import java.util.Date;
-
 import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
 import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
 
-public class NewPostPresenter implements NewPostContract.INewPostPresenter, MainActivity.IImagePicker {
+public class EditPostPresenter implements EditPostContract.IEditPostPresenter, MainActivity.IImagePicker {
 
-    private NewPostContract.INewPostView view;
-    private NewPostFragment fragment;
+    public final static String SAVE = "Save";
+    public final static String CANCEL = "Cancel";
+
+    private EditPostContract.IEditPostView view;
+    private EditPostFragment fragment;
     private String type;
+    private Post editedPost;
     private Uri uri;
+    private String result = CANCEL;
 
-    public NewPostPresenter(NewPostContract.INewPostView view, NewPostFragment fragment) {
+    public EditPostPresenter(EditPostContract.IEditPostView view, EditPostFragment fragment) {
         this.view = view;
         this.fragment = fragment;
+    }
+
+    @Override
+    public void initEditPost(Post post) {
+        editedPost = post;
+        view.setEditPost(post);
     }
 
     @Override
@@ -56,17 +64,27 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter, Main
     }
 
     @Override
-    public void doneClick(String title, String about, String text, int duration, boolean state) {
+    public void saveClick(String title, String about, String text, int duration, boolean state) {
         if (validateInput(title, text) == false) {
             return;
         }
 
-        Post post = new Post(title, about, new Date(), type, uri, text, state, duration);
-        Repository.getInstance().addPost(post);
-        Toast.makeText(fragment.getContext(), "Post " + title + " added", Toast.LENGTH_SHORT)
-                .show();
+        editedPost.setTitle(title);
+        editedPost.setAbout(about);
+        editedPost.setText(text);
+        editedPost.setType(type);
+        editedPost.setImageUri(uri);
+        editedPost.setState(state);
+        editedPost.setDuration(duration);
 
-        ((MainActivity) fragment.getActivity()).openMainFragment();
+        Repository.getInstance().setPost(editedPost);
+        result = SAVE;
+        ((MainActivity) fragment.getActivity()).openAllPostsFragment();
+    }
+
+    @Override
+    public void cancelClick() {
+        ((MainActivity) fragment.getActivity()).openAllPostsFragment();
     }
 
     private void hideAllError() {
@@ -106,5 +124,9 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter, Main
                 }
         }
         return true;
+    }
+
+    public String getResult() {
+        return result;
     }
 }

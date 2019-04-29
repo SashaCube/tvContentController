@@ -70,4 +70,8 @@ public class AllPostsFragment extends Fragment {
         presenter = new AllPostsPresenter(view, this);
         view.setPresenter(presenter, getFragmentManager());
     }
+
+    public void update() {
+        view.updatePosts();
+    }
 }
