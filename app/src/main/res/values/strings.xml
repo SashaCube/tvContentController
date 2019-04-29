@@ -31,7 +31,8 @@
     <string name="done">Done</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-
+    <string name="sort_by_title">Sort by title</string>
+    <string name="sort_by_date">Sort by date</string>
 
     <string-array name="type_list">
         <item>News</item>

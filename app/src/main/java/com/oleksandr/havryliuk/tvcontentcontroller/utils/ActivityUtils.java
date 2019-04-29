@@ -12,9 +12,10 @@ import java.util.Locale;
 
 public class ActivityUtils {
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                             @NonNull Fragment fragment, int frameId) {
+                                             @NonNull Fragment fragment, int frameId, String tag) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
+        transaction.addToBackStack(tag);
         transaction.commit();
     }
 

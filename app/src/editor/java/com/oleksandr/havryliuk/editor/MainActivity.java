@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().popBackStackImmediate(MainFragment.class.getName(), 0);
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    new MainFragment(), R.id.fragment);
+                    new MainFragment(), R.id.fragment, MainFragment.class.getName());
         }
     }
 
@@ -57,7 +57,7 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().popBackStackImmediate(AllPostsFragment.class.getName(), 0);
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    new AllPostsFragment(), R.id.fragment);
+                    new AllPostsFragment(), R.id.fragment, AllPostsFragment.class.getName());
         }
     }
 
@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().popBackStackImmediate(NewPostFragment.class.getName(), 0);
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    new NewPostFragment(), R.id.fragment);
+                    new NewPostFragment(), R.id.fragment, NewPostFragment.class.getName());
         }
     }
 }

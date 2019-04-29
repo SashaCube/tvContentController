@@ -28,5 +28,7 @@ public interface AllPostsContract {
         void clickEdit(Post post);
 
         void clickSetPost(Post oldPost);
+
+        void setSorting(String type);
     }
 }

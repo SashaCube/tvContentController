@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@drawable/background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/large_x_dimen"
+        android:background="@drawable/background"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
-            android:gravity="center"
+            style="@style/Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/all_posts"
-            android:textStyle="bold"
             android:layout_margin="@dimen/default_dimen"
-            style="@style/Title"/>
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/all_posts"
+            android:textStyle="bold" />
 
 
         <ImageView
@@ -29,31 +29,40 @@
             android:layout_height="@dimen/small_icon_size"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/default_dimen"
-            android:src="@drawable/ic_sort"
-            android:contentDescription="@string/sort" />
+            android:clickable="true"
+            android:contentDescription="@string/sort"
+            android:focusable="true"
+            android:src="@drawable/ic_sort" />
 
     </LinearLayout>
 
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
+    <LinearLayout
+        android:layout_marginTop="@dimen/large_x_dimen"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/independence"
-        android:minHeight="?attr/actionBarSize"
-        app:tabIndicatorColor="@color/diamond"
-        app:tabTextColor="@color/diamond"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:orientation="vertical">
 
-    </android.support.design.widget.TabLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/independence"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabIndicatorColor="@color/diamond"
+            app:tabTextColor="@color/diamond">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        </android.support.design.widget.TabLayout>
 
-    <View
-        android:layout_width="match_parent"
-        style="@style/Separator"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-</LinearLayout>
+        <View
+            style="@style/Separator"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+</RelativeLayout>
