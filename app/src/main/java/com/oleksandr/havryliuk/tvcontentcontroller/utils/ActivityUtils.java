@@ -5,9 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ActivityUtils {
-    public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
-                                              @NonNull Fragment fragment, int frameId) {
+    public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
+                                             @NonNull Fragment fragment, int frameId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         transaction.commit();
@@ -21,5 +26,10 @@ public class ActivityUtils {
             }
         }
         return false;
+    }
+
+    public static String dateTimeConverter(Date date) {
+        DateFormat format = new SimpleDateFormat("d MMM HH:mm", Locale.ENGLISH);
+        return format.format(date);
     }
 }

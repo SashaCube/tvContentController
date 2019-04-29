@@ -51,21 +51,12 @@ public class AllPostsItemFragment extends Fragment {
         return this;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        adapter.update();
-        adapter.notifyDataSetChanged();
-    }
-
     public void update() {
         if (adapter != null) {
-            recyclerView.post(new Runnable()
-            {
+            recyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     adapter.update();
-                    adapter.notifyDataSetChanged();
                 }
             });
         }

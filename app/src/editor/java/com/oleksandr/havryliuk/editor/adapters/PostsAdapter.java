@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
 
             stateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Post post = mPosts.get(getAdapterPosition());
                     post.setState(isChecked);
 
@@ -66,7 +67,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         public void onClick(View v) {
             int position = getAdapterPosition();
 
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.edit_button:
                     presenter.clickEdit(mPosts.get(position));
                     break;
@@ -98,7 +99,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         this.presenter = presenter;
         this.type = type;
         update();
-        notifyDataSetChanged();
     }
 
     @Override
@@ -115,7 +115,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.titleTextView.setText(currentPost.getTitle());
             holder.aboutTextView.setText(currentPost.getAbout());
             holder.typeTextView.setText(currentPost.getType());
-            holder.dateTextView.setText(currentPost.getCreateDate().toString());
+            holder.dateTextView.setText(ActivityUtils.dateTimeConverter(currentPost.getCreateDate()));
             holder.stateSwitch.setChecked(currentPost.isState());
 
             if (position == openPost) {
@@ -132,6 +132,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
 
     public void update() {
         mPosts = presenter.getPosts(type);
+        notifyDataSetChanged();
     }
 
     public int getItemCount() {

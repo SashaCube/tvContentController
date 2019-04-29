@@ -39,7 +39,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     }
 
     @Override
-    public void clickDelete(Post post) {
+    public void clickDelete(final Post post) {
         repository.deletePost(post);
         view.updatePosts();
     }
@@ -51,7 +51,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     }
 
     @Override
-    public void clickSetPost(Post post) {
+    public void clickSetPost(final Post post) {
         repository.setPost(post);
         view.updatePosts();
     }

@@ -22,7 +22,6 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
 
     @Override
     public void init(View root) {
-
         viewPager = root.findViewById(R.id.view_pager);
         tabLayout = root.findViewById(R.id.tab_layout);
 
@@ -58,7 +57,6 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
 
             }
         });
-
     }
 
     @Override
@@ -72,6 +70,4 @@ public class AllPostsView implements AllPostsContract.IAllPostsView {
     public void updatePosts() {
         adapterViewPager.update();
     }
-
-
 }
