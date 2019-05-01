@@ -5,13 +5,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.repository.Repository;
 
 import java.util.Date;
 
-import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
-import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
+import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class NewPostPresenter implements NewPostContract.INewPostPresenter {
 

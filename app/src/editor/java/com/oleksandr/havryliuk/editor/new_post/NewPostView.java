@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
-import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
+import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class NewPostView implements NewPostContract.INewPostView, View.OnClickListener {
 

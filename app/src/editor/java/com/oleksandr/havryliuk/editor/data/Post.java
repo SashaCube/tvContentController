@@ -1,9 +1,16 @@
-package com.oleksandr.havryliuk.editor.model;
+package com.oleksandr.havryliuk.editor.data;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
+@Entity(tableName = "posts")
 public class Post {
 
     public final static boolean ACTIVE = true;
@@ -14,16 +21,37 @@ public class Post {
     public final static String IMAGE = "Image";
     public final static String TEXT = "Text";
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "post_id")
+    private String id;
+
+    @ColumnInfo(name = "title")
     private String title;
+
+    @ColumnInfo(name = "about")
     private String about;
+
+    @ColumnInfo(name = "create_date")
     private Date createDate;
+
+    @ColumnInfo(name = "type")
     private String type;
+
+    @ColumnInfo(name = "image_uri")
     private Uri imageUri;
+
+    @ColumnInfo(name = "text")
     private String text;
+
+    @ColumnInfo(name = "state")
     private boolean state;
+
+    @ColumnInfo(name = "duration")
     private long duration;
 
     public Post(String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.about = about;
         this.createDate = createDate;
@@ -32,6 +60,15 @@ public class Post {
         this.text = text;
         this.state = state;
         this.duration = duration;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -96,5 +133,24 @@ public class Post {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post task = (Post) o;
+        return Objects.equals(id, task.id) &&
+                Objects.equals(title, task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Post with title " + title;
     }
 }

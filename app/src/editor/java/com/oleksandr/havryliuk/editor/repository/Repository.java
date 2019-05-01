@@ -1,6 +1,6 @@
 package com.oleksandr.havryliuk.editor.repository;
 
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 
 import java.util.ArrayList;
 
