@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.oleksandr.havryliuk.editor.data.Post;
 
-@Database(entities = {Post.class}, version = 1)
+@Database(entities = {Post.class}, version = 1, exportSchema = false)
 public abstract class PostsDatabase extends RoomDatabase {
 
     private static PostsDatabase INSTANCE;

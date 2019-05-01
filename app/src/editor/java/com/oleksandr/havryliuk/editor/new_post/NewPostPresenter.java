@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 
 import java.util.Date;
 
@@ -62,7 +62,7 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter {
         }
 
         Post post = new Post(title, about, new Date(), type, uri, text, state, duration);
-        Repository.getInstance().addPost(post);
+        PostsRepository.getInstance(fragment.getContext()).savePost(post);
         Toast.makeText(fragment.getContext(), "Post " + title + " added", Toast.LENGTH_SHORT)
                 .show();
 

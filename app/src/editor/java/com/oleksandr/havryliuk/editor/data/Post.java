@@ -2,9 +2,14 @@ package com.oleksandr.havryliuk.editor.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import com.oleksandr.havryliuk.editor.data.source.converters.DateConverter;
+import com.oleksandr.havryliuk.editor.data.source.converters.UriConverter;
 
 import java.util.Date;
 import java.util.Objects;
@@ -32,12 +37,14 @@ public class Post {
     @ColumnInfo(name = "about")
     private String about;
 
+    @TypeConverters(DateConverter.class)
     @ColumnInfo(name = "create_date")
     private Date createDate;
 
     @ColumnInfo(name = "type")
     private String type;
 
+    @TypeConverters(UriConverter.class)
     @ColumnInfo(name = "image_uri")
     private Uri imageUri;
 
@@ -62,6 +69,7 @@ public class Post {
         this.duration = duration;
     }
 
+    @Ignore
     public Post(String id, String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
         this.id = id;
         this.title = title;
