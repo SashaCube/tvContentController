@@ -62,6 +62,18 @@ public class Post {
         this.duration = duration;
     }
 
+    public Post(String id, String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+        this.id = id;
+        this.title = title;
+        this.about = about;
+        this.createDate = createDate;
+        this.type = type;
+        this.imageUri = imageUri;
+        this.text = text;
+        this.state = state;
+        this.duration = duration;
+    }
+
     @NonNull
     public String getId() {
         return id;

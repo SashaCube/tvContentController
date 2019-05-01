@@ -100,14 +100,14 @@ public class PostsLocalDataSource implements PostsDataSource {
 
     @Override
     public void disActivatePost(@NonNull final Post post) {
-        Runnable completeRunnable = new Runnable() {
+        Runnable disActivateRunnable = new Runnable() {
             @Override
             public void run() {
                 mPostsDao.updateState(post.getId(), false);
             }
         };
 
-        mAppExecutors.diskIO().execute(completeRunnable);
+        mAppExecutors.diskIO().execute(disActivateRunnable);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class PostsLocalDataSource implements PostsDataSource {
 
     @Override
     public void clearDisActivatedPosts() {
-        Runnable clearTasksRunnable = new Runnable() {
+        Runnable clearPostsRunnable = new Runnable() {
             @Override
             public void run() {
                 mPostsDao.deleteDisActivetedPosts();
@@ -141,12 +141,11 @@ public class PostsLocalDataSource implements PostsDataSource {
             }
         };
 
-        mAppExecutors.diskIO().execute(clearTasksRunnable);
+        mAppExecutors.diskIO().execute(clearPostsRunnable);
     }
 
     @Override
     public void refreshPosts() {
-
     }
 
     @Override
