@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.new_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.net.Uri;
 import android.view.View;
@@ -12,11 +12,12 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
 
-public class NewPostView implements NewPostContract.INewPostView, View.OnClickListener {
+public class NewPostView implements NewPostContract.INewPostView, View.OnClickListener, IValidateView {
 
     private NewPostContract.INewPostPresenter presenter;
     private Spinner spinner;
@@ -26,6 +27,7 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     private Switch stateSwitch;
     private ImageView addImageView;
     private LinearLayout addImageLayout, addTextLayout;
+    private View root;
 
     @Override
     public void setPresenter(NewPostContract.INewPostPresenter presenter) {
@@ -35,7 +37,13 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
 
     @Override
     public void init(final View root) {
+        this.root = root;
 
+        initView();
+        initListener();
+    }
+
+    private void initView() {
         spinner = root.findViewById(R.id.spinner);
         titleEditText = root.findViewById(R.id.title_edit_text);
         aboutEditText = root.findViewById(R.id.about_edit_text);
@@ -48,40 +56,17 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
         addImageLayout = root.findViewById(R.id.add_image_layout);
         addTextLayout = root.findViewById(R.id.add_text_layout);
         imageErrorTextView = root.findViewById(R.id.image_error_text_view);
+    }
 
+    private void initListener(){
         spinner.setAdapter(ArrayAdapter.createFromResource(root.getContext(),
                 R.array.type_list, R.layout.item_type));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent,
-                                       View itemSelected, int selectedItemPosition, long selectedId) {
-
-                String[] types = root.getContext().getResources().getStringArray(R.array.type_list);
-                presenter.setTypeClick(types[selectedItemPosition]);
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        spinner.setOnItemSelectedListener(new SpinnerListener());
 
         doneButton.setOnClickListener(this);
         addImageView.setOnClickListener(this);
 
-        durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                durationTextView.setText(String.valueOf(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        durationSeekBar.setOnSeekBarChangeListener(new SeekBarListener());
     }
 
     @Override
@@ -100,16 +85,10 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     }
 
     @Override
-    public void showAddImageLayout() {
-        addImageLayout.setVisibility(View.VISIBLE);
-
-    }
+    public void showAddImageLayout() { addImageLayout.setVisibility(View.VISIBLE); }
 
     @Override
-    public void showAddTextLayout() {
-        addTextLayout.setVisibility(View.VISIBLE);
-
-    }
+    public void showAddTextLayout() { addTextLayout.setVisibility(View.VISIBLE); }
 
     @Override
     public void showTitleError() {
@@ -155,6 +134,38 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
             case R.id.add_image_view:
                 presenter.setImageClick();
                 break;
+        }
+    }
+
+    class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            durationTextView.setText(String.valueOf(progress));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    }
+
+    class SpinnerListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String[] types = root.getContext().getResources().getStringArray(R.array.type_list);
+            presenter.setTypeClick(types[position]);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }

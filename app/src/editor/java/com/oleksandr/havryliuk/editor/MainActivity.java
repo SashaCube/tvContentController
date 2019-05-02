@@ -10,10 +10,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
-import com.oleksandr.havryliuk.editor.edit_post.EditPostFragment;
+import com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostFragment;
 import com.oleksandr.havryliuk.editor.main.MainFragment;
 import com.oleksandr.havryliuk.editor.model.Post;
-import com.oleksandr.havryliuk.editor.new_post.NewPostFragment;
+import com.oleksandr.havryliuk.editor.new_edit_post.new_post.NewPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 

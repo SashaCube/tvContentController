@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.edit_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
-import static com.oleksandr.havryliuk.editor.edit_post.EditPostPresenter.CANCEL;
+import static com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostPresenter.CANCEL;
 
 public class EditPostFragment extends Fragment {
 

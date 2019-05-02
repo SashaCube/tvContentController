@@ -11,6 +11,7 @@ import com.oleksandr.havryliuk.editor.repository.Repository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.DATE;
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.TITLE;
@@ -25,7 +26,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     private static String sortedPostsBy = TITLE;
     private volatile Repository repository;
 
-    public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
+    AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
         this.view = view;
         this.fragment = fragment;
         repository = Repository.getInstance();
@@ -55,7 +56,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     @Override
     public void clickEdit(Post post) {
-        ((MainActivity) fragment.getActivity()).openEditPostFragment(post);
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openEditPostFragment(post);
     }
 
     @Override

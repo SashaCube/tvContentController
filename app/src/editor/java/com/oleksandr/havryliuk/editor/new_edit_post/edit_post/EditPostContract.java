@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.edit_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 
 import android.net.Uri;
 import android.view.View;
@@ -24,18 +24,6 @@ public interface EditPostContract {
         void showAddImageLayout();
 
         void showAddTextLayout();
-
-        void showTitleError();
-
-        void showImageError();
-
-        void showTextError();
-
-        void hideTitleError();
-
-        void hideImageError();
-
-        void hideTextError();
     }
 
     interface IEditPostPresenter {

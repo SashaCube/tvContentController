@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.edit_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 
 import android.net.Uri;
 import android.view.View;
@@ -14,11 +14,12 @@ import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
 
-public class EditPostView implements EditPostContract.IEditPostView, View.OnClickListener {
+public class EditPostView implements EditPostContract.IEditPostView, View.OnClickListener, IValidateView {
 
     private EditPostContract.IEditPostPresenter presenter;
     private Spinner spinner;
@@ -40,6 +41,11 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     public void init(final View root) {
         this.root = root;
 
+        initView();
+        initListeners();
+    }
+
+    private void initView() {
         spinner = root.findViewById(R.id.spinner);
         titleEditText = root.findViewById(R.id.title_edit_text);
         aboutEditText = root.findViewById(R.id.about_edit_text);
@@ -53,41 +59,18 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
         addImageLayout = root.findViewById(R.id.add_image_layout);
         addTextLayout = root.findViewById(R.id.add_text_layout);
         imageErrorTextView = root.findViewById(R.id.image_error_text_view);
+    }
 
+    private void initListeners() {
         spinner.setAdapter(ArrayAdapter.createFromResource(root.getContext(),
                 R.array.type_list, R.layout.item_type));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent,
-                                       View itemSelected, int selectedItemPosition, long selectedId) {
-
-                String[] types = root.getContext().getResources().getStringArray(R.array.type_list);
-                presenter.setTypeClick(types[selectedItemPosition]);
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        spinner.setOnItemSelectedListener(new SpinnerListener());
 
         saveButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         addImageView.setOnClickListener(this);
 
-        durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                durationTextView.setText(String.valueOf(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        durationSeekBar.setOnSeekBarChangeListener(new SeekBarListener());
     }
 
     @Override
@@ -99,20 +82,21 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     public void setEditPost(Post post) {
         titleEditText.setText(post.getTitle());
         aboutEditText.setText(post.getAbout());
+        textEditText.setText(post.getText());
+        durationTextView.setText(String.valueOf(post.getDuration()));
+        stateSwitch.setChecked(post.isState());
+        setSpinnerSelection(post.getType());
+        ((MainActivity.IImagePicker) presenter).setUri(post.getImageUri());
+        durationSeekBar.setProgress((int) post.getDuration());
+    }
 
+    private void setSpinnerSelection(String type) {
         String[] types = root.getContext().getResources().getStringArray(R.array.type_list);
         for (int i = 0; i < types.length; i++) {
-            if (post.getType().equals(types[i])) {
+            if (type.equals(types[i])) {
                 spinner.setSelection(i);
             }
         }
-        presenter.setTypeClick(post.getType());
-
-        textEditText.setText(post.getText());
-        ((MainActivity.IImagePicker) presenter).setUri(post.getImageUri());
-        durationSeekBar.setProgress((int) post.getDuration());
-        durationTextView.setText(String.valueOf(post.getDuration()));
-        stateSwitch.setChecked(post.isState());
     }
 
     @Override
@@ -171,8 +155,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save_button:
-                presenter.saveClick(
-                        titleEditText.getText().toString(),
+                presenter.saveClick(titleEditText.getText().toString(),
                         aboutEditText.getText().toString(),
                         textEditText.getText().toString(),
                         Integer.parseInt(durationTextView.getText().toString()),
@@ -184,6 +167,39 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
             case R.id.add_image_view:
                 presenter.setImageClick();
                 break;
+        }
+    }
+
+    class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            durationTextView.setText(String.valueOf(progress));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    }
+
+    class SpinnerListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            String[] types = root.getContext().getResources().getStringArray(R.array.type_list);
+            presenter.setTypeClick(types[position]);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }

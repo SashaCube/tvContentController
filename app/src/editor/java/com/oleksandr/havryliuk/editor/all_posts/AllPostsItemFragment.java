@@ -21,10 +21,9 @@ public class AllPostsItemFragment extends Fragment {
     private RecyclerView recyclerView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
-
         initView(root);
 
         return root;
@@ -38,7 +37,6 @@ public class AllPostsItemFragment extends Fragment {
     }
 
     private void initView(View root) {
-
         recyclerView = root.findViewById(R.id.recycler_view);
         adapter = new PostsAdapter(root.getContext());
         recyclerView.setAdapter(adapter);

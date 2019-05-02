@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.new_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
