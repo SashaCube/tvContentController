@@ -17,16 +17,19 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.UUID;
+
+import static com.oleksandr.havryliuk.editor.data.source.image_manager.ImageSaver.DIR;
 
 public class ImageManager {
 
     private final static String TAG = ImageManager.class.getSimpleName();
 
-    public static String uploadImage(String imagePath, final Context context) {
+    public static String uploadImage(Uri imageUri) {
         final StorageReference ref = FirebaseStorage.getInstance().getReference()
                 .child(UUID.randomUUID().toString());
-        UploadTask uploadTask = ref.putFile(Uri.fromFile(new File(imagePath)));
+        UploadTask uploadTask = ref.putFile(imageUri);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {

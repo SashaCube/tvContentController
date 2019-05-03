@@ -3,7 +3,7 @@ package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 import android.net.Uri;
 import android.view.View;
 
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 
 public interface EditPostContract {
 

@@ -4,12 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
-import com.oleksandr.havryliuk.editor.data.source.converters.DateConverter;
-
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,6 +19,7 @@ public class Post {
     public final static String AD = "AD";
     public final static String IMAGE = "Image";
     public final static String TEXT = "Text";
+    public final static String ALL = "All";
 
     @PrimaryKey
     @NonNull
@@ -35,9 +32,8 @@ public class Post {
     @ColumnInfo(name = "about")
     private String about;
 
-    @TypeConverters(DateConverter.class)
     @ColumnInfo(name = "create_date")
-    private Date createDate;
+    private String createDate;
 
     @ColumnInfo(name = "type")
     private String type;
@@ -54,7 +50,7 @@ public class Post {
     @ColumnInfo(name = "duration")
     private long duration;
 
-    public Post(String title, String about, Date createDate, String type, String imagePath, String text, boolean state, long duration) {
+    public Post(String title, String about, String createDate, String type, String imagePath, String text, boolean state, long duration) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.about = about;
@@ -67,7 +63,7 @@ public class Post {
     }
 
     @Ignore
-    public Post(String id, String title, String about, Date createDate, String type, String imagePath, String text, boolean state, long duration) {
+    public Post(String id, String title, String about, String createDate, String type, String imagePath, String text, boolean state, long duration) {
         this.id = id;
         this.title = title;
         this.about = about;
@@ -104,11 +100,11 @@ public class Post {
         this.about = about;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

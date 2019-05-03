@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import static com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostPresenter.CANCEL;

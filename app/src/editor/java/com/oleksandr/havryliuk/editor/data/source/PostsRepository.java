@@ -14,6 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
+
 public class PostsRepository implements PostsDataSource {
 
     private static PostsRepository INSTANCE = null;
@@ -48,19 +50,20 @@ public class PostsRepository implements PostsDataSource {
 
     @Override
     public void getPosts(@NonNull final LoadPostsCallback callback) {
-        // Query the local storage if available.
-        mPostsLocalDataSource.getPosts(new LoadPostsCallback() {
-            @Override
-            public void onPostsLoaded(List<Post> posts) {
-                refreshCache(posts);
-                callback.onPostsLoaded(new ArrayList<>(mCachedPosts.values()));
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-                getPostsFromRemoteDataSource(callback);
-            }
-        });
+//        // Query the local storage if available.
+//        mPostsLocalDataSource.getPosts(new LoadPostsCallback() {
+//            @Override
+//            public void onPostsLoaded(List<Post> posts) {
+//                refreshCache(posts);
+//                callback.onPostsLoaded(new ArrayList<>(mCachedPosts.values()));
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                getPostsFromRemoteDataSource(callback);
+//            }
+//        });
 
 
         // Fetch new data from the network.
@@ -113,8 +116,6 @@ public class PostsRepository implements PostsDataSource {
 
     @Override
     public void savePost(@NonNull Post post) {
-        post.setImagePath(ImageManager.uploadImage(post.getImagePath(), context));
-
         mPostsRemoteDataSource.savePost(post);
         mPostsLocalDataSource.savePost(post);
 

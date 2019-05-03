@@ -4,16 +4,18 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
+import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.PostValidator;
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import java.util.Date;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
-import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
+import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class NewPostPresenter implements NewPostContract.INewPostPresenter,
         MainActivity.IImagePicker {
@@ -60,8 +62,14 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter,
     public void doneClick(String title, String about, String text, int duration, boolean state) {
         if (PostValidator.validateInput((IValidateView) view, title, text, uri, type)) {
 
-            Post post = new Post(title, about, new Date(), type, uri, text, state, duration);
-            Repository.getInstance().addPost(post);
+            Post post = new Post(title, about, ActivityUtils.dateTimeConverter(new Date()),
+                    type, ActivityUtils.UriPath(uri), text, state, duration);
+
+            if (post.getType() != TEXT && post.getImagePath() != null) {
+                post.setImagePath(ImageManager.uploadImage(uri));
+            }
+
+            PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext())).savePost(post);
             Toast.makeText(fragment.getContext(), "Post " + title + " added", Toast.LENGTH_SHORT)
                     .show();
 

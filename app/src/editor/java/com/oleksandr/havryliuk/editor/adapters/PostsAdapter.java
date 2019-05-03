@@ -12,7 +12,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
@@ -21,7 +21,6 @@ import java.util.List;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHolder> {
 
     private AllPostsContract.IAllPostsPresenter presenter;
-    private String type;
     private final static int NONE = -1;
     private int openPost = NONE;
 
@@ -95,10 +94,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter, String type) {
+    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter) {
         this.presenter = presenter;
-        this.type = type;
-        update();
     }
 
     @Override
@@ -115,7 +112,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.titleTextView.setText(currentPost.getTitle());
             holder.aboutTextView.setText(currentPost.getAbout());
             holder.typeTextView.setText(currentPost.getType());
-            holder.dateTextView.setText(ActivityUtils.dateTimeConverter(currentPost.getCreateDate()));
+            holder.dateTextView.setText(currentPost.getCreateDate());
             holder.stateSwitch.setChecked(currentPost.isState());
 
             if (position == openPost) {
@@ -130,8 +127,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         }
     }
 
-    public void update() {
-        mPosts = presenter.getPosts(type);
+    public void setPosts(List<Post> posts) {
+        mPosts = posts;
         notifyDataSetChanged();
     }
 
@@ -140,4 +137,5 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             return mPosts.size();
         else return 0;
     }
+
 }

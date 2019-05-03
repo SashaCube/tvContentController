@@ -3,15 +3,16 @@ package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 import android.net.Uri;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.PostValidator;
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
-import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
+import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class EditPostPresenter implements EditPostContract.IEditPostPresenter, MainActivity.IImagePicker {
 
@@ -72,11 +73,11 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
             editedPost.setAbout(about);
             editedPost.setText(text);
             editedPost.setType(type);
-            editedPost.setImageUri(uri);
+            editedPost.setImagePath(ActivityUtils.UriPath(uri));
             editedPost.setState(state);
             editedPost.setDuration(duration);
 
-            Repository.getInstance().setPost(editedPost);
+            PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext())).savePost(editedPost);
 
             finishWithResult(SAVE);
         }
@@ -96,17 +97,17 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
         ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openAllPostsFragment();
     }
 
-    private void showImageType(){
+    private void showImageType() {
         view.hideAddTextLayout();
         view.showAddImageLayout();
     }
 
-    private void showTextType(){
+    private void showTextType() {
         view.hideAddImageLayout();
         view.showAddTextLayout();
     }
 
-    private void showDefault(){
+    private void showDefault() {
         view.showAddTextLayout();
         view.showAddImageLayout();
     }

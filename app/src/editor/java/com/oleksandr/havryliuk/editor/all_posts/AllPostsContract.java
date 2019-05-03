@@ -1,9 +1,8 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 
 import java.util.List;
 
@@ -11,17 +10,25 @@ public interface AllPostsContract {
 
     interface IAllPostsView {
 
-        void init(View root);
+        void setPresenter(IAllPostsPresenter presenter);
 
-        void setPresenter(IAllPostsPresenter presenter, FragmentManager fragmentManager);
+        void setPosts(List<Post> posts);
 
-        void updatePosts();
+        void setLoadingIndicator(boolean value);
+
+        void showNoPosts();
+
+        String getType();
+
+        void showLoadingTasksError();
 
     }
 
     interface IAllPostsPresenter {
 
-        List<Post> getPosts(String type);
+        void loadPosts(boolean forceUpdate, boolean showLoadingUI);
+
+        void loadPosts(boolean forceUpdate);
 
         void clickDelete(Post post);
 
@@ -30,5 +37,9 @@ public interface AllPostsContract {
         void clickSetPost(Post oldPost);
 
         void setSorting(String type);
+
+        void start();
+
+        void setView(IAllPostsView view);
     }
 }

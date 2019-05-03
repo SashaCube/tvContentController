@@ -3,8 +3,8 @@ package com.oleksandr.havryliuk.editor.new_edit_post.validator;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
-import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
+import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class PostValidator {
 

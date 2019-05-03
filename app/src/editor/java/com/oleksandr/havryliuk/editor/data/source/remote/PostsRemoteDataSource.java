@@ -13,7 +13,6 @@ import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +59,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    getTasksFromSnapShot(dataSnapshot);
+                    getPostsFromSnapShot(dataSnapshot);
                     Log.i("Firebase DB", "update value for user " + USERID);
                 } else {
                     saveNewUser(USERID);
@@ -75,7 +74,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
         });
     }
 
-    private void getTasksFromSnapShot(DataSnapshot dataSnapshot) {
+    private void getPostsFromSnapShot(DataSnapshot dataSnapshot) {
         POSTS_SERVICE_DATA.clear();
 
         HashMap<String, HashMap<String, Object>> map = (HashMap<String, HashMap<String, Object>>) dataSnapshot.getValue();
@@ -84,12 +83,12 @@ public class PostsRemoteDataSource implements PostsDataSource {
             String title = (String) entry.getValue().get("title");
             String about = (String) entry.getValue().get("about");
             String postId = (String) entry.getValue().get("id");
-            Boolean state = (Boolean) entry.getValue().get("state");
+            boolean state = (Boolean) entry.getValue().get("state");
             String type = (String) entry.getValue().get("type");
-            Date createDate = (Date) entry.getValue().get("create_date");
             String imagePath = (String) entry.getValue().get("image_path");
             String text = (String) entry.getValue().get("text");
-            Long duration = (long) entry.getValue().get("duration");
+            long duration = (Long) entry.getValue().get("duration");
+            String createDate = (String) entry.getValue().get("create_date");
 
 
             Post post = new Post(postId, title, about, createDate, type, imagePath, text, state,
@@ -126,7 +125,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
         Post disActivePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
                 post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
                 false, post.getDuration());
-        POSTS_SERVICE_DATA.put(disActivePost.getId(), disActivePost);
+        POSTS_SERVICE_DATA.put(post.getId(), disActivePost);
         mPostsRef.setValue(POSTS_SERVICE_DATA);
     }
 

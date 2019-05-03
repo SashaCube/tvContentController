@@ -1,57 +1,81 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.DATE;
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.TITLE;
-import static com.oleksandr.havryliuk.editor.model.Post.AD;
-import static com.oleksandr.havryliuk.editor.model.Post.ALL;
-import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
+import static com.oleksandr.havryliuk.editor.data.Post.ACTIVE;
+import static com.oleksandr.havryliuk.editor.data.Post.ALL;
 
 public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     private AllPostsContract.IAllPostsView view;
     private Fragment fragment;
-    private static String sortedPostsBy = TITLE;
-    private volatile Repository repository;
+    private static String mSortedPostsBy = TITLE;
+    private boolean mFirstLoad = false;
+    private PostsRepository mRepository;
 
-    AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
-        this.view = view;
+    AllPostsPresenter(Fragment fragment) {
         this.fragment = fragment;
-        repository = Repository.getInstance();
+        mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public List<Post> getPosts(String type) {
+    public void setView(AllPostsContract.IAllPostsView view) {
+        this.view = view;
+        start();
+    }
 
-        switch (type) {
-            case ALL:
-                return sortedPosts(repository.getAllPosts());
-            case NEWS:
-                return sortedPosts(repository.getPostsByType(NEWS));
-            case AD:
-                return sortedPosts(repository.getPostsByType(AD));
+    @Override
+    public void loadPosts(boolean forceUpdate, final boolean showLoadingUI) {
+
+        if (showLoadingUI) {
+            view.setLoadingIndicator(true);
         }
-        return null;
+        if (forceUpdate) {
+            mRepository.refreshPosts();
+        }
+
+        mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
+                    @Override
+                    public void onPostsLoaded(List<Post> posts) {
+                        processPosts(posts);
+
+//                        if (!((Fragment)view).isActive()) {
+//                            return;
+//                        }
+
+                        if (showLoadingUI) {
+                            view.setLoadingIndicator(false);
+                            Toast.makeText(fragment.getContext(), "done", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        //TODO: 03.05.19 handle errors
+                    }
+                });
     }
 
     @Override
     public void clickDelete(final Post post) {
-        repository.deletePost(post);
+        mRepository.deletePost(post.getId());
         Toast.makeText(fragment.getContext(), post.getTitle() + " deleted successfully", Toast.LENGTH_SHORT).show();
-        view.updatePosts();
+        loadPosts(false, true);
     }
 
     @Override
@@ -61,21 +85,25 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     @Override
     public void clickSetPost(final Post post) {
-        repository.setPost(post);
-        view.updatePosts();
+        if (post.isState() == ACTIVE) {
+            mRepository.disActivatePost(post);
+        } else {
+            mRepository.activatePost(post);
+        }
     }
 
     @Override
     public void setSorting(String type) {
-        sortedPostsBy = type;
-        view.updatePosts();
+        mSortedPostsBy = type;
+        loadPosts(true, true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<Post> sortedPosts(List<Post> posts) {
-        switch (sortedPostsBy) {
+
+    private List<Post> sortPosts(List<Post> posts) {
+
+        switch (mSortedPostsBy) {
             case TITLE:
-                posts.sort(new Comparator<Post>() {
+                Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
                         return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
@@ -83,14 +111,51 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                 });
                 break;
             case DATE:
-                posts.sort(new Comparator<Post>() {
+                Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
-                        return o1.getCreateDate().compareTo(o2.getCreateDate());
+                        return new Date(o1.getCreateDate()).compareTo(new Date(o2.getCreateDate()));
                     }
                 });
                 break;
         }
         return posts;
+    }
+
+    @Override
+    public void start() {
+        loadPosts(false);
+    }
+
+    @Override
+    public void loadPosts(boolean forceUpdate) {
+        // Simplification for sample: a network reload will be forced on first load.
+        loadPosts(forceUpdate || mFirstLoad, true);
+        mFirstLoad = false;
+    }
+
+    private void processPosts(List<Post> posts) {
+        posts = filterPosts(posts);
+
+        if (posts.isEmpty()) {
+            view.showNoPosts();
+        } else {
+            posts = sortPosts(posts);
+            view.setPosts(posts);
+        }
+    }
+
+    private List<Post> filterPosts(List<Post> posts){
+        if (view.getType().equals(ALL)) {
+            return posts;
+        } else {
+            List<Post> filteredPosts = new ArrayList<>();
+            for (Post p : posts) {
+                if (p.getType().equals(view.getType())) {
+                    filteredPosts.add(p);
+                }
+            }
+            return filteredPosts;
+        }
     }
 }
