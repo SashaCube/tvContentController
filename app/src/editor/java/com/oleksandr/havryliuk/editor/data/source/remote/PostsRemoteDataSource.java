@@ -1,6 +1,5 @@
 package com.oleksandr.havryliuk.editor.data.source.remote;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -88,14 +87,12 @@ public class PostsRemoteDataSource implements PostsDataSource {
             Boolean state = (Boolean) entry.getValue().get("state");
             String type = (String) entry.getValue().get("type");
             Date createDate = (Date) entry.getValue().get("create_date");
-            Uri imageUri = (Uri) entry.getValue().get("image_uri");
+            String imagePath = (String) entry.getValue().get("image_path");
             String text = (String) entry.getValue().get("text");
             Long duration = (long) entry.getValue().get("duration");
 
 
-
-
-            Post post = new Post(postId, title, about, createDate, type, imageUri, text, state,
+            Post post = new Post(postId, title, about, createDate, type, imagePath, text, state,
                     duration);
             POSTS_SERVICE_DATA.put(postId, post);
             Log.i("DataSnapshot", "Post from remote repo " + post);
@@ -127,7 +124,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     @Override
     public void disActivatePost(@NonNull Post post) {
         Post disActivePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImageUri(), post.getText(),
+                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
                 false, post.getDuration());
         POSTS_SERVICE_DATA.put(disActivePost.getId(), disActivePost);
         mPostsRef.setValue(POSTS_SERVICE_DATA);
@@ -140,7 +137,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     @Override
     public void activatePost(@NonNull Post post) {
         Post activePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImageUri(), post.getText(),
+                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
                 true, post.getDuration());
         POSTS_SERVICE_DATA.put(activePost.getId(), activePost);
         mPostsRef.setValue(POSTS_SERVICE_DATA);

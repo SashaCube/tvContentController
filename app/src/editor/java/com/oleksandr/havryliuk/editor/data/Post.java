@@ -5,11 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.editor.data.source.converters.DateConverter;
-import com.oleksandr.havryliuk.editor.data.source.converters.UriConverter;
 
 import java.util.Date;
 import java.util.Objects;
@@ -44,9 +42,8 @@ public class Post {
     @ColumnInfo(name = "type")
     private String type;
 
-    @TypeConverters(UriConverter.class)
-    @ColumnInfo(name = "image_uri")
-    private Uri imageUri;
+    @ColumnInfo(name = "image_path")
+    private String imagePath;
 
     @ColumnInfo(name = "text")
     private String text;
@@ -57,26 +54,26 @@ public class Post {
     @ColumnInfo(name = "duration")
     private long duration;
 
-    public Post(String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+    public Post(String title, String about, Date createDate, String type, String imagePath, String text, boolean state, long duration) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.about = about;
         this.createDate = createDate;
         this.type = type;
-        this.imageUri = imageUri;
+        this.imagePath = imagePath;
         this.text = text;
         this.state = state;
         this.duration = duration;
     }
 
     @Ignore
-    public Post(String id, String title, String about, Date createDate, String type, Uri imageUri, String text, boolean state, long duration) {
+    public Post(String id, String title, String about, Date createDate, String type, String imagePath, String text, boolean state, long duration) {
         this.id = id;
         this.title = title;
         this.about = about;
         this.createDate = createDate;
         this.type = type;
-        this.imageUri = imageUri;
+        this.imagePath = imagePath;
         this.text = text;
         this.state = state;
         this.duration = duration;
@@ -123,12 +120,12 @@ public class Post {
         this.type = type;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getText() {

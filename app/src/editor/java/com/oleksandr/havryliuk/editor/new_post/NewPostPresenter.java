@@ -9,6 +9,7 @@ import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
@@ -57,12 +58,12 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter {
 
     @Override
     public void doneClick(String title, String about, String text, int duration, boolean state) {
-        if (validateInput(title, text) == false) {
+        if (validateInput(title, text)) {
             return;
         }
 
-        Post post = new Post(title, about, new Date(), type, uri, text, state, duration);
-        PostsRepository.getInstance(fragment.getContext()).savePost(post);
+        Post post = new Post(title, about, new Date(), type, uri.getPath(), text, state, duration);
+        PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext())).savePost(post);
         Toast.makeText(fragment.getContext(), "Post " + title + " added", Toast.LENGTH_SHORT)
                 .show();
 

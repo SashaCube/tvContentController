@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.editor.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.editor.data.source.remote.PostsRemoteDataSource;
 
@@ -21,12 +22,15 @@ public class PostsRepository implements PostsDataSource {
 
     private PostsDataSource mPostsLocalDataSource;
 
+    private Context context;
+
     Map<String, Post> mCachedPosts;
 
     // Prevent direct instantiation.
     private PostsRepository(@NonNull Context context) {
         mPostsRemoteDataSource = PostsRemoteDataSource.getInstance();
         mPostsLocalDataSource = PostsLocalDataSource.getInstance(context);
+        this.context = context;
     }
 
     public static PostsRepository getInstance(@NonNull final Context context) {
@@ -109,6 +113,8 @@ public class PostsRepository implements PostsDataSource {
 
     @Override
     public void savePost(@NonNull Post post) {
+        post.setImagePath(ImageManager.uploadImage(post.getImagePath(), context));
+
         mPostsRemoteDataSource.savePost(post);
         mPostsLocalDataSource.savePost(post);
 
@@ -125,7 +131,7 @@ public class PostsRepository implements PostsDataSource {
         mPostsLocalDataSource.disActivatePost(post);
 
         Post disActivatePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImageUri(), post.getText(),
+                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
                 false, post.getDuration());
 
         // Do in memory cache update to keep the app UI up to date
@@ -146,7 +152,7 @@ public class PostsRepository implements PostsDataSource {
         mPostsLocalDataSource.activatePost(post);
 
         Post activatePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImageUri(), post.getText(),
+                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
                 true, post.getDuration());
 
         // Do in memory cache update to keep the app UI up to date
