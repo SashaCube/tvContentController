@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.new_post;
+package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.net.Uri;
 import android.view.View;
@@ -20,18 +20,6 @@ public interface NewPostContract {
         void showAddImageLayout();
 
         void showAddTextLayout();
-
-        void showTitleError();
-
-        void showImageError();
-
-        void showTextError();
-
-        void hideTitleError();
-
-        void hideImageError();
-
-        void hideTextError();
     }
 
     interface INewPostPresenter {
@@ -41,7 +29,5 @@ public interface NewPostContract {
         void setTypeClick(String type);
 
         void doneClick(String title, String about, String text, int duration, boolean state);
-
-        void setUri(Uri uri);
     }
 }
