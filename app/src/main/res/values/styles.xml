@@ -40,7 +40,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">casual</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:padding">@dimen/default_dimen</item>
+        <item name="android:padding">@dimen/small_dimen</item>
     </style>
 
 
