@@ -51,19 +51,20 @@ public class PostsRepository implements PostsDataSource {
     @Override
     public void getPosts(@NonNull final LoadPostsCallback callback) {
 
-//        // Query the local storage if available.
-//        mPostsLocalDataSource.getPosts(new LoadPostsCallback() {
-//            @Override
-//            public void onPostsLoaded(List<Post> posts) {
-//                refreshCache(posts);
-//                callback.onPostsLoaded(new ArrayList<>(mCachedPosts.values()));
-//            }
-//
-//            @Override
-//            public void onDataNotAvailable() {
-//                getPostsFromRemoteDataSource(callback);
-//            }
-//        });
+        // FIXME: 04.05.19 something wrong with data when its returning from this method and repository maybe this is Firebase database or local Data base check it
+        // Query the local storage if available.
+        mPostsLocalDataSource.getPosts(new LoadPostsCallback() {
+            @Override
+            public void onPostsLoaded(List<Post> posts) {
+                refreshCache(posts);
+                callback.onPostsLoaded(new ArrayList<>(mCachedPosts.values()));
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                getPostsFromRemoteDataSource(callback);
+            }
+        });
 
 
         // Fetch new data from the network.

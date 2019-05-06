@@ -10,13 +10,15 @@ public interface AllPostsContract {
 
     interface IAllPostsView {
 
-        void setPresenter(IAllPostsPresenter presenter);
+        void init(View root, String type);
+
+        void setPresenter(IAllPostsPresenter mPresenter);
 
         void setPosts(List<Post> posts);
 
         void setLoadingIndicator(boolean value);
 
-        void showNoPosts();
+        void showNoPosts(int string);
 
         String getType();
 
@@ -39,7 +41,5 @@ public interface AllPostsContract {
         void setSorting(String type);
 
         void start();
-
-        void setView(IAllPostsView view);
     }
 }

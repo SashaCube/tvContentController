@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.all_posts;
+package com.oleksandr.havryliuk.editor.all_posts.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,10 +23,9 @@ import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class AllPostsFragment extends Fragment {
 
-    public final static String TITLE = "Title";
-    public final static String DATE = "Date";
-
-    private AllPostsContract.IAllPostsPresenter presenter;
+    public final static int ALL_FRAGMENT = 0;
+    public final static int NEWS_FRAGMENT = 1;
+    public final static int AD_FRAGMENT = 2;
 
     private PostsPagerAdapter adapterViewPager;
 
@@ -35,27 +34,24 @@ public class AllPostsFragment extends Fragment {
     private ImageView sortButton;
     private PopupMenu popupMenu;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         initView(root);
-        initPresenter();
 
         return root;
     }
 
-
     private void initView(final View root) {
-
         sortButton = root.findViewById(R.id.sort_icon);
         viewPager = root.findViewById(R.id.view_pager);
         tabLayout = root.findViewById(R.id.tab_layout);
 
         initSortMenu();
         initViewPager();
+        initTabLayout();
     }
 
     private void initSortMenu(){
@@ -72,10 +68,10 @@ public class AllPostsFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.sort_by_date:
-                        presenter.setSorting(DATE);
+                        adapterViewPager.getSortingFragment(viewPager.getCurrentItem()).setSortingByDate();
                         break;
                     case R.id.sort_by_title:
-                        presenter.setSorting(TITLE);
+                        adapterViewPager.getSortingFragment(viewPager.getCurrentItem()).setSortingByTitle();
                         break;
                 }
                 return true;
@@ -90,7 +86,9 @@ public class AllPostsFragment extends Fragment {
         adapterViewPager = new PostsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(0);
+    }
 
+    private void initTabLayout(){
         tabLayout.addTab(tabLayout.newTab().setText(ALL));
         tabLayout.addTab(tabLayout.newTab().setText(NEWS));
         tabLayout.addTab(tabLayout.newTab().setText(AD));
@@ -98,26 +96,18 @@ public class AllPostsFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabListener());
     }
 
-    private void initPresenter() {
-
-        presenter = new AllPostsPresenter(this);
-        adapterViewPager.setPresenter(presenter);
-
-        showAllView();
-    }
-
     class TabListener implements TabLayout.OnTabSelectedListener {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             switch (Objects.requireNonNull(tab.getText()).toString()) {
                 case ALL:
-                    showAllView();
+                    viewPager.setCurrentItem(ALL_FRAGMENT);
                     break;
                 case NEWS:
-                    showNewsView();
+                    viewPager.setCurrentItem(NEWS_FRAGMENT);
                     break;
                 case AD:
-                    showADView();
+                    viewPager.setCurrentItem(AD_FRAGMENT);
                     break;
             }
         }
@@ -131,20 +121,5 @@ public class AllPostsFragment extends Fragment {
         public void onTabReselected(TabLayout.Tab tab) {
 
         }
-    }
-
-    private void showAllView(){
-        viewPager.setCurrentItem(0);
-        presenter.setView((AllPostsContract.IAllPostsView) adapterViewPager.getItem(0));
-    }
-
-    private void showNewsView(){
-        viewPager.setCurrentItem(1);
-        presenter.setView((AllPostsContract.IAllPostsView) adapterViewPager.getItem(1));
-    }
-
-    private void showADView(){
-        viewPager.setCurrentItem(2);
-        presenter.setView((AllPostsContract.IAllPostsView) adapterViewPager.getItem(2));
     }
 }

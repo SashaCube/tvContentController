@@ -7,6 +7,7 @@ import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
+import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,12 +16,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.DATE;
-import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.TITLE;
 import static com.oleksandr.havryliuk.editor.data.Post.ACTIVE;
+import static com.oleksandr.havryliuk.editor.data.Post.AD;
 import static com.oleksandr.havryliuk.editor.data.Post.ALL;
+import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
+
+    public final static String TITLE = "Title";
+    public final static String DATE = "Date";
 
     private AllPostsContract.IAllPostsView view;
     private Fragment fragment;
@@ -28,14 +32,11 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     private boolean mFirstLoad = false;
     private PostsRepository mRepository;
 
-    AllPostsPresenter(Fragment fragment) {
+    public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
+        this.view = view;
         this.fragment = fragment;
         mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
-    }
 
-    @Override
-    public void setView(AllPostsContract.IAllPostsView view) {
-        this.view = view;
         start();
     }
 
@@ -47,28 +48,33 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
         }
         if (forceUpdate) {
             mRepository.refreshPosts();
+            // FIXME: 04.05.19 what must do this method
         }
 
         mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
-                    @Override
-                    public void onPostsLoaded(List<Post> posts) {
-                        processPosts(posts);
+            @Override
+            public void onPostsLoaded(List<Post> posts) {
+                processPosts(posts);
 
-//                        if (!((Fragment)view).isActive()) {
-//                            return;
-//                        }
+                if (!fragment.isAdded()) {
+                    return;
+                }
 
-                        if (showLoadingUI) {
-                            view.setLoadingIndicator(false);
-                            Toast.makeText(fragment.getContext(), "done", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                if (showLoadingUI) {
+                    view.setLoadingIndicator(false);
+                    Toast.makeText(fragment.getContext(), "done", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-                    @Override
-                    public void onDataNotAvailable() {
-                        //TODO: 03.05.19 handle errors
-                    }
-                });
+            @Override
+            public void onDataNotAvailable() {
+                // The view may not be able to handle UI updates anymore
+                if (!fragment.isAdded()) {
+                    return;
+                }
+                view.showLoadingTasksError();
+            }
+        });
     }
 
     @Override
@@ -138,14 +144,24 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
         posts = filterPosts(posts);
 
         if (posts.isEmpty()) {
-            view.showNoPosts();
+            switch (view.getType()) {
+                case ALL:
+                    view.showNoPosts(R.string.no_posts_all);
+                    break;
+                case NEWS:
+                    view.showNoPosts(R.string.no_posts_news);
+                    break;
+                case AD:
+                    view.showNoPosts(R.string.no_posts_ad);
+                    break;
+            }
         } else {
             posts = sortPosts(posts);
             view.setPosts(posts);
         }
     }
 
-    private List<Post> filterPosts(List<Post> posts){
+    private List<Post> filterPosts(List<Post> posts) {
         if (view.getType().equals(ALL)) {
             return posts;
         } else {

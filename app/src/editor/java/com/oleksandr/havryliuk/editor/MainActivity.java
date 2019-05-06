@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
+import com.oleksandr.havryliuk.editor.all_posts.fragments.AllPostsFragment;
 import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.main.MainFragment;
 import com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostFragment;

@@ -37,6 +37,11 @@
     <string name="text">Text</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="no_posts_all">You have no posts!</string>
+    <string name="no_posts_news">You have no News posts!</string>
+    <string name="no_posts_ad">You have no AD posts</string>
+    <string name="no_posts_add">Add a new post</string>
+    <string name="loading_posts_error">Error while loading posts</string>
 
 
     <string-array name="type_list">

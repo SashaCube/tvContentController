@@ -47,4 +47,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    // TODO: 04.05.19 add function to settings - remove cache - that remove all from local storage
 }
