@@ -62,7 +62,6 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
                 if (showLoadingUI) {
                     view.setLoadingIndicator(false);
-                    Toast.makeText(fragment.getContext(), "done", Toast.LENGTH_SHORT).show();
                 }
             }
 

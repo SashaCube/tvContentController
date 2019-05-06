@@ -110,6 +110,8 @@ public class MainActivity extends FragmentActivity {
 
     public interface IImagePicker {
         void setUri(Uri uri);
+
+        void setPath(String path);
     }
 
 

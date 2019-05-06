@@ -11,20 +11,20 @@ public class PostValidator {
     private final static boolean VALID = true;
     private final static boolean INVALID = false;
 
-    public static boolean validateInput(IValidateView view, String title, String text, Uri uri, String type) {
+    public static boolean validateInput(IValidateView view, String title, String text, Uri uri, String path, String type) {
         hideAllError(view);
         boolean validate = validateTitle(view, title);
 
         if (validate) {
             switch (type) {
                 case IMAGE:
-                    validate = validateImage(view, uri);
+                    validate = validateImage(view, uri, path);
                     break;
                 case TEXT:
                     validate = validateText(view, text);
                     break;
                 default:
-                    validate = validateImage(view, uri);
+                    validate = validateImage(view, uri, path);
                     if (validate) {
                         validate = validateText(view, text);
                     }
@@ -34,8 +34,8 @@ public class PostValidator {
         return validate;
     }
 
-    private static boolean validateImage(IValidateView view, Uri uri) {
-        if (uri == null) {
+    private static boolean validateImage(IValidateView view, Uri uri, String path) {
+        if (uri == null && path == null) {
             view.showImageError();
             return INVALID;
         }

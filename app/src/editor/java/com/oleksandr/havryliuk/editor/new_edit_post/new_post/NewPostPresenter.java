@@ -43,6 +43,11 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter,
     }
 
     @Override
+    public void setPath(String path) {
+
+    }
+
+    @Override
     public void setTypeClick(String type) {
         this.type = type;
 
@@ -60,7 +65,7 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter,
 
     @Override
     public void doneClick(String title, String about, String text, int duration, boolean state) {
-        if (PostValidator.validateInput((IValidateView) view, title, text, uri, type)) {
+        if (PostValidator.validateInput((IValidateView) view, title, text, uri, null, type)) {
 
             Post post = new Post(title, about, ActivityUtils.dateTimeConverter(new Date()),
                     type, ActivityUtils.UriPath(uri), text, state, duration);

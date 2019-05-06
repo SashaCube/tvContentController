@@ -24,6 +24,7 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
     private String type;
     private Post editedPost;
     private Uri uri;
+    private String path;
     private String result = CANCEL;
 
     EditPostPresenter(EditPostContract.IEditPostView view, EditPostFragment fragment) {
@@ -50,6 +51,12 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
     }
 
     @Override
+    public void setPath(String path) {
+        this.path = path;
+        view.setImage(path);
+    }
+
+    @Override
     public void setTypeClick(String type) {
         this.type = type;
 
@@ -67,7 +74,7 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
 
     @Override
     public void saveClick(String title, String about, String text, int duration, boolean state) {
-        if (PostValidator.validateInput((IValidateView) view, title, text, uri, type)) {
+        if (PostValidator.validateInput((IValidateView) view, title, text, uri, path, type)) {
 
             editedPost.setTitle(title);
             editedPost.setAbout(about);

@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.oleksandr.havryliuk.editor.data.Post;
 
-@Database(entities = {Post.class}, version = 1, exportSchema = false)
+@Database(entities = {Post.class}, version = 2, exportSchema = false)
 public abstract class PostsDatabase extends RoomDatabase {
 
     private static PostsDatabase INSTANCE;
@@ -21,6 +21,7 @@ public abstract class PostsDatabase extends RoomDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         PostsDatabase.class, "Posts.db")
+                        .fallbackToDestructiveMigration()
                         .build();
             }
             return INSTANCE;

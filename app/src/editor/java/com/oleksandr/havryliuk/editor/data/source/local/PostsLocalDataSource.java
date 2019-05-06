@@ -88,11 +88,11 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
-    public void savePost(@NonNull final Post task) {
+    public void savePost(@NonNull final Post post) {
         Runnable saveRunnable = new Runnable() {
             @Override
             public void run() {
-                mPostsDao.insertPost(task);
+                mPostsDao.insertPost(post);
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);

@@ -85,10 +85,10 @@ public class PostsRemoteDataSource implements PostsDataSource {
             String postId = (String) entry.getValue().get("id");
             boolean state = (Boolean) entry.getValue().get("state");
             String type = (String) entry.getValue().get("type");
-            String imagePath = (String) entry.getValue().get("image_path");
+            String imagePath = (String) entry.getValue().get("imagePath");
             String text = (String) entry.getValue().get("text");
             long duration = (Long) entry.getValue().get("duration");
-            String createDate = (String) entry.getValue().get("create_date");
+            String createDate = (String) entry.getValue().get("createDate");
 
 
             Post post = new Post(postId, title, about, createDate, type, imagePath, text, state,

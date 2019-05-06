@@ -15,11 +15,8 @@ import android.widget.TextView;
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
-import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageSaver;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-
-import java.io.File;
 
 import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
@@ -83,6 +80,11 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     }
 
     @Override
+    public void setImage(String path) {
+        ImageManager.loadInto(root.getContext(), path, addImageView);
+    }
+
+    @Override
     public void setEditPost(Post post) {
         titleEditText.setText(post.getTitle());
         aboutEditText.setText(post.getAbout());
@@ -90,7 +92,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
         durationTextView.setText(String.valueOf(post.getDuration()));
         stateSwitch.setChecked(post.isState());
         setSpinnerSelection(post.getType());
-        ImageManager.loadInto(root.getContext(), post.getImagePath(), addImageView);
+        ((MainActivity.IImagePicker) presenter).setPath(post.getImagePath());
         durationSeekBar.setProgress((int) post.getDuration());
     }
 

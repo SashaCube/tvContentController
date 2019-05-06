@@ -24,15 +24,12 @@ public class PostsRepository implements PostsDataSource {
 
     private PostsDataSource mPostsLocalDataSource;
 
-    private Context context;
-
     Map<String, Post> mCachedPosts;
 
     // Prevent direct instantiation.
     private PostsRepository(@NonNull Context context) {
         mPostsRemoteDataSource = PostsRemoteDataSource.getInstance();
         mPostsLocalDataSource = PostsLocalDataSource.getInstance(context);
-        this.context = context;
     }
 
     public static PostsRepository getInstance(@NonNull final Context context) {

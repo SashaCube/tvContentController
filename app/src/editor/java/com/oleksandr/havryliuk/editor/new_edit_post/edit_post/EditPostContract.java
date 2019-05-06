@@ -15,6 +15,8 @@ public interface EditPostContract {
 
         void setImage(Uri uri);
 
+        void setImage(String path);
+
         void setEditPost(Post post);
 
         void hideAddImageLayout();
