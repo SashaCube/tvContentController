@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.data.Post.ACTIVE;
 import static com.oleksandr.havryliuk.editor.data.Post.AD;
 import static com.oleksandr.havryliuk.editor.data.Post.ALL;
 import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
@@ -90,11 +89,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     @Override
     public void clickSetPost(final Post post) {
-        if (post.isState() == ACTIVE) {
-            mRepository.disActivatePost(post);
-        } else {
-            mRepository.activatePost(post);
-        }
+        mRepository.savePost(post);
     }
 
     @Override

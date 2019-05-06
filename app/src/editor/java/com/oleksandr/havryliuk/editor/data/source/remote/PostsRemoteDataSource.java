@@ -121,32 +121,6 @@ public class PostsRemoteDataSource implements PostsDataSource {
     }
 
     @Override
-    public void disActivatePost(@NonNull Post post) {
-        Post disActivePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
-                false, post.getDuration());
-        POSTS_SERVICE_DATA.put(post.getId(), disActivePost);
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
-    }
-
-    @Override
-    public void disActivatePost(@NonNull String postId) {
-    }
-
-    @Override
-    public void activatePost(@NonNull Post post) {
-        Post activePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
-                true, post.getDuration());
-        POSTS_SERVICE_DATA.put(activePost.getId(), activePost);
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
-    }
-
-    @Override
-    public void activatePost(@NonNull String postId) {
-    }
-
-    @Override
     public void clearDisActivatedPosts() {
         Iterator<Map.Entry<String, Post>> it = POSTS_SERVICE_DATA.entrySet().iterator();
 

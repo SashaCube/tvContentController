@@ -26,10 +26,12 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
     private Uri uri;
     private String path;
     private String result = CANCEL;
+    private PostsRepository mRepository;
 
     EditPostPresenter(EditPostContract.IEditPostView view, EditPostFragment fragment) {
         this.view = view;
         this.fragment = fragment;
+        mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
     }
 
     @Override
@@ -80,11 +82,19 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
             editedPost.setAbout(about);
             editedPost.setText(text);
             editedPost.setType(type);
-            editedPost.setImagePath(ActivityUtils.UriPath(uri));
+
+            if(path != null){
+                editedPost.setImagePath(path);
+            }else{
+                if(uri != null){
+                    editedPost.setImagePath(ActivityUtils.UriPath(uri));
+                }
+            }
+
             editedPost.setState(state);
             editedPost.setDuration(duration);
 
-            PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext())).savePost(editedPost);
+            mRepository.savePost(editedPost);
 
             finishWithResult(SAVE);
         }

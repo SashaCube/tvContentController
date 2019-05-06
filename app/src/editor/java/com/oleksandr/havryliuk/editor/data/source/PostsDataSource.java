@@ -30,14 +30,6 @@ public interface PostsDataSource {
 
     void savePost(@NonNull Post post);
 
-    void disActivatePost(@NonNull Post post);
-
-    void disActivatePost(@NonNull String postId);
-
-    void activatePost(@NonNull Post post);
-
-    void activatePost(@NonNull String postId);
-
     void clearDisActivatedPosts();
 
     void refreshPosts();

@@ -54,10 +54,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Post post = mPosts.get(getAdapterPosition());
-
-                    //post.setState(isChecked); // FIXME: 04.05.19 must setState only for user set, not start UI init
-
-                    //presenter.clickSetPost(post);
+                    post.setState(isChecked);
+                    presenter.clickSetPost(post);
                 }
             });
         }
@@ -114,7 +112,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.typeTextView.setText(currentPost.getType());
             holder.dateTextView.setText(currentPost.getCreateDate());
             holder.stateSwitch.setChecked(currentPost.isState());
-            // FIXME: 04.05.19 when invoke setChecked than set date in repository
 
             if (position == openPost) {
                 holder.dateLayout.setVisibility(View.VISIBLE);

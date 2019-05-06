@@ -99,39 +99,6 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
-    public void disActivatePost(@NonNull final Post post) {
-        Runnable disActivateRunnable = new Runnable() {
-            @Override
-            public void run() {
-                mPostsDao.updateState(post.getId(), false);
-            }
-        };
-
-        mAppExecutors.diskIO().execute(disActivateRunnable);
-    }
-
-    @Override
-    public void disActivatePost(@NonNull String postId) {
-
-    }
-
-    @Override
-    public void activatePost(@NonNull final Post post) {
-        Runnable activateRunnable = new Runnable() {
-            @Override
-            public void run() {
-                mPostsDao.updateState(post.getId(), true);
-            }
-        };
-        mAppExecutors.diskIO().execute(activateRunnable);
-    }
-
-    @Override
-    public void activatePost(@NonNull String postId) {
-
-    }
-
-    @Override
     public void clearDisActivatedPosts() {
         Runnable clearPostsRunnable = new Runnable() {
             @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.editor.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.editor.data.source.remote.PostsRemoteDataSource;
 
@@ -13,8 +12,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class PostsRepository implements PostsDataSource {
 
@@ -122,48 +119,6 @@ public class PostsRepository implements PostsDataSource {
             mCachedPosts = new LinkedHashMap<>();
         }
         mCachedPosts.put(post.getId(), post);
-    }
-
-    @Override
-    public void disActivatePost(@NonNull Post post) {
-        mPostsRemoteDataSource.disActivatePost(post);
-        mPostsLocalDataSource.disActivatePost(post);
-
-        Post disActivatePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
-                false, post.getDuration());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedPosts == null) {
-            mCachedPosts = new LinkedHashMap<>();
-        }
-        mCachedPosts.put(post.getId(), disActivatePost);
-    }
-
-    @Override
-    public void disActivatePost(@NonNull String postId) {
-        disActivatePost(getPostWithId(postId));
-    }
-
-    @Override
-    public void activatePost(@NonNull Post post) {
-        mPostsRemoteDataSource.activatePost(post);
-        mPostsLocalDataSource.activatePost(post);
-
-        Post activatePost = new Post(post.getId(), post.getTitle(), post.getAbout(),
-                post.getCreateDate(), post.getType(), post.getImagePath(), post.getText(),
-                true, post.getDuration());
-
-        // Do in memory cache update to keep the app UI up to date
-        if (mCachedPosts == null) {
-            mCachedPosts = new LinkedHashMap<>();
-        }
-        mCachedPosts.put(post.getId(), activatePost);
-    }
-
-    @Override
-    public void activatePost(@NonNull String postId) {
-        activatePost(getPostWithId(postId));
     }
 
     @Override
