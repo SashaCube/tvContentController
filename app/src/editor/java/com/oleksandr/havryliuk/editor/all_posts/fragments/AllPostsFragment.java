@@ -68,10 +68,10 @@ public class AllPostsFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.sort_by_date:
-                        adapterViewPager.getSortingFragment(viewPager.getCurrentItem()).setSortingByDate();
+                        adapterViewPager.getFragment(viewPager.getCurrentItem()).setSortingByDate();
                         break;
                     case R.id.sort_by_title:
-                        adapterViewPager.getSortingFragment(viewPager.getCurrentItem()).setSortingByTitle();
+                        adapterViewPager.getFragment(viewPager.getCurrentItem()).setSortingByTitle();
                         break;
                 }
                 return true;

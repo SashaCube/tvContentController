@@ -1,7 +1,6 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.data.Post;
@@ -28,26 +27,20 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     private AllPostsContract.IAllPostsView view;
     private Fragment fragment;
     private static String mSortedPostsBy = TITLE;
-    private boolean mFirstLoad = false;
     private PostsRepository mRepository;
 
     public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
         this.view = view;
         this.fragment = fragment;
         mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
-
-        start();
+        loadPosts(true);
     }
 
     @Override
-    public void loadPosts(boolean forceUpdate, final boolean showLoadingUI) {
+    public void loadPosts(final boolean showLoadingUI) {
 
         if (showLoadingUI) {
             view.setLoadingIndicator(true);
-        }
-        if (forceUpdate) {
-            mRepository.refreshPosts();
-            // FIXME: 04.05.19 what must do this method
         }
 
         mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
@@ -71,6 +64,10 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                     return;
                 }
                 view.showLoadingTasksError();
+
+                if (showLoadingUI) {
+                    view.setLoadingIndicator(false);
+                }
             }
         });
     }
@@ -78,8 +75,8 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     @Override
     public void clickDelete(final Post post) {
         mRepository.deletePost(post.getId());
-        Toast.makeText(fragment.getContext(), post.getTitle() + " deleted successfully", Toast.LENGTH_SHORT).show();
-        loadPosts(false, true);
+        view.showPostDeleted();
+        loadPosts(true);
     }
 
     @Override
@@ -90,12 +87,13 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     @Override
     public void clickSetPost(final Post post) {
         mRepository.savePost(post);
+        loadPosts(true);
     }
 
     @Override
     public void setSorting(String type) {
         mSortedPostsBy = type;
-        loadPosts(true, true);
+        loadPosts(true);
     }
 
 
@@ -120,18 +118,6 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                 break;
         }
         return posts;
-    }
-
-    @Override
-    public void start() {
-        loadPosts(false);
-    }
-
-    @Override
-    public void loadPosts(boolean forceUpdate) {
-        // Simplification for sample: a network reload will be forced on first load.
-        loadPosts(forceUpdate || mFirstLoad, true);
-        mFirstLoad = false;
     }
 
     private void processPosts(List<Post> posts) {

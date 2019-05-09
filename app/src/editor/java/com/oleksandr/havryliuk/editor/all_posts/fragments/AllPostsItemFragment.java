@@ -15,7 +15,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.DATE;
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.TITLE;
 
-public class AllPostsItemFragment extends Fragment implements SortingFragment{
+public class AllPostsItemFragment extends Fragment {
 
     private AllPostsContract.IAllPostsPresenter presenter;
     private AllPostsContract.IAllPostsView view;
@@ -44,18 +44,18 @@ public class AllPostsItemFragment extends Fragment implements SortingFragment{
         view.init(root, type);
     }
 
-    public void initPresenter(){
+    public void initPresenter() {
         presenter = new AllPostsPresenter(view, this);
         view.setPresenter(presenter);
+        presenter.loadPosts(true);
     }
 
-    @Override
     public void setSortingByDate() {
         presenter.setSorting(DATE);
     }
 
-    @Override
+
     public void setSortingByTitle() {
-        presenter.setSorting(TITLE);
+        presenter.setSorting(TITLE); // FIXME: 06.05.19 invoke on null???
     }
 }

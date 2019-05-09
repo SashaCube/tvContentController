@@ -24,13 +24,13 @@ public interface AllPostsContract {
 
         void showLoadingTasksError();
 
+        void showPostDeleted();
+
     }
 
     interface IAllPostsPresenter {
 
-        void loadPosts(boolean forceUpdate, boolean showLoadingUI);
-
-        void loadPosts(boolean forceUpdate);
+        void loadPosts(boolean showLoadingUI);
 
         void clickDelete(Post post);
 
@@ -39,7 +39,5 @@ public interface AllPostsContract {
         void clickSetPost(Post oldPost);
 
         void setSorting(String type);
-
-        void start();
     }
 }

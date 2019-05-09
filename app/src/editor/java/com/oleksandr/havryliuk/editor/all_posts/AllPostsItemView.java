@@ -59,7 +59,7 @@ public class AllPostsItemView implements AllPostsContract.IAllPostsView {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadPosts(false);
+                mPresenter.loadPosts(true);
             }
         });
 
@@ -97,6 +97,11 @@ public class AllPostsItemView implements AllPostsContract.IAllPostsView {
     @Override
     public void showLoadingTasksError() {
         showMessage(root.getContext().getString(R.string.loading_posts_error));
+    }
+
+    @Override
+    public void showPostDeleted() {
+        showMessage(root.getContext().getString(R.string.deleted_successfully));
     }
 
     @Override

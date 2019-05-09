@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.oleksandr.havryliuk.editor.all_posts.fragments.AllPostsItemFragment;
-import com.oleksandr.havryliuk.editor.all_posts.fragments.SortingFragment;
 
 import static com.oleksandr.havryliuk.editor.data.Post.AD;
 import static com.oleksandr.havryliuk.editor.data.Post.ALL;
@@ -37,7 +36,7 @@ public class PostsPagerAdapter extends FragmentStatePagerAdapter {
         return NUM_ITEMS;
     }
 
-    public SortingFragment getSortingFragment(int item) {
-        return (SortingFragment) getItem(item);
+    public AllPostsItemFragment getFragment(int item) {
+        return (AllPostsItemFragment) getItem(item);
     }
 }

@@ -22,6 +22,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
     private AllPostsContract.IAllPostsPresenter presenter;
     private final static int NONE = -1;
     private int openPost = NONE;
+    private boolean firstSetState = false;
 
     class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTextView, aboutTextView, typeTextView, dateTextView, editButton, deleteButton;
@@ -53,9 +54,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             stateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Post post = mPosts.get(getAdapterPosition());
-                    post.setState(isChecked);
-                    presenter.clickSetPost(post);
+                    if(!firstSetState) {
+                        Post post = mPosts.get(getAdapterPosition());
+                        post.setState(isChecked);
+                        presenter.clickSetPost(post);
+                    }
                 }
             });
         }
@@ -111,7 +114,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.aboutTextView.setText(currentPost.getAbout());
             holder.typeTextView.setText(currentPost.getType());
             holder.dateTextView.setText(currentPost.getCreateDate());
-            holder.stateSwitch.setChecked(currentPost.isState());
+            setStateChecked(holder.stateSwitch ,currentPost.isState());
 
             if (position == openPost) {
                 holder.dateLayout.setVisibility(View.VISIBLE);
@@ -123,6 +126,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
                 holder.editLayout.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void setStateChecked(Switch s, boolean state){
+        firstSetState = true;
+        s.setChecked(state);
+        firstSetState = false;
     }
 
     public void setPosts(List<Post> posts) {
