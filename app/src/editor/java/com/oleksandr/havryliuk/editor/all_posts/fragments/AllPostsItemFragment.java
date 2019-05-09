@@ -20,13 +20,12 @@ public class AllPostsItemFragment extends Fragment {
     private AllPostsContract.IAllPostsPresenter presenter;
     private AllPostsContract.IAllPostsView view;
 
-    private View root;
     private String type;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
+        View root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
 
         initView(root);
         initPresenter();
@@ -48,14 +47,5 @@ public class AllPostsItemFragment extends Fragment {
         presenter = new AllPostsPresenter(view, this);
         view.setPresenter(presenter);
         presenter.loadPosts(true);
-    }
-
-    public void setSortingByDate() {
-        presenter.setSorting(DATE);
-    }
-
-
-    public void setSortingByTitle() {
-        presenter.setSorting(TITLE); // FIXME: 06.05.19 invoke on null???
     }
 }

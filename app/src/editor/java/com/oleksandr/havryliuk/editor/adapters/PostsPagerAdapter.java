@@ -35,8 +35,4 @@ public class PostsPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return NUM_ITEMS;
     }
-
-    public AllPostsItemFragment getFragment(int item) {
-        return (AllPostsItemFragment) getItem(item);
-    }
 }

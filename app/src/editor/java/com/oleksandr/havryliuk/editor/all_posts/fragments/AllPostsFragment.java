@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.oleksandr.havryliuk.editor.adapters.PostsPagerAdapter;
+import com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.Objects;
 
+import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.DATE;
+import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.TITLE;
 import static com.oleksandr.havryliuk.editor.data.Post.AD;
 import static com.oleksandr.havryliuk.editor.data.Post.ALL;
 import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
@@ -28,6 +31,7 @@ public class AllPostsFragment extends Fragment {
     public final static int AD_FRAGMENT = 2;
 
     private PostsPagerAdapter adapterViewPager;
+    private View root;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -37,7 +41,7 @@ public class AllPostsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_all_posts, container, false);
+        root = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         initView(root);
 
@@ -54,7 +58,7 @@ public class AllPostsFragment extends Fragment {
         initTabLayout();
     }
 
-    private void initSortMenu(){
+    private void initSortMenu() {
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,10 +72,10 @@ public class AllPostsFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.sort_by_date:
-                        adapterViewPager.getFragment(viewPager.getCurrentItem()).setSortingByDate();
+                        AllPostsPresenter.setSorting(DATE);
                         break;
                     case R.id.sort_by_title:
-                        adapterViewPager.getFragment(viewPager.getCurrentItem()).setSortingByTitle();
+                        AllPostsPresenter.setSorting(TITLE);
                         break;
                 }
                 return true;
@@ -81,14 +85,14 @@ public class AllPostsFragment extends Fragment {
         popupMenu.inflate(R.menu.sorter_posts);
     }
 
-    private void initViewPager(){
+    private void initViewPager() {
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         adapterViewPager = new PostsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(0);
     }
 
-    private void initTabLayout(){
+    private void initTabLayout() {
         tabLayout.addTab(tabLayout.newTab().setText(ALL));
         tabLayout.addTab(tabLayout.newTab().setText(NEWS));
         tabLayout.addTab(tabLayout.newTab().setText(AD));

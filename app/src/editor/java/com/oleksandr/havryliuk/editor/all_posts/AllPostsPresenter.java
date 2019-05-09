@@ -11,7 +11,6 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +25,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     private AllPostsContract.IAllPostsView view;
     private Fragment fragment;
-    private static String mSortedPostsBy = TITLE;
+    private static String sortedPostsBy = DATE;
     private PostsRepository mRepository;
 
     public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
@@ -90,16 +89,13 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
         loadPosts(true);
     }
 
-    @Override
-    public void setSorting(String type) {
-        mSortedPostsBy = type;
-        loadPosts(true);
+    public static void setSorting(String type) {
+        sortedPostsBy = type;
     }
-
 
     private List<Post> sortPosts(List<Post> posts) {
 
-        switch (mSortedPostsBy) {
+        switch (sortedPostsBy) {
             case TITLE:
                 Collections.sort(posts, new Comparator<Post>() {
                     @Override
@@ -112,7 +108,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                 Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
-                        return new Date(o1.getCreateDate()).compareTo(new Date(o2.getCreateDate()));
+                        return o1.getCreateDate().compareTo(o2.getCreateDate());
                     }
                 });
                 break;

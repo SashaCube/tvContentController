@@ -38,6 +38,5 @@ public interface AllPostsContract {
 
         void clickSetPost(Post oldPost);
 
-        void setSorting(String type);
     }
 }
