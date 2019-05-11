@@ -1,7 +1,10 @@
 package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.view.View;
+
+import com.oleksandr.havryliuk.editor.MainActivity;
 
 public interface NewPostContract {
 
@@ -9,7 +12,7 @@ public interface NewPostContract {
 
         void setPresenter(INewPostPresenter presenter);
 
-        void init(View root);
+        void init(Fragment fragment, View root);
 
         void setImage(Uri uri);
 
@@ -20,6 +23,12 @@ public interface NewPostContract {
         void showAddImageLayout();
 
         void showAddTextLayout();
+
+        void showImagePicker(MainActivity.IImagePicker imagePicker);
+
+        void showMainPostsScreen();
+
+        void showPostAdded();
     }
 
     interface INewPostPresenter {

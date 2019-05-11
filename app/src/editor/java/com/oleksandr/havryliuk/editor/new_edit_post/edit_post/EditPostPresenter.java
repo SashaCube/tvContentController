@@ -9,8 +9,6 @@ import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.PostValidator;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
-import java.util.Objects;
-
 import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
@@ -80,10 +78,10 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
             editedPost.setText(text);
             editedPost.setType(type);
 
-            if(path != null){
+            if (path != null) {
                 editedPost.setImagePath(path);
-            }else{
-                if(uri != null){
+            } else {
+                if (uri != null) {
                     editedPost.setImagePath(ActivityUtils.UriPath(uri));
                 }
             }

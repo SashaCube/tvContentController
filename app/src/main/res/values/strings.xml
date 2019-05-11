@@ -48,6 +48,7 @@
     <string name="please_enter_title">Please enter title</string>
     <string name="please_enter_text">Please enter text</string>
     <string name="please_pick_image">Please pick image</string>
+    <string name="new_post_added">New post added</string>
 
 
     <string-array name="type_list">
