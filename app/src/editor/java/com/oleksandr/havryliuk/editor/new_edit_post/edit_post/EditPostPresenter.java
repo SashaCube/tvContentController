@@ -20,7 +20,6 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
     final static String CANCEL = "Cancel";
 
     private EditPostContract.IEditPostView view;
-    private EditPostFragment fragment;
     private String type;
     private Post editedPost;
     private Uri uri;
@@ -28,10 +27,9 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
     private String result = CANCEL;
     private PostsRepository mRepository;
 
-    EditPostPresenter(EditPostContract.IEditPostView view, EditPostFragment fragment) {
+    EditPostPresenter(EditPostContract.IEditPostView view, PostsRepository mRepository) {
         this.view = view;
-        this.fragment = fragment;
-        mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
+        this.mRepository = mRepository;
     }
 
     @Override
@@ -42,8 +40,7 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
 
     @Override
     public void setImageClick() {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity()))
-                .pickImageFromGallery(this);
+        view.showImagePicker(this);
     }
 
     @Override
@@ -111,7 +108,7 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
 
     private void finishWithResult(String result) {
         this.result = result;
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openAllPostsFragment();
+        view.showAllPostsScreen();
     }
 
     private void showImageType() {
