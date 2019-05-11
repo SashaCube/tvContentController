@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
 import com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostFragment;
-import com.oleksandr.havryliuk.editor.main.MainFragment;
+import com.oleksandr.havryliuk.editor.main.MainPostsFragment;
 import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.editor.new_edit_post.new_post.NewPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
@@ -48,11 +48,11 @@ public class MainActivity extends FragmentActivity {
 
     public void openMainFragment() {
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
-                MainFragment.class.getName())) {
-            getSupportFragmentManager().popBackStackImmediate(MainFragment.class.getName(), 0);
+                MainPostsFragment.class.getName())) {
+            getSupportFragmentManager().popBackStackImmediate(MainPostsFragment.class.getName(), 0);
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    new MainFragment(), R.id.fragment, MainFragment.class.getName());
+                    new MainPostsFragment(), R.id.fragment, MainPostsFragment.class.getName());
         }
     }
 
