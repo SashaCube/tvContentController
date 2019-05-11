@@ -49,6 +49,25 @@
     <string name="please_enter_text">Please enter text</string>
     <string name="please_pick_image">Please pick image</string>
     <string name="new_post_added">New post added</string>
+    <string name="please_enter_login">Please enter login!</string>
+    <string name="please_enter_email">Please enter email!</string>
+    <string name="please_enter_password">Please enter password!</string>
+    <string name="password_arent_equal">Passwords aren\'t equal!</string>
+    <string name="sign_in_success">Success Sign in</string>
+    <string name="sign_in_failed">Failed Sign in</string>
+    <string name="sign_up_success">Success Sign up</string>
+    <string name="sign_up_failed">Failed Sign up</string>
+    <string name="email_send_success">Success email send</string>
+    <string name="email_send_failed">Failed email send</string>
+    <string name="google_auth_success">Google authencatition success</string>
+    <string name="google_auth_failed_firebase">Google authentication failed(Firebase)</string>
+    <string name="google_auth_failed_google">Google authinication failed(Google)</string>
+
+
+
+
+
+
 
 
     <string-array name="type_list">

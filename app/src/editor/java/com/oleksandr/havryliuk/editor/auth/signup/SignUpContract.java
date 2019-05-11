@@ -1,11 +1,12 @@
 package com.oleksandr.havryliuk.editor.auth.signup;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 public interface SignUpContract {
 
     interface ISignUpView{
-        void init(View root);
+        void init(Fragment fragment, View root);
 
         void setPresenter(ISignUpPresenter presenter);
 
@@ -32,11 +33,15 @@ public interface SignUpContract {
         String getEmail();
 
         String getConfirmPassword();
+
+        void showSignIn();
+
+        void signUp(String login, String email, String  password);
     }
 
     interface ISignUpPresenter{
         void signUpClick();
 
-        void showSignIn();
+        void showSignInClick();
     }
 }

@@ -1,11 +1,12 @@
 package com.oleksandr.havryliuk.editor.auth.forgotpassword;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 public interface ForgotPasswordContract {
 
-    interface IForgotPasswordView{
-        void init(View root);
+    interface IForgotPasswordView {
+        void init(Fragment fragment, View root);
 
         void hideEmailError();
 
@@ -14,10 +15,16 @@ public interface ForgotPasswordContract {
         String getEmail();
 
         void setPresenter(IForgotPasswordPresenter presenter);
+
+        void showSignIn();
+
+        void sendRecoverCode(String email);
+
+
     }
 
-    interface IForgotPasswordPresenter{
-        void showSignIn();
+    interface IForgotPasswordPresenter {
+        void showSignInClick();
 
         void sendRecoverCodeClick();
     }

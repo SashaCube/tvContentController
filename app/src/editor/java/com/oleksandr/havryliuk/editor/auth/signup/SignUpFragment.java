@@ -1,6 +1,7 @@
 package com.oleksandr.havryliuk.editor.auth.signup;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ public class SignUpFragment extends Fragment {
     private SignUpContract.ISignUpPresenter presenter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_signup, container, false);
 
         initView(root);
@@ -25,11 +26,11 @@ public class SignUpFragment extends Fragment {
 
     private void initView(View root) {
         view = new SignUpView();
-        view.init(root);
+        view.init(this, root);
     }
 
     private void initPresenter() {
-        presenter = new SignUpPresenter(this, view);
+        presenter = new SignUpPresenter(view);
         view.setPresenter(presenter);
     }
 }
