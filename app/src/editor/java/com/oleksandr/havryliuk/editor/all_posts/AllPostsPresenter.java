@@ -1,22 +1,15 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
-import android.support.v4.app.Fragment;
-
-import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
-import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.data.Post.AD;
 import static com.oleksandr.havryliuk.editor.data.Post.ALL;
-import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
@@ -24,14 +17,12 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     public final static String DATE = "Date";
 
     private AllPostsContract.IAllPostsView view;
-    private Fragment fragment;
     private static String sortedPostsBy = DATE;
     private PostsRepository mRepository;
 
-    public AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
+    public AllPostsPresenter(AllPostsContract.IAllPostsView view, PostsRepository postsRepository) {
         this.view = view;
-        this.fragment = fragment;
-        mRepository = PostsRepository.getInstance(Objects.requireNonNull(fragment.getContext()));
+        mRepository = postsRepository;
         loadPosts(true);
     }
 
@@ -47,7 +38,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
             public void onPostsLoaded(List<Post> posts) {
                 processPosts(posts);
 
-                if (!fragment.isAdded()) {
+                if (!view.isActive()) {
                     return;
                 }
 
@@ -59,7 +50,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
             @Override
             public void onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!fragment.isAdded()) {
+                if (!view.isActive()) {
                     return;
                 }
                 view.showLoadingTasksError();
@@ -80,7 +71,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
     @Override
     public void clickEdit(Post post) {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openEditPostFragment(post);
+        view.showEditScreen(post);
     }
 
     @Override
@@ -120,17 +111,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
         posts = filterPosts(posts);
 
         if (posts.isEmpty()) {
-            switch (view.getType()) {
-                case ALL:
-                    view.showNoPosts(R.string.no_posts_all);
-                    break;
-                case NEWS:
-                    view.showNoPosts(R.string.no_posts_news);
-                    break;
-                case AD:
-                    view.showNoPosts(R.string.no_posts_ad);
-                    break;
-            }
+            view.showNoPosts();
         } else {
             posts = sortPosts(posts);
             view.setPosts(posts);

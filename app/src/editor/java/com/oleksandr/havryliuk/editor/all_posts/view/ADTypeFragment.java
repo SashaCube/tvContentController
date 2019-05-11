@@ -1,43 +1,70 @@
-package com.oleksandr.havryliuk.editor.all_posts;
+package com.oleksandr.havryliuk.editor.all_posts.view;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.adapters.PostsAdapter;
+import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
+import com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter;
+import com.oleksandr.havryliuk.editor.all_posts.ScrollChildSwipeRefreshLayout;
 import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.List;
+import java.util.Objects;
 
-public class AllPostsItemView implements AllPostsContract.IAllPostsView {
+import static com.oleksandr.havryliuk.editor.data.Post.AD;
 
+public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPostsView {
+
+    private final String TYPE = AD;
     private AllPostsContract.IAllPostsPresenter mPresenter;
     private PostsAdapter mAdapter;
-    private String type;
     private RecyclerView mRecyclerView;
 
     private View root, mPostsView, mNoPostsView;
     private TextView mNoPostsMainView;
-    private ScrollChildSwipeRefreshLayout swipeRefreshLayout;
+    private ScrollChildSwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
-    public void init(View root, String type) {
-        this.root = root;
-        this.type = type;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
 
+        initView();
+        initPresenter();
+
+        return root;
+    }
+
+    public void initView() {
         mRecyclerView = root.findViewById(R.id.recycler_view);
         mNoPostsView = root.findViewById(R.id.no_posts_layout);
         mPostsView = root.findViewById(R.id.all_posts_layout);
         mNoPostsMainView = root.findViewById(R.id.no_posts_main);
-        swipeRefreshLayout = root.findViewById(R.id.refresh_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh_layout);
 
         initRecyclerView();
         initScrollRefreshLayout();
+    }
+
+    public void initPresenter() {
+        mPresenter = new AllPostsPresenter(this,
+                PostsRepository.getInstance(Objects.requireNonNull(getContext())));
+        mAdapter.setPresenter(mPresenter);
+        mPresenter.loadPosts(true);
     }
 
     public void initRecyclerView() {
@@ -48,27 +75,21 @@ public class AllPostsItemView implements AllPostsContract.IAllPostsView {
 
     public void initScrollRefreshLayout() {
         // Set up progress indicator
-        swipeRefreshLayout.setColorSchemeColors(
+        mSwipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(root.getContext(), R.color.independence),
                 ContextCompat.getColor(root.getContext(), R.color.slate_gray),
                 ContextCompat.getColor(root.getContext(), R.color.dark_purple)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(mRecyclerView);
+        mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mPresenter.loadPosts(true);
             }
         });
 
-    }
-
-    @Override
-    public void setPresenter(AllPostsContract.IAllPostsPresenter mPresenter) {
-        this.mPresenter = mPresenter;
-        mAdapter.setPresenter(mPresenter);
     }
 
     @Override
@@ -82,16 +103,16 @@ public class AllPostsItemView implements AllPostsContract.IAllPostsView {
     }
 
     @Override
-    public void showNoPosts(int string) {
+    public void showNoPosts() {
         mPostsView.setVisibility(View.GONE);
         mNoPostsView.setVisibility(View.VISIBLE);
 
-        mNoPostsMainView.setText(string);
+        mNoPostsMainView.setText(R.string.no_posts_ad);
     }
 
     @Override
     public String getType() {
-        return type;
+        return TYPE;
     }
 
     @Override
@@ -105,16 +126,26 @@ public class AllPostsItemView implements AllPostsContract.IAllPostsView {
     }
 
     @Override
+    public void showEditScreen(Post post) {
+        ((MainActivity) Objects.requireNonNull(getActivity())).openEditPostFragment(post);
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
+
+    @Override
     public void setLoadingIndicator(final boolean active) {
 
         if (root == null) {
             return;
         }
         // Make sure setRefreshing() is called after the layout is done with everything else.
-        swipeRefreshLayout.post(new Runnable() {
+        mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(active);
+                mSwipeRefreshLayout.setRefreshing(active);
             }
         });
     }

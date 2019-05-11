@@ -4,11 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.oleksandr.havryliuk.editor.all_posts.fragments.AllPostsItemFragment;
-
-import static com.oleksandr.havryliuk.editor.data.Post.AD;
-import static com.oleksandr.havryliuk.editor.data.Post.ALL;
-import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
+import com.oleksandr.havryliuk.editor.all_posts.view.ADTypeFragment;
+import com.oleksandr.havryliuk.editor.all_posts.view.AllTypeFragment;
+import com.oleksandr.havryliuk.editor.all_posts.view.NewsTypeFragment;
 
 public class PostsPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -22,11 +20,11 @@ public class PostsPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return (new AllPostsItemFragment()).initType(ALL);
+                return new AllTypeFragment();
             case 1:
-                return (new AllPostsItemFragment()).initType(NEWS);
+                return new NewsTypeFragment();
             case 2:
-                return (new AllPostsItemFragment()).initType(AD);
+                return new ADTypeFragment();
         }
         return null;
     }

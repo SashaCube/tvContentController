@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.all_posts.fragments;
+package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.oleksandr.havryliuk.editor.adapters.PostsPagerAdapter;
-import com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.Objects;
@@ -30,9 +29,6 @@ public class AllPostsFragment extends Fragment {
     public final static int NEWS_FRAGMENT = 1;
     public final static int AD_FRAGMENT = 2;
 
-    private PostsPagerAdapter adapterViewPager;
-    private View root;
-
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ImageView sortButton;
@@ -41,7 +37,7 @@ public class AllPostsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_all_posts, container, false);
+        View root = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         initView(root);
 
@@ -87,7 +83,7 @@ public class AllPostsFragment extends Fragment {
 
     private void initViewPager() {
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        adapterViewPager = new PostsPagerAdapter(getFragmentManager());
+        PostsPagerAdapter adapterViewPager = new PostsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(0);
     }
