@@ -1,11 +1,12 @@
 package com.oleksandr.havryliuk.editor.auth.signin;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 public interface SignInContract {
 
     interface ISignInView {
-        void init(View root);
+        void init(Fragment fragment, View root);
 
         void setPresenter(ISignInPresenter presenter);
 
@@ -20,6 +21,14 @@ public interface SignInContract {
         String getLoginText();
 
         String getPasswordText();
+
+        void signIn(String login, String password);
+
+        void googleSignIn();
+
+        void showSignUp();
+
+        void showForgotPassword();
     }
 
     interface ISignInPresenter {
@@ -27,8 +36,8 @@ public interface SignInContract {
 
         void googleSignInClick();
 
-        void showSignUp();
+        void showSignUpClick();
 
-        void showForgotPassword();
+        void showForgotPasswordClick();
     }
 }

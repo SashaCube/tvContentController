@@ -37,6 +37,37 @@
     <string name="text">Text</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="no_posts_all">You have no posts!</string>
+    <string name="no_posts_news">You have no News posts!</string>
+    <string name="no_posts_ad">You have no AD posts</string>
+    <string name="no_posts_add">Add a new post</string>
+    <string name="loading_posts_error">Error while loading posts</string>
+    <string name="deleted_successfully">Post deleted successfully</string>
+    <string name="edit_saved">changes saved successfully</string>
+    <string name="edit_canceled">changes have not been saved</string>
+    <string name="please_enter_title">Please enter title</string>
+    <string name="please_enter_text">Please enter text</string>
+    <string name="please_pick_image">Please pick image</string>
+    <string name="new_post_added">New post added</string>
+    <string name="please_enter_login">Please enter login!</string>
+    <string name="please_enter_email">Please enter email!</string>
+    <string name="please_enter_password">Please enter password!</string>
+    <string name="password_arent_equal">Passwords aren\'t equal!</string>
+    <string name="sign_in_success">Success Sign in</string>
+    <string name="sign_in_failed">Failed Sign in</string>
+    <string name="sign_up_success">Success Sign up</string>
+    <string name="sign_up_failed">Failed Sign up</string>
+    <string name="email_send_success">Success email send</string>
+    <string name="email_send_failed">Failed email send</string>
+    <string name="google_auth_success">Google authencatition success</string>
+    <string name="google_auth_failed_firebase">Google authentication failed(Firebase)</string>
+    <string name="google_auth_failed_google">Google authinication failed(Google)</string>
+
+
+
+
+
+
 
 
     <string-array name="type_list">

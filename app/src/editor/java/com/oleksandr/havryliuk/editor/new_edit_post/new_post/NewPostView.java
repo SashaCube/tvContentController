@@ -1,6 +1,7 @@
 package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,11 +12,15 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
-import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
+import java.util.Objects;
+
+import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class NewPostView implements NewPostContract.INewPostView, View.OnClickListener, IValidateView {
 
@@ -28,6 +33,7 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     private ImageView addImageView;
     private LinearLayout addImageLayout, addTextLayout;
     private View root;
+    private Fragment fragment;
 
     @Override
     public void setPresenter(NewPostContract.INewPostPresenter presenter) {
@@ -36,7 +42,8 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     }
 
     @Override
-    public void init(final View root) {
+    public void init(Fragment fragment, final View root) {
+        this.fragment = fragment;
         this.root = root;
 
         initView();
@@ -58,7 +65,7 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
         imageErrorTextView = root.findViewById(R.id.image_error_text_view);
     }
 
-    private void initListener(){
+    private void initListener() {
         spinner.setAdapter(ArrayAdapter.createFromResource(root.getContext(),
                 R.array.type_list, R.layout.item_type));
         spinner.setOnItemSelectedListener(new SpinnerListener());
@@ -85,24 +92,46 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     }
 
     @Override
-    public void showAddImageLayout() { addImageLayout.setVisibility(View.VISIBLE); }
+    public void showAddImageLayout() {
+        addImageLayout.setVisibility(View.VISIBLE);
+    }
 
     @Override
-    public void showAddTextLayout() { addTextLayout.setVisibility(View.VISIBLE); }
+    public void showAddTextLayout() {
+        addTextLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showImagePicker(MainActivity.IImagePicker imagePicker) {
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity()))
+                .pickImageFromGallery(imagePicker);
+    }
+
+    @Override
+    public void showMainPostsScreen() {
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openMainFragment();
+    }
+
+    @Override
+    public void showPostAdded() {
+        Toast.makeText(fragment.getContext(),
+                fragment.getResources().getString(R.string.new_post_added),
+                Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void showTitleError() {
-        titleEditText.setError("Please enter title");
+        titleEditText.setError(fragment.getResources().getString(R.string.please_enter_title));
     }
 
     @Override
     public void showImageError() {
-        imageErrorTextView.setText("Please pick image");
+        imageErrorTextView.setText(fragment.getResources().getString(R.string.please_pick_image));
     }
 
     @Override
     public void showTextError() {
-        textEditText.setError("Please enter text");
+        textEditText.setError(fragment.getResources().getString(R.string.please_enter_text));
     }
 
     @Override

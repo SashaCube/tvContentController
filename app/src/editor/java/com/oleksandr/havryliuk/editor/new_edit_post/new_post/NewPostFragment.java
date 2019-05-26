@@ -1,12 +1,16 @@
 package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+
+import java.util.Objects;
 
 public class NewPostFragment extends Fragment {
 
@@ -14,7 +18,7 @@ public class NewPostFragment extends Fragment {
     private NewPostContract.INewPostView view;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_new_post, container, false);
 
@@ -26,11 +30,11 @@ public class NewPostFragment extends Fragment {
 
     public void initView(View root) {
         view = new NewPostView();
-        view.init(root);
+        view.init(this, root);
     }
 
     public void initPresenter() {
-        presenter = new NewPostPresenter(view, this);
+        presenter = new NewPostPresenter(view, PostsRepository.getInstance(Objects.requireNonNull(getContext())));
         view.setPresenter(presenter);
     }
 }

@@ -1,23 +1,29 @@
 package com.oleksandr.havryliuk.editor.auth.signup;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
+import com.oleksandr.havryliuk.editor.auth.signin.SignInFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+
+import java.util.Objects;
 
 public class SignUpView implements SignUpContract.ISignUpView {
 
-    private Button signUpBtn;
-    private TextView signInTv;
     private EditText loginEt, emailEt, passwordEt, confirmPasswordEt;
     private SignUpContract.ISignUpPresenter presenter;
+    private Fragment fragment;
 
     @Override
-    public void init(View root) {
-        signUpBtn = root.findViewById(R.id.sign_up_btn);
-        signInTv = root.findViewById(R.id.sign_in_txt);
+    public void init(Fragment fragment, View root) {
+        this.fragment = fragment;
+
+        Button signUpBtn = root.findViewById(R.id.sign_up_btn);
+        TextView signInTv = root.findViewById(R.id.sign_in_txt);
         loginEt = root.findViewById(R.id.login_et);
         emailEt = root.findViewById(R.id.email_et);
         passwordEt = root.findViewById(R.id.password_et);
@@ -33,7 +39,7 @@ public class SignUpView implements SignUpContract.ISignUpView {
         signInTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.showSignIn();
+                presenter.showSignInClick();
             }
         });
     }
@@ -50,7 +56,7 @@ public class SignUpView implements SignUpContract.ISignUpView {
 
     @Override
     public void showLoginError() {
-        loginEt.setError("Please enter login!");
+        loginEt.setError(fragment.getString(R.string.please_enter_login));
     }
 
     @Override
@@ -60,12 +66,12 @@ public class SignUpView implements SignUpContract.ISignUpView {
 
     @Override
     public void showEmailError() {
-        loginEt.setError("Please enter Email!");
+        loginEt.setError(fragment.getString(R.string.please_enter_email));
     }
 
     @Override
     public void showPasswordError() {
-        passwordEt.setError("Please enter password!");
+        passwordEt.setError(fragment.getString(R.string.please_enter_password));
     }
 
     @Override
@@ -75,7 +81,7 @@ public class SignUpView implements SignUpContract.ISignUpView {
 
     @Override
     public void showConfirmError() {
-        confirmPasswordEt.setError("Passwords aren't equal!");
+        confirmPasswordEt.setError(fragment.getString(R.string.password_arent_equal));
     }
 
     @Override
@@ -101,5 +107,17 @@ public class SignUpView implements SignUpContract.ISignUpView {
     @Override
     public String getConfirmPassword() {
         return confirmPasswordEt.getText().toString();
+    }
+
+    @Override
+    public void showSignIn() {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .showFragment(new SignInFragment(), SignInFragment.class.getName());
+    }
+
+    @Override
+    public void signUp(String login, String email, String password) {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .signUp(login, email, password);
     }
 }

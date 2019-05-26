@@ -1,6 +1,7 @@
 package com.oleksandr.havryliuk.editor.auth.forgotpassword;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,14 +13,13 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 public class ForgotPasswordFragment extends Fragment {
 
-    private View root;
     private ForgotPasswordPresenter presenter;
     private ForgotPasswordView view;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_forgot_password, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
         initView(root);
         initPresenter();
@@ -29,11 +29,11 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void initView(View root) {
         view = new ForgotPasswordView();
-        view.init(root);
+        view.init(this, root);
     }
 
     private void initPresenter() {
-        presenter = new ForgotPasswordPresenter(this, view);
+        presenter = new ForgotPasswordPresenter(view);
         view.setPresenter(presenter);
     }
 }

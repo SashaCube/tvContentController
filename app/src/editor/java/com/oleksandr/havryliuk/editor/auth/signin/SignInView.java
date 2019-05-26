@@ -1,31 +1,37 @@
 package com.oleksandr.havryliuk.editor.auth.signin;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
+import com.oleksandr.havryliuk.editor.auth.forgotpassword.ForgotPasswordFragment;
+import com.oleksandr.havryliuk.editor.auth.signup.SignUpFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+
+import java.util.Objects;
 
 public class SignInView implements SignInContract.ISignInView {
     private Button signInBtn;
     private TextView signUpTv, forgotPasswordTv;
     private EditText loginEt, passwordEt;
     private ImageView googleImg;
-    //private LoginButton facebookBtn;
+    private Fragment fragment;
+
 
     private SignInContract.ISignInPresenter presenter;
-
-    public SignInView() {
-
-    }
 
     public void setPresenter(SignInContract.ISignInPresenter presenter) {
         this.presenter = presenter;
     }
 
-    public void init(View root) {
+    @Override
+    public void init(Fragment fragment, View root) {
+        this.fragment = fragment;
+
         googleImg = root.findViewById(R.id.google_signIn_button);
         signInBtn = root.findViewById(R.id.signin_btn);
         signUpTv = root.findViewById(R.id.sign_up_txt);
@@ -53,14 +59,14 @@ public class SignInView implements SignInContract.ISignInView {
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.showSignUp();
+                presenter.showSignUpClick();
             }
         });
 
         forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.showForgotPassword();
+                presenter.showForgotPasswordClick();
             }
         });
     }
@@ -77,12 +83,12 @@ public class SignInView implements SignInContract.ISignInView {
 
     @Override
     public void showLoginError() {
-        loginEt.setError("Please enter login!");
+        loginEt.setError(fragment.getString(R.string.please_enter_login));
     }
 
     @Override
     public void showPasswordError() {
-        passwordEt.setError("Please enter password!");
+        passwordEt.setError(fragment.getString(R.string.please_enter_password));
     }
 
     @Override
@@ -93,5 +99,31 @@ public class SignInView implements SignInContract.ISignInView {
     @Override
     public String getPasswordText() {
         return passwordEt.getText().toString();
+    }
+
+    @Override
+    public void signIn(String login, String password) {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .signIn(login, password);
+    }
+
+    @Override
+    public void googleSignIn() {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .googleSignIn();
+    }
+
+    @Override
+    public void showSignUp() {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .showFragment(new SignUpFragment(),
+                        SignUpFragment.class.getName());
+    }
+
+    @Override
+    public void showForgotPassword() {
+        ((AuthenticationActivity) Objects.requireNonNull(fragment.getActivity()))
+                .showFragment(new ForgotPasswordFragment(),
+                        ForgotPasswordFragment.class.getName());
     }
 }

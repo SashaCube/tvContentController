@@ -27,7 +27,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
-    public void initView(){
+    public void initView() {
         settings = root.findViewById(R.id.settings_icon);
         settings.setOnClickListener(this);
     }
@@ -41,10 +41,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.settings_icon:
                 signOut(); //TODO: open settings instead of singOut
                 break;
         }
     }
+
+    // TODO: 04.05.19 add function to settings - remove cache - that remove all from local storage
 }

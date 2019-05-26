@@ -1,5 +1,6 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.utils;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,7 +31,14 @@ public class ActivityUtils {
     }
 
     public static String dateTimeConverter(Date date) {
-        DateFormat format = new SimpleDateFormat("d MMM HH:mm", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat(" yyyy:MM.dd HH:mm", Locale.ENGLISH);
         return format.format(date);
+    }
+
+    public static String UriPath(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        return uri.getPath();
     }
 }
