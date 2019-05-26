@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
 import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHolder> {
 
-    private AllPostsContract.IAllPostsPresenter presenter;
+    private IPostAdapterPresenter presenter;
     private final static int NONE = -1;
     private int openPost = NONE;
     private boolean firstSetState = false;
@@ -54,7 +53,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             stateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(!firstSetState) {
+                    if (!firstSetState) {
                         Post post = mPosts.get(getAdapterPosition());
                         post.setState(isChecked);
                         presenter.clickSetPost(post);
@@ -95,8 +94,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter) {
+    public void setPresenter(IPostAdapterPresenter presenter) {
         this.presenter = presenter;
+        mPosts = null;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.aboutTextView.setText(currentPost.getAbout());
             holder.typeTextView.setText(currentPost.getType());
             holder.dateTextView.setText(currentPost.getCreateDate());
-            setStateChecked(holder.stateSwitch ,currentPost.isState());
+            setStateChecked(holder.stateSwitch, currentPost.isState());
 
             if (position == openPost) {
                 holder.dateLayout.setVisibility(View.VISIBLE);
@@ -128,7 +128,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         }
     }
 
-    private void setStateChecked(Switch s, boolean state){
+    private void setStateChecked(Switch s, boolean state) {
         firstSetState = true;
         s.setChecked(state);
         firstSetState = false;

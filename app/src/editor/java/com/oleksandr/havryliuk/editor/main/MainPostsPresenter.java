@@ -1,13 +1,13 @@
 package com.oleksandr.havryliuk.editor.main;
 
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 
-public class MainPostsPresenter implements ContractMainPosts.IMainFragmentPresenter {
+public class MainPostsPresenter implements MainPostsContract.IMainFragmentPresenter {
 
-    private ContractMainPosts.IMainFragmentView view;
-    private Repository repository;
+    private MainPostsContract.IMainFragmentView view;
+    private PostsRepository repository;
 
-    public MainPostsPresenter(ContractMainPosts.IMainFragmentView view, Repository repository){
+    public MainPostsPresenter(MainPostsContract.IMainFragmentView view, PostsRepository repository) {
         this.view = view;
         this.repository = repository;
     }

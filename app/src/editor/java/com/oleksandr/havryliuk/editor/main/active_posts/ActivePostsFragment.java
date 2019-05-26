@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.main;
+package com.oleksandr.havryliuk.editor.main.active_posts;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,15 +12,15 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.Objects;
 
-public class MainPostsFragment extends Fragment {
+public class ActivePostsFragment extends Fragment {
 
-    private MainPostsContract.IMainFragmentView view;
-    private MainPostsContract.IMainFragmentPresenter presenter;
+    private ActivePostsContract.IActivePostsView view;
+    private ActivePostsContract.IActivePostPresenter presenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
+        View root = inflater.inflate(R.layout.fragment_tab_item, container, false);
 
         initView(root);
         initPresenter();
@@ -29,12 +29,12 @@ public class MainPostsFragment extends Fragment {
     }
 
     public void initView(View root) {
-        view = new MainPostsView();
-        view.init(this, root);
+        view = new ActivePostsView();
+        view.init(root, this);
     }
 
     public void initPresenter() {
-        presenter = new MainPostsPresenter(view,
+        presenter = new ActivePostsPresenter(view,
                 PostsRepository.getInstance(Objects.requireNonNull(getContext())));
         view.setPresenter(presenter);
     }

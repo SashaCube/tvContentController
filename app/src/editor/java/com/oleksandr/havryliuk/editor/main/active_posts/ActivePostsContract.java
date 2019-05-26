@@ -1,22 +1,26 @@
-package com.oleksandr.havryliuk.editor.all_posts;
+package com.oleksandr.havryliuk.editor.main.active_posts;
+
+import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.oleksandr.havryliuk.editor.adapters.IPostAdapterPresenter;
 import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.main.active_posts.ActivePostsContract;
 
 import java.util.List;
 
-public interface AllPostsContract {
+public interface ActivePostsContract {
 
-    interface IAllPostsView {
+    interface IActivePostsView{
+
+        void init(View root, Fragment fragment);
+
+        void setPresenter(IActivePostPresenter presenter);
 
         void setPosts(List<Post> posts);
 
         void setLoadingIndicator(boolean value);
 
         void showNoPosts();
-
-        String getType();
 
         void showLoadingTasksError();
 
@@ -27,7 +31,7 @@ public interface AllPostsContract {
         boolean isActive();
     }
 
-    interface IAllPostsPresenter extends IPostAdapterPresenter {
+    interface IActivePostPresenter extends IPostAdapterPresenter {
 
         void loadPosts(boolean showLoadingUI);
 

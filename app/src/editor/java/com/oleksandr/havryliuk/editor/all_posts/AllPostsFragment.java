@@ -19,25 +19,19 @@ import java.util.Objects;
 
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.DATE;
 import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.TITLE;
-import static com.oleksandr.havryliuk.editor.data.Post.AD;
-import static com.oleksandr.havryliuk.editor.data.Post.ALL;
-import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class AllPostsFragment extends Fragment {
-
-    public final static int ALL_FRAGMENT = 0;
-    public final static int NEWS_FRAGMENT = 1;
-    public final static int AD_FRAGMENT = 2;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ImageView sortButton;
     private PopupMenu popupMenu;
+    private View root;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_all_posts, container, false);
+        root = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         initView(root);
 
@@ -89,9 +83,9 @@ public class AllPostsFragment extends Fragment {
     }
 
     private void initTabLayout() {
-        tabLayout.addTab(tabLayout.newTab().setText(ALL));
-        tabLayout.addTab(tabLayout.newTab().setText(NEWS));
-        tabLayout.addTab(tabLayout.newTab().setText(AD));
+        tabLayout.addTab(tabLayout.newTab().setText(root.getContext().getString(R.string.tab_all)));
+        tabLayout.addTab(tabLayout.newTab().setText(root.getContext().getString(R.string.tab_news)));
+        tabLayout.addTab(tabLayout.newTab().setText(root.getContext().getString(R.string.tab_ad)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabListener());
     }
@@ -99,17 +93,7 @@ public class AllPostsFragment extends Fragment {
     class TabListener implements TabLayout.OnTabSelectedListener {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            switch (Objects.requireNonNull(tab.getText()).toString()) {
-                case ALL:
-                    viewPager.setCurrentItem(ALL_FRAGMENT);
-                    break;
-                case NEWS:
-                    viewPager.setCurrentItem(NEWS_FRAGMENT);
-                    break;
-                case AD:
-                    viewPager.setCurrentItem(AD_FRAGMENT);
-                    break;
-            }
+            viewPager.setCurrentItem(tab.getPosition());
         }
 
         @Override

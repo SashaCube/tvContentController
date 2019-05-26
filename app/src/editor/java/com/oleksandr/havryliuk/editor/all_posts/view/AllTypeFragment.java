@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
+import com.oleksandr.havryliuk.editor.adapters.IPostAdapterPresenter;
 import com.oleksandr.havryliuk.editor.adapters.PostsAdapter;
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter;
@@ -41,7 +42,7 @@ public class AllTypeFragment extends Fragment implements AllPostsContract.IAllPo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
+        root = inflater.inflate(R.layout.fragment_tab_item, container, false);
 
         initView();
         initPresenter();
@@ -63,7 +64,7 @@ public class AllTypeFragment extends Fragment implements AllPostsContract.IAllPo
     public void initPresenter() {
         mPresenter = new AllPostsPresenter(this,
                 PostsRepository.getInstance(Objects.requireNonNull(getContext())));
-        mAdapter.setPresenter(mPresenter);
+        mAdapter.setPresenter((IPostAdapterPresenter)mPresenter);
         mPresenter.loadPosts(true);
     }
 

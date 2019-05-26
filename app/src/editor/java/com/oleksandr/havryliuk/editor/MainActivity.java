@@ -13,9 +13,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
+import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostFragment;
 import com.oleksandr.havryliuk.editor.main.MainPostsFragment;
-import com.oleksandr.havryliuk.editor.model.Post;
 import com.oleksandr.havryliuk.editor.new_edit_post.new_post.NewPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
@@ -51,7 +51,8 @@ public class MainActivity extends FragmentActivity {
                 });
 
         checkFilePermissions();
-
+        //openMainFragment();
+        openAllPostsFragment();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -60,7 +61,8 @@ public class MainActivity extends FragmentActivity {
             int permissionCheck = MainActivity.this.checkSelfPermission("Manifest.permission.READ_EXTERNAL_STORAGE");
             permissionCheck += MainActivity.this.checkSelfPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE");
             if (permissionCheck != 0) {
-                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1001); //Any number
+                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1001); //Any number
             }
         } else {
             Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");

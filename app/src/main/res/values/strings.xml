@@ -62,12 +62,13 @@
     <string name="google_auth_success">Google authencatition success</string>
     <string name="google_auth_failed_firebase">Google authentication failed(Firebase)</string>
     <string name="google_auth_failed_google">Google authinication failed(Google)</string>
-
-
-
-
-
-
+    <string name="active_posts">Active posts</string>
+    <string name="configuration">Configuration</string>
+    <string name="tab_all">All</string>
+    <string name="tab_news">News</string>
+    <string name="tab_ad">Ad</string>
+    <string name="no_active_posts">You have no Active posts!</string>
+    <string name="no_active_posts_add">Go to All Posts and activate some</string>
 
 
     <string-array name="type_list">
