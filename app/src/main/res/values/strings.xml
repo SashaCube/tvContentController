@@ -69,6 +69,8 @@
     <string name="tab_ad">Ad</string>
     <string name="no_active_posts">You have no Active posts!</string>
     <string name="no_active_posts_add">Go to All Posts and activate some</string>
+    <string name="show_ad">Show AD</string>
+    <string name="ad_configuration_changed">AD configuration changed</string>
 
 
     <string-array name="type_list">

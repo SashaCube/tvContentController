@@ -91,7 +91,7 @@ public class ActivePostsView implements ActivePostsContract.IActivePostsView {
         mPostsView.setVisibility(View.GONE);
         mNoPostsView.setVisibility(View.VISIBLE);
 
-        mNoPostsMainView.setText(R.string.no_posts_ad);
+        mNoPostsMainView.setText(R.string.no_active_posts);
     }
 
     @Override

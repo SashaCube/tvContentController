@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
-import com.oleksandr.havryliuk.editor.main.MainPostsContract;
-import com.oleksandr.havryliuk.editor.main.MainPostsPresenter;
-import com.oleksandr.havryliuk.editor.main.MainPostsView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+
+import java.util.Objects;
 
 public class ConfigurationFragment extends Fragment {
 
@@ -21,7 +20,7 @@ public class ConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_tab_item, container, false);
+        View root = inflater.inflate(R.layout.fragment_configuration, container, false);
 
         initView(root);
         initPresenter();
@@ -30,12 +29,13 @@ public class ConfigurationFragment extends Fragment {
     }
 
     public void initView(View root) {
-//        view = new MainPostsView();
-//        view.init(this, root);
+        view = new ConfigurationView();
+        view.init(this, root);
     }
 
     public void initPresenter() {
-//        presenter = new MainPostsPresenter(view, PostsRepository.getInstance(getContext()));
-//        view.setPresenter(presenter);
+        presenter = new ConfigurationPresenter(view,
+                PostsRepository.getInstance(Objects.requireNonNull(getContext())));
+        view.setPresenter(presenter);
     }
 }
