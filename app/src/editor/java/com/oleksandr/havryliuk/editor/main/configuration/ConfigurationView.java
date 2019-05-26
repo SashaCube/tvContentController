@@ -25,6 +25,7 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
     @Override
     public void setPresenter(ConfigurationContract.IConfigurationPresenter presenter) {
         this.presenter = presenter;
+        presenter.loadConfiguration();
     }
 
     @Override
@@ -44,6 +45,11 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
     @Override
     public void showAdConfigurationChange() {
         showMessage(fragment.getString(R.string.ad_configuration_changed));
+    }
+
+    @Override
+    public boolean isActive() {
+       return fragment.isAdded();
     }
 
     private void showMessage(String message) {

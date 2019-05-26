@@ -14,11 +14,15 @@ public interface ConfigurationContract {
         void initAdConfiguration(boolean showAd);
 
         void showAdConfigurationChange();
+
+        boolean isActive();
     }
 
     interface IConfigurationPresenter{
 
         void setAdConfiguration(boolean showAd);
+
+        void loadConfiguration();
 
     }
 }

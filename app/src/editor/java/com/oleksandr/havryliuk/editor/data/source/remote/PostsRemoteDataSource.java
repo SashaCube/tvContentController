@@ -20,15 +20,20 @@ import java.util.Map;
 
 public class PostsRemoteDataSource implements PostsDataSource {
 
-    private DatabaseReference mPostsRef;
+    public final static String AD_CONF = "ad_configuration";
 
+    private DatabaseReference databaseReference;
+    
     private static PostsRemoteDataSource INSTANCE;
 
     private static HashMap<String, Post> POSTS_SERVICE_DATA;
+    private static HashMap<String, Boolean> CONF_SERVICE_DATA;
+
     private String USERID;
 
     static {
         POSTS_SERVICE_DATA = new HashMap<>();
+        CONF_SERVICE_DATA = new HashMap<>();
     }
 
     public static PostsRemoteDataSource getInstance() {
@@ -50,12 +55,12 @@ public class PostsRemoteDataSource implements PostsDataSource {
         USERID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Log.i("Remote", "connected: user");
-        mPostsRef = FirebaseDatabase.getInstance()
+        databaseReference = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
                 .child(USERID);
 
-        mPostsRef.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -64,6 +69,24 @@ public class PostsRemoteDataSource implements PostsDataSource {
                 } else {
                     saveNewUser(USERID);
                     Log.i("Firebase DB", "create new posts List for user " + USERID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("Firebase", "error");
+            }
+        });
+
+        databaseReference.child("conf").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    getConfFromSnapShot(dataSnapshot);
+                    Log.i("Firebase DB", "update value for user " + USERID);
+                } else {
+                    saveNewUser(USERID);
+                    Log.i("Firebase DB", "create new conf List for user " + USERID);
                 }
             }
 
@@ -98,8 +121,19 @@ public class PostsRemoteDataSource implements PostsDataSource {
         }
     }
 
+    private void getConfFromSnapShot(DataSnapshot dataSnapshot) {
+        CONF_SERVICE_DATA.clear();
+
+        HashMap<String, Boolean> map = (HashMap<String, Boolean>) dataSnapshot.getValue();
+
+            CONF_SERVICE_DATA.put(AD_CONF, map.get(AD_CONF));
+            Log.i("DataSnapshot", "Conf from remote repo " + AD_CONF +
+                    " " + map.get(AD_CONF));
+    }
+
     private void saveNewUser(String userId) {
-        mPostsRef.child(userId).setValue(POSTS_SERVICE_DATA);
+        databaseReference.child(userId).child("posts").setValue(POSTS_SERVICE_DATA);
+        databaseReference.child(userId).child("conf").setValue(CONF_SERVICE_DATA);
     }
 
     @Override
@@ -115,9 +149,20 @@ public class PostsRemoteDataSource implements PostsDataSource {
     }
 
     @Override
+    public void saveConf(@NonNull String key, Boolean value) {
+        CONF_SERVICE_DATA.put(key, value);
+        databaseReference.child("conf").setValue(CONF_SERVICE_DATA);
+    }
+
+    @Override
+    public void getConf(final LoadConfCallback callback) {
+        callback.onConfigLoaded(CONF_SERVICE_DATA);
+    }
+
+    @Override
     public void savePost(@NonNull Post post) {
         POSTS_SERVICE_DATA.put(post.getId(), post);
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
+        databaseReference.child("posts").setValue(POSTS_SERVICE_DATA);
     }
 
     @Override
@@ -130,7 +175,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
                 it.remove();
             }
         }
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
+        databaseReference.setValue(POSTS_SERVICE_DATA);
     }
 
     @Override
@@ -142,12 +187,12 @@ public class PostsRemoteDataSource implements PostsDataSource {
     @Override
     public void deleteAllPosts() {
         POSTS_SERVICE_DATA.clear();
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
+        databaseReference.setValue(POSTS_SERVICE_DATA);
     }
 
     @Override
     public void deletePost(@NonNull String postId) {
         POSTS_SERVICE_DATA.remove(postId);
-        mPostsRef.setValue(POSTS_SERVICE_DATA);
+        databaseReference.setValue(POSTS_SERVICE_DATA);
     }
 }

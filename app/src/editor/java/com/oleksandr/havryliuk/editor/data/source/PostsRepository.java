@@ -139,6 +139,16 @@ public class PostsRepository implements PostsDataSource {
     }
 
     @Override
+    public void getConf(@NonNull LoadConfCallback callback) {
+        mPostsRemoteDataSource.getConf(callback);
+    }
+
+    @Override
+    public void saveConf(@NonNull String key, Boolean value) {
+        mPostsRemoteDataSource.saveConf(key, value);
+    }
+
+    @Override
     public void refreshPosts() {
     }
 
