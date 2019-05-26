@@ -2,18 +2,12 @@ package com.oleksandr.havryliuk.editor.auth.signin;
 
 import android.text.TextUtils;
 
-import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
-import com.oleksandr.havryliuk.editor.auth.forgotpassword.ForgotPasswordFragment;
-import com.oleksandr.havryliuk.editor.auth.signup.SignUpFragment;
-
 public class SignInPresenter implements SignInContract.ISignInPresenter {
 
     private SignInContract.ISignInView view;
-    private SignInFragment fragment;
 
-    public SignInPresenter(SignInContract.ISignInView view, SignInFragment fragment) {
+    public SignInPresenter(SignInContract.ISignInView view) {
         this.view = view;
-        this.fragment = fragment;
     }
 
     @Override
@@ -24,7 +18,7 @@ public class SignInPresenter implements SignInContract.ISignInPresenter {
 
     @Override
     public void googleSignInClick() {
-        ((AuthenticationActivity) fragment.getActivity()).googleSignIn();
+        view.googleSignIn();
     }
 
     private void validateInput() {
@@ -43,18 +37,16 @@ public class SignInPresenter implements SignInContract.ISignInPresenter {
             return;
         }
 
-        ((AuthenticationActivity) fragment.getActivity()).signIn(login, password);
+        view.signIn(login, password);
     }
 
     @Override
-    public void showSignUp() {
-        ((AuthenticationActivity) fragment.getActivity()).showFragment(new SignUpFragment(),
-                SignUpFragment.class.getName());
+    public void showSignUpClick() {
+        view.showSignUp();
     }
 
     @Override
-    public void showForgotPassword() {
-        ((AuthenticationActivity) fragment.getActivity()).showFragment(new ForgotPasswordFragment(),
-                ForgotPasswordFragment.class.getName());
+    public void showForgotPasswordClick() {
+        view.showForgotPassword();
     }
 }

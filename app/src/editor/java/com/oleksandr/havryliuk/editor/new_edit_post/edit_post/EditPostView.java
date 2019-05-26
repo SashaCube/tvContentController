@@ -1,6 +1,7 @@
 package com.oleksandr.havryliuk.editor.new_edit_post.edit_post;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,11 +14,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
-import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
+import java.util.Objects;
+
+import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
 
 public class EditPostView implements EditPostContract.IEditPostView, View.OnClickListener, IValidateView {
 
@@ -30,6 +34,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     private ImageView addImageView;
     private LinearLayout addImageLayout, addTextLayout;
     private View root;
+    private Fragment fragment;
 
     @Override
     public void setPresenter(EditPostContract.IEditPostPresenter presenter) {
@@ -38,7 +43,8 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     }
 
     @Override
-    public void init(final View root) {
+    public void init(Fragment fragment, View root) {
+        this.fragment = fragment;
         this.root = root;
 
         initView();
@@ -79,6 +85,11 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     }
 
     @Override
+    public void setImage(String path) {
+        ImageManager.loadInto(root.getContext(), path, addImageView);
+    }
+
+    @Override
     public void setEditPost(Post post) {
         titleEditText.setText(post.getTitle());
         aboutEditText.setText(post.getAbout());
@@ -86,7 +97,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
         durationTextView.setText(String.valueOf(post.getDuration()));
         stateSwitch.setChecked(post.isState());
         setSpinnerSelection(post.getType());
-        ((MainActivity.IImagePicker) presenter).setUri(post.getImageUri());
+        ((MainActivity.IImagePicker) presenter).setPath(post.getImagePath());
         durationSeekBar.setProgress((int) post.getDuration());
     }
 
@@ -122,18 +133,29 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     }
 
     @Override
+    public void showImagePicker(MainActivity.IImagePicker imagePicker) {
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity()))
+                .pickImageFromGallery(imagePicker);
+    }
+
+    @Override
+    public void showAllPostsScreen() {
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openAllPostsFragment();
+    }
+
+    @Override
     public void showTitleError() {
-        titleEditText.setError("Please enter title");
+        titleEditText.setError(fragment.getResources().getString(R.string.please_enter_title));
     }
 
     @Override
     public void showImageError() {
-        imageErrorTextView.setText("Please pick image");
+        imageErrorTextView.setText(fragment.getResources().getString(R.string.please_pick_image));
     }
 
     @Override
     public void showTextError() {
-        textEditText.setError("Please enter text");
+        textEditText.setError(fragment.getResources().getString(R.string.please_enter_text));
     }
 
     @Override

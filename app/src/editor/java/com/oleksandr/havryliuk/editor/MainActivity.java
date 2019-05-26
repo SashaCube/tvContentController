@@ -3,10 +3,13 @@ package com.oleksandr.havryliuk.editor;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
@@ -18,7 +21,9 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 public class MainActivity extends FragmentActivity {
+    private final static String TAG = MainActivity.class.getSimpleName();
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,22 @@ public class MainActivity extends FragmentActivity {
                         return true;
                     }
                 });
+
+        checkFilePermissions();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkFilePermissions() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            int permissionCheck = MainActivity.this.checkSelfPermission("Manifest.permission.READ_EXTERNAL_STORAGE");
+            permissionCheck += MainActivity.this.checkSelfPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE");
+            if (permissionCheck != 0) {
+                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1001); //Any number
+            }
+        } else {
+            Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
+        }
     }
 
     public void openMainFragment() {
@@ -62,7 +83,7 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().popBackStackImmediate(AllPostsFragment.class.getName(), 0);
             AllPostsFragment fragment = (AllPostsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
             if (fragment != null) {
-                fragment.update();
+//                fragment.update();
             }
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
@@ -90,6 +111,8 @@ public class MainActivity extends FragmentActivity {
 
     public interface IImagePicker {
         void setUri(Uri uri);
+
+        void setPath(String path);
     }
 
 

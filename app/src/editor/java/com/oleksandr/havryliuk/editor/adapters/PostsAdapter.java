@@ -12,18 +12,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHolder> {
 
     private AllPostsContract.IAllPostsPresenter presenter;
-    private String type;
     private final static int NONE = -1;
     private int openPost = NONE;
+    private boolean firstSetState = false;
 
     class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTextView, aboutTextView, typeTextView, dateTextView, editButton, deleteButton;
@@ -55,10 +54,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             stateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Post post = mPosts.get(getAdapterPosition());
-                    post.setState(isChecked);
-
-                    presenter.clickSetPost(post);
+                    if(!firstSetState) {
+                        Post post = mPosts.get(getAdapterPosition());
+                        post.setState(isChecked);
+                        presenter.clickSetPost(post);
+                    }
                 }
             });
         }
@@ -95,10 +95,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter, String type) {
+    public void setPresenter(AllPostsContract.IAllPostsPresenter presenter) {
         this.presenter = presenter;
-        this.type = type;
-        update();
     }
 
     @Override
@@ -115,8 +113,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             holder.titleTextView.setText(currentPost.getTitle());
             holder.aboutTextView.setText(currentPost.getAbout());
             holder.typeTextView.setText(currentPost.getType());
-            holder.dateTextView.setText(ActivityUtils.dateTimeConverter(currentPost.getCreateDate()));
-            holder.stateSwitch.setChecked(currentPost.isState());
+            holder.dateTextView.setText(currentPost.getCreateDate());
+            setStateChecked(holder.stateSwitch ,currentPost.isState());
 
             if (position == openPost) {
                 holder.dateLayout.setVisibility(View.VISIBLE);
@@ -130,8 +128,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
         }
     }
 
-    public void update() {
-        mPosts = presenter.getPosts(type);
+    private void setStateChecked(Switch s, boolean state){
+        firstSetState = true;
+        s.setChecked(state);
+        firstSetState = false;
+    }
+
+    public void setPosts(List<Post> posts) {
+        mPosts = posts;
         notifyDataSetChanged();
     }
 
@@ -140,4 +144,5 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             return mPosts.size();
         else return 0;
     }
+
 }

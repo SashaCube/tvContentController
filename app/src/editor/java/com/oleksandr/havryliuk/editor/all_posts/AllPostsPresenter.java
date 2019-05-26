@@ -1,81 +1,94 @@
 package com.oleksandr.havryliuk.editor.all_posts;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.widget.Toast;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 
-import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
-import com.oleksandr.havryliuk.editor.repository.Repository;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.DATE;
-import static com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment.TITLE;
-import static com.oleksandr.havryliuk.editor.model.Post.AD;
-import static com.oleksandr.havryliuk.editor.model.Post.ALL;
-import static com.oleksandr.havryliuk.editor.model.Post.NEWS;
+import static com.oleksandr.havryliuk.editor.data.Post.ALL;
 
 public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
-    private AllPostsContract.IAllPostsView view;
-    private Fragment fragment;
-    private static String sortedPostsBy = TITLE;
-    private volatile Repository repository;
+    public final static String TITLE = "Title";
+    public final static String DATE = "Date";
 
-    AllPostsPresenter(AllPostsContract.IAllPostsView view, Fragment fragment) {
+    private AllPostsContract.IAllPostsView view;
+    private static String sortedPostsBy = DATE;
+    private PostsRepository mRepository;
+
+    public AllPostsPresenter(AllPostsContract.IAllPostsView view, PostsRepository postsRepository) {
         this.view = view;
-        this.fragment = fragment;
-        repository = Repository.getInstance();
+        mRepository = postsRepository;
+        loadPosts(true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public List<Post> getPosts(String type) {
+    public void loadPosts(final boolean showLoadingUI) {
 
-        switch (type) {
-            case ALL:
-                return sortedPosts(repository.getAllPosts());
-            case NEWS:
-                return sortedPosts(repository.getPostsByType(NEWS));
-            case AD:
-                return sortedPosts(repository.getPostsByType(AD));
+        if (showLoadingUI) {
+            view.setLoadingIndicator(true);
         }
-        return null;
+
+        mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
+            @Override
+            public void onPostsLoaded(List<Post> posts) {
+                processPosts(posts);
+
+                if (!view.isActive()) {
+                    return;
+                }
+
+                if (showLoadingUI) {
+                    view.setLoadingIndicator(false);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // The view may not be able to handle UI updates anymore
+                if (!view.isActive()) {
+                    return;
+                }
+                view.showLoadingTasksError();
+
+                if (showLoadingUI) {
+                    view.setLoadingIndicator(false);
+                }
+            }
+        });
     }
 
     @Override
     public void clickDelete(final Post post) {
-        repository.deletePost(post);
-        Toast.makeText(fragment.getContext(), post.getTitle() + " deleted successfully", Toast.LENGTH_SHORT).show();
-        view.updatePosts();
+        mRepository.deletePost(post.getId());
+        view.showPostDeleted();
+        loadPosts(true);
     }
 
     @Override
     public void clickEdit(Post post) {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openEditPostFragment(post);
+        view.showEditScreen(post);
     }
 
     @Override
     public void clickSetPost(final Post post) {
-        repository.setPost(post);
-        view.updatePosts();
+        mRepository.savePost(post);
+        loadPosts(true);
     }
 
-    @Override
-    public void setSorting(String type) {
+    public static void setSorting(String type) {
         sortedPostsBy = type;
-        view.updatePosts();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<Post> sortedPosts(List<Post> posts) {
+    private List<Post> sortPosts(List<Post> posts) {
+
         switch (sortedPostsBy) {
             case TITLE:
-                posts.sort(new Comparator<Post>() {
+                Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
                         return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
@@ -83,7 +96,7 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                 });
                 break;
             case DATE:
-                posts.sort(new Comparator<Post>() {
+                Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
                         return o1.getCreateDate().compareTo(o2.getCreateDate());
@@ -92,5 +105,30 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
                 break;
         }
         return posts;
+    }
+
+    private void processPosts(List<Post> posts) {
+        posts = filterPosts(posts);
+
+        if (posts.isEmpty()) {
+            view.showNoPosts();
+        } else {
+            posts = sortPosts(posts);
+            view.setPosts(posts);
+        }
+    }
+
+    private List<Post> filterPosts(List<Post> posts) {
+        if (view.getType().equals(ALL)) {
+            return posts;
+        } else {
+            List<Post> filteredPosts = new ArrayList<>();
+            for (Post p : posts) {
+                if (p.getType().equals(view.getType())) {
+                    filteredPosts.add(p);
+                }
+            }
+            return filteredPosts;
+        }
     }
 }

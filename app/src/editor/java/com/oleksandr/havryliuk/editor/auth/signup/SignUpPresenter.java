@@ -2,16 +2,11 @@ package com.oleksandr.havryliuk.editor.auth.signup;
 
 import android.text.TextUtils;
 
-import com.oleksandr.havryliuk.editor.auth.AuthenticationActivity;
-import com.oleksandr.havryliuk.editor.auth.signin.SignInFragment;
-
 public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
 
-    private SignUpFragment fragment;
     private SignUpContract.ISignUpView view;
 
-    public SignUpPresenter(SignUpFragment fragment, SignUpContract.ISignUpView view) {
-        this.fragment = fragment;
+    public SignUpPresenter(SignUpContract.ISignUpView view) {
         this.view = view;
     }
 
@@ -21,8 +16,8 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
     }
 
     @Override
-    public void showSignIn() {
-        ((AuthenticationActivity) fragment.getActivity()).showFragment(new SignInFragment(), SignInFragment.class.getName());
+    public void showSignInClick() {
+        view.showSignIn();
     }
 
     private void validateInput() {
@@ -63,7 +58,7 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
         }
 
 
-        ((AuthenticationActivity) fragment.getActivity()).signUp(login, email, password);
+        view.signUp(login, email, password);
 
     }
 }

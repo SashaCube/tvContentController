@@ -32,12 +32,12 @@ public class Auth {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //if login success
-                    Toast.makeText(activity, "Success Sign in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
                     auth.getCurrentUser();
                     startMainActivity(activity);
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(activity, "Failed Sign in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -50,11 +50,11 @@ public class Auth {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(activity, "You are signed up.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.sign_up_success, Toast.LENGTH_SHORT).show();
                     sendSignUpConfirm(auth.getCurrentUser(), activity);
                     startMainActivity(activity);
                 } else {
-                    Toast.makeText(activity, "Failed sign up", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.sign_up_failed, Toast.LENGTH_SHORT).show();
                     //currentUser = null;
                 }
             }
@@ -66,9 +66,9 @@ public class Auth {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Email sent: success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.email_send_success, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "Email isn't sent: error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.email_send_failed, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -94,9 +94,9 @@ public class Auth {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Email sent: success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.email_send_success, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "Email not sent: error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.email_send_failed, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -113,12 +113,12 @@ public class Auth {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(activity, "Google authinication success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.google_auth_success, Toast.LENGTH_SHORT).show();
                             auth.getCurrentUser();
                             startMainActivity(activity);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(activity, "Google authinication failed(Firebase part)", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.google_auth_failed_firebase, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -135,7 +135,7 @@ public class Auth {
                 Auth.firebaseAuthWithGoogle(account, activity);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(activity, "Google authinication failed(Google part)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.google_auth_failed_google, Toast.LENGTH_SHORT).show();
                 // ...
             }
         }

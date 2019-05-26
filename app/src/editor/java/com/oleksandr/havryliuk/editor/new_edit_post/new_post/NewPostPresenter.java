@@ -1,43 +1,47 @@
 package com.oleksandr.havryliuk.editor.new_edit_post.new_post;
 
 import android.net.Uri;
-import android.widget.Toast;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
-import com.oleksandr.havryliuk.editor.model.Post;
+import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
+import com.oleksandr.havryliuk.editor.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.editor.new_edit_post.validator.PostValidator;
-import com.oleksandr.havryliuk.editor.repository.Repository;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import java.util.Date;
-import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.model.Post.IMAGE;
-import static com.oleksandr.havryliuk.editor.model.Post.TEXT;
+import static com.oleksandr.havryliuk.editor.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.editor.data.Post.TEXT;
 
 public class NewPostPresenter implements NewPostContract.INewPostPresenter,
         MainActivity.IImagePicker {
 
     private NewPostContract.INewPostView view;
-    private NewPostFragment fragment;
     private String type;
     private Uri uri;
+    private PostsRepository repository;
 
-    public NewPostPresenter(NewPostContract.INewPostView view, NewPostFragment fragment) {
+    public NewPostPresenter(NewPostContract.INewPostView view, PostsRepository repository) {
         this.view = view;
-        this.fragment = fragment;
+        this.repository = repository;
     }
 
     @Override
     public void setImageClick() {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity()))
-                .pickImageFromGallery(this);
+        view.showImagePicker(this);
     }
 
     @Override
     public void setUri(Uri uri) {
         this.uri = uri;
         view.setImage(uri);
+    }
+
+    @Override
+    public void setPath(String path) {
+
     }
 
     @Override
@@ -58,19 +62,24 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter,
 
     @Override
     public void doneClick(String title, String about, String text, int duration, boolean state) {
-        if (PostValidator.validateInput((IValidateView) view, title, text, uri, type)) {
+        if (PostValidator.validateInput((IValidateView) view, title, text, uri, null, type)) {
 
-            Post post = new Post(title, about, new Date(), type, uri, text, state, duration);
-            Repository.getInstance().addPost(post);
-            Toast.makeText(fragment.getContext(), "Post " + title + " added", Toast.LENGTH_SHORT)
-                    .show();
+            Post post = new Post(title, about, ActivityUtils.dateTimeConverter(new Date()),
+                    type, ActivityUtils.UriPath(uri), text, state, duration);
+
+            if (!post.getType().equals(TEXT) && post.getImagePath() != null) {
+                post.setImagePath(ImageManager.uploadImage(uri));
+            }
+
+            repository.savePost(post);
+            view.showPostAdded();
 
             finish();
         }
     }
 
     private void finish() {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openMainFragment();
+        view.showMainPostsScreen();
     }
 
     private void showImageType() {

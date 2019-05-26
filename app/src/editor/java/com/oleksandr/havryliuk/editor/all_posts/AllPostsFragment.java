@@ -2,7 +2,9 @@ package com.oleksandr.havryliuk.editor.all_posts;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -10,21 +12,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.oleksandr.havryliuk.editor.adapters.PostsPagerAdapter;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.Objects;
 
+import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.DATE;
+import static com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter.TITLE;
+import static com.oleksandr.havryliuk.editor.data.Post.AD;
+import static com.oleksandr.havryliuk.editor.data.Post.ALL;
+import static com.oleksandr.havryliuk.editor.data.Post.NEWS;
+
 public class AllPostsFragment extends Fragment {
 
-    public final static String TITLE = "Title";
-    public final static String DATE = "Date";
+    public final static int ALL_FRAGMENT = 0;
+    public final static int NEWS_FRAGMENT = 1;
+    public final static int AD_FRAGMENT = 2;
 
-    private AllPostsContract.IAllPostsView view;
-    private AllPostsContract.IAllPostsPresenter presenter;
-
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
     private ImageView sortButton;
     private PopupMenu popupMenu;
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -32,17 +40,21 @@ public class AllPostsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         initView(root);
-        initPresenter();
 
         return root;
     }
 
-
     private void initView(final View root) {
-        view = new AllPostsView();
-        view.init(root);
-
         sortButton = root.findViewById(R.id.sort_icon);
+        viewPager = root.findViewById(R.id.view_pager);
+        tabLayout = root.findViewById(R.id.tab_layout);
+
+        initSortMenu();
+        initViewPager();
+        initTabLayout();
+    }
+
+    private void initSortMenu() {
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,24 +68,58 @@ public class AllPostsFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.sort_by_date:
-                        presenter.setSorting(DATE);
+                        AllPostsPresenter.setSorting(DATE);
                         break;
                     case R.id.sort_by_title:
-                        presenter.setSorting(TITLE);
+                        AllPostsPresenter.setSorting(TITLE);
                         break;
                 }
                 return true;
             }
         });
+
         popupMenu.inflate(R.menu.sorter_posts);
     }
 
-    private void initPresenter() {
-        presenter = new AllPostsPresenter(view, this);
-        view.setPresenter(presenter, getFragmentManager());
+    private void initViewPager() {
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        PostsPagerAdapter adapterViewPager = new PostsPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
+        viewPager.setCurrentItem(0);
     }
 
-    public void update() {
-        view.updatePosts();
+    private void initTabLayout() {
+        tabLayout.addTab(tabLayout.newTab().setText(ALL));
+        tabLayout.addTab(tabLayout.newTab().setText(NEWS));
+        tabLayout.addTab(tabLayout.newTab().setText(AD));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.addOnTabSelectedListener(new TabListener());
+    }
+
+    class TabListener implements TabLayout.OnTabSelectedListener {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            switch (Objects.requireNonNull(tab.getText()).toString()) {
+                case ALL:
+                    viewPager.setCurrentItem(ALL_FRAGMENT);
+                    break;
+                case NEWS:
+                    viewPager.setCurrentItem(NEWS_FRAGMENT);
+                    break;
+                case AD:
+                    viewPager.setCurrentItem(AD_FRAGMENT);
+                    break;
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
     }
 }
