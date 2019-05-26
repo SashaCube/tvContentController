@@ -29,7 +29,6 @@ public class ConfigurationPresenter implements ConfigurationContract.IConfigurat
 
                     if (view.isActive()) {
                         view.initAdConfiguration(true);
-                        view.showAdConfigurationChange();
                     }
                 }
             }

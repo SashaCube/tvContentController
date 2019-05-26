@@ -23,7 +23,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     public final static String AD_CONF = "ad_configuration";
 
     private DatabaseReference databaseReference;
-    
+
     private static PostsRemoteDataSource INSTANCE;
 
     private static HashMap<String, Post> POSTS_SERVICE_DATA;

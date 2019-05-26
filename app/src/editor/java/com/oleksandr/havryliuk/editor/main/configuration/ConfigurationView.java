@@ -30,7 +30,7 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
 
     @Override
     public void initAdConfiguration(boolean showAd) {
-        if(showAdSwitch == null){
+        if (showAdSwitch == null) {
             showAdSwitch = root.findViewById(R.id.show_ad_switch);
             showAdSwitch.setChecked(showAd);
             showAdSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -49,7 +49,7 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
 
     @Override
     public boolean isActive() {
-       return fragment.isAdded();
+        return fragment.isAdded();
     }
 
     private void showMessage(String message) {
