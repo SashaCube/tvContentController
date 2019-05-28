@@ -1,9 +1,9 @@
-package com.oleksandr.havryliuk.editor.data.source;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.editor.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.editor.data.source.remote.PostsRemoteDataSource;
 

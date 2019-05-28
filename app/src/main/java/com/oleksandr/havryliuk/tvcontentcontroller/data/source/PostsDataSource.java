@@ -1,8 +1,8 @@
-package com.oleksandr.havryliuk.editor.data.source;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source;
 
 import android.support.annotation.NonNull;
 
-import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 
 import java.util.List;
 import java.util.Map;

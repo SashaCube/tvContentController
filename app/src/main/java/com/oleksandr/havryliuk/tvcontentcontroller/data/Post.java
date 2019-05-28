@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.data;
+package com.oleksandr.havryliuk.tvcontentcontroller.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

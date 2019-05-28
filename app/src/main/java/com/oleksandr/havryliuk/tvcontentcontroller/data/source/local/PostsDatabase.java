@@ -1,11 +1,11 @@
-package com.oleksandr.havryliuk.editor.data.source.local;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source.local;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 
 @Database(entities = {Post.class}, version = 2, exportSchema = false)
 public abstract class PostsDatabase extends RoomDatabase {

@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.data.source.local;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source.local;
 
 
 import android.arch.persistence.room.Dao;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.oleksandr.havryliuk.editor.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 
 import java.util.List;
 

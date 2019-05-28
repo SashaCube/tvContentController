@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.data.source.image_manager;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager;
 
 import android.content.Context;
 import android.graphics.Bitmap;

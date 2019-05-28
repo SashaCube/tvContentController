@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.editor.data.source.remote;
+package com.oleksandr.havryliuk.tvcontentcontroller.data.source.remote;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -9,8 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
