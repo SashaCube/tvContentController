@@ -17,10 +17,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.UUID;
-
-import static com.oleksandr.havryliuk.editor.data.source.image_manager.ImageSaver.DIR;
 
 public class ImageManager {
 
