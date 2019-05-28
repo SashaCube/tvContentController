@@ -5,23 +5,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.oleksandr.havryliuk.editor.all_posts.AllPostsFragment;
 import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.main.MainFragment;
+import com.oleksandr.havryliuk.editor.main.MainPostsFragment;
 import com.oleksandr.havryliuk.editor.new_edit_post.edit_post.EditPostFragment;
 import com.oleksandr.havryliuk.editor.new_edit_post.new_post.NewPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private final static String TAG = MainActivity.class.getSimpleName();
+
+    private FrameLayout mainMenuLayout, newPostMenuLayout, allPostsMenuLayout;
+    private FrameLayout currentMenuLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -29,29 +31,22 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_main:
-                                openMainFragment();
-                                break;
-                            case R.id.action_new_post:
-                                openNewPostFragment();
-                                break;
-                            case R.id.action_all_posts:
-                                openAllPostsFragment();
-                                break;
-                        }
-                        return true;
-                    }
-                });
+        initMenu();
 
         checkFilePermissions();
+        openMainFragment();
+    }
 
+    private void initMenu() {
+        mainMenuLayout = findViewById(R.id.main_menu_layout);
+        newPostMenuLayout = findViewById(R.id.new_post_menu_layout);
+        allPostsMenuLayout = findViewById(R.id.all_posts_menu_layout);
+
+        mainMenuLayout.setOnClickListener(this);
+        newPostMenuLayout.setOnClickListener(this);
+        allPostsMenuLayout.setOnClickListener(this);
+
+        currentMenuLayout = mainMenuLayout;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -60,7 +55,8 @@ public class MainActivity extends FragmentActivity {
             int permissionCheck = MainActivity.this.checkSelfPermission("Manifest.permission.READ_EXTERNAL_STORAGE");
             permissionCheck += MainActivity.this.checkSelfPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE");
             if (permissionCheck != 0) {
-                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1001); //Any number
+                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1001); //Any number
             }
         } else {
             Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
@@ -69,11 +65,11 @@ public class MainActivity extends FragmentActivity {
 
     public void openMainFragment() {
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
-                MainFragment.class.getName())) {
-            getSupportFragmentManager().popBackStackImmediate(MainFragment.class.getName(), 0);
+                MainPostsFragment.class.getName())) {
+            getSupportFragmentManager().popBackStackImmediate(MainPostsFragment.class.getName(), 0);
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    new MainFragment(), R.id.fragment, MainFragment.class.getName());
+                    new MainPostsFragment(), R.id.fragment, MainPostsFragment.class.getName());
         }
     }
 
@@ -109,6 +105,30 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_menu_layout:
+                if (currentMenuLayout != mainMenuLayout) {
+                    currentMenuLayout = mainMenuLayout;
+                    openMainFragment();
+                }
+                break;
+            case R.id.new_post_menu_layout:
+                if (currentMenuLayout != newPostMenuLayout) {
+                    currentMenuLayout = newPostMenuLayout;
+                    openNewPostFragment();
+                }
+                break;
+            case R.id.all_posts_menu_layout:
+                if (currentMenuLayout != allPostsMenuLayout) {
+                    currentMenuLayout = allPostsMenuLayout;
+                    openAllPostsFragment();
+                }
+                break;
+        }
+    }
+
     public interface IImagePicker {
         void setUri(Uri uri);
 
@@ -142,5 +162,14 @@ public class MainActivity extends FragmentActivity {
         String[] mimeTypes = {"image/jpeg", "image/png"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            super.onBackPressed();
+        } else {
+            finish();
+        }
     }
 }

@@ -1,36 +1,27 @@
-package com.oleksandr.havryliuk.editor.all_posts.view;
+package com.oleksandr.havryliuk.editor.main.active_posts;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.editor.MainActivity;
 import com.oleksandr.havryliuk.editor.adapters.PostsAdapter;
-import com.oleksandr.havryliuk.editor.all_posts.AllPostsContract;
-import com.oleksandr.havryliuk.editor.all_posts.AllPostsPresenter;
 import com.oleksandr.havryliuk.editor.all_posts.ScrollChildSwipeRefreshLayout;
 import com.oleksandr.havryliuk.editor.data.Post;
-import com.oleksandr.havryliuk.editor.data.source.PostsRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.editor.data.Post.AD;
+public class ActivePostsView implements ActivePostsContract.IActivePostsView {
 
-public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPostsView {
-
-    private final String TYPE = AD;
-    private AllPostsContract.IAllPostsPresenter mPresenter;
+    private ActivePostsContract.IActivePostPresenter mPresenter;
+    private Fragment fragment;
     private PostsAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
@@ -38,18 +29,10 @@ public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPos
     private TextView mNoPostsMainView;
     private ScrollChildSwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_tab_item, container, false);
+    public void init(View root, Fragment fragment) {
+        this.fragment = fragment;
+        this.root = root;
 
-        initView();
-        initPresenter();
-
-        return root;
-    }
-
-    public void initView() {
         mRecyclerView = root.findViewById(R.id.recycler_view);
         mNoPostsView = root.findViewById(R.id.no_posts_layout);
         mPostsView = root.findViewById(R.id.all_posts_layout);
@@ -60,16 +43,16 @@ public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPos
         initScrollRefreshLayout();
     }
 
-    public void initPresenter() {
-        mPresenter = new AllPostsPresenter(this,
-                PostsRepository.getInstance(Objects.requireNonNull(getContext())));
+    public void setPresenter(ActivePostsContract.IActivePostPresenter presenter) {
+        mPresenter = presenter;
+        mAdapter = new PostsAdapter(root.getContext());
+        mRecyclerView.setAdapter(mAdapter);
         mAdapter.setPresenter(mPresenter);
         mPresenter.loadPosts(true);
+
     }
 
     public void initRecyclerView() {
-        mAdapter = new PostsAdapter(root.getContext());
-        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
     }
 
@@ -94,6 +77,7 @@ public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPos
 
     @Override
     public void setPosts(List<Post> posts) {
+
         if (mAdapter != null) {
             mAdapter.setPosts(posts);
         }
@@ -107,12 +91,7 @@ public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPos
         mPostsView.setVisibility(View.GONE);
         mNoPostsView.setVisibility(View.VISIBLE);
 
-        mNoPostsMainView.setText(R.string.no_posts_ad);
-    }
-
-    @Override
-    public String getType() {
-        return TYPE;
+        mNoPostsMainView.setText(R.string.no_active_posts);
     }
 
     @Override
@@ -127,12 +106,12 @@ public class ADTypeFragment extends Fragment implements AllPostsContract.IAllPos
 
     @Override
     public void showEditScreen(Post post) {
-        ((MainActivity) Objects.requireNonNull(getActivity())).openEditPostFragment(post);
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openEditPostFragment(post);
     }
 
     @Override
     public boolean isActive() {
-        return isAdded();
+        return fragment.isAdded();
     }
 
     @Override

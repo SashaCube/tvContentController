@@ -41,7 +41,7 @@ public class NewsTypeFragment extends Fragment implements AllPostsContract.IAllP
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_all_posts_item, container, false);
+        root = inflater.inflate(R.layout.fragment_tab_item, container, false);
 
         initView();
         initPresenter();

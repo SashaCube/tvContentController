@@ -112,6 +112,16 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
+    public void getConf(@NonNull LoadConfCallback callback) {
+
+    }
+
+    @Override
+    public void saveConf(@NonNull String key, Boolean value) {
+
+    }
+
+    @Override
     public void refreshPosts() {
     }
 
