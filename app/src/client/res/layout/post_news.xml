@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/news_post_image"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:layout_weight="3"
+        android:padding="@dimen/small_dimen"
+        android:gravity="center|top|start"
+        android:text="@string/text"
+        android:textSize="@dimen/default_text_size"
+        android:id="@+id/news_post_text"
+        android:textColor="@color/diamond"
+        android:background="@drawable/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxLines="16"/>
+
+
+</LinearLayout>
