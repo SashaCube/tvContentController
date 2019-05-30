@@ -19,8 +19,8 @@
         android:text="@string/text"
         android:textSize="@dimen/default_text_size"
         android:id="@+id/news_post_text"
-        android:textColor="@color/diamond"
-        android:background="@drawable/background"
+        android:textColor="@color/dark_purple"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:maxLines="16"/>

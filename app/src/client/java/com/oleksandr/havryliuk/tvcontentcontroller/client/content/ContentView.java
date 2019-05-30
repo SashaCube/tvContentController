@@ -52,7 +52,13 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void showADPost(Post post) {
         ImageManager.loadInto(root.getContext(), post.getImagePath(), adPostImage);
-        adPostText.setText(post.getText());
+
+        if (post.getText().equals("none")) {
+            adPostText.setVisibility(View.GONE);
+        } else {
+            adPostText.setVisibility(View.VISIBLE);
+            adPostText.setText(post.getText());
+        }
 
         hideAll();
         adPostView.setVisibility(View.VISIBLE);
