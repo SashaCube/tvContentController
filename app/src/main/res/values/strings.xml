@@ -73,6 +73,10 @@
     <string name="ad_configuration_changed">AD configuration changed</string>
 
 
+    <string name="connecting">connecting ...</string>
+    <string name="ad">AD</string>
+
+
     <string-array name="type_list">
         <item>News</item>
         <item>AD</item>

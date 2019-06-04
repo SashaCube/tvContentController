@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/post_ad"
+        layout="@layout/post_ad">
+    </include>
+    <include
+        android:id="@+id/post_news"
+        layout="@layout/post_news">
+    </include>
+    <include
+        android:id="@+id/post_image"
+        layout="@layout/post_image">
+    </include>
+    <include
+        android:id="@+id/post_text"
+        layout="@layout/post_text">
+    </include>
+
+</android.support.constraint.ConstraintLayout>
