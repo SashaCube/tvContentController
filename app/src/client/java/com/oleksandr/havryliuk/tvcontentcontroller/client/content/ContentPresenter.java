@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
@@ -22,10 +24,11 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     private PostsDataSource repository;
     private volatile static boolean state;
     private boolean startShowingPosts;
+    private boolean showAD = false;
 
     private Handler handler;
 
-    private List<Post> posts;
+    private volatile List<Post> posts;
 
     public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository) {
         this.view = view;
@@ -41,8 +44,8 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         repository.getPosts(new PostsDataSource.LoadPostsCallback() {
             @Override
             public void onPostsLoaded(final List<Post> posts) {
-                processPosts(getActive(posts));
-                Log.i(TAG, "Load Posts " + posts.size());
+                processPosts(getFilteredPosts(posts));
+                Log.i(TAG, "Loaded Posts " + posts.size());
 
                 // refresh posts regularly
                 if (handler != null) {
@@ -51,7 +54,22 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
                         public void run() {
                             loadPosts();
                         }
-                    }, 50000);
+                    }, 60000);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+            }
+        });
+
+        repository.getConf(new PostsDataSource.LoadConfCallback() {
+            @Override
+            public void onConfigLoaded(Map<String, Boolean> configurations) {
+                Log.i(TAG, "Loaded configuration " + posts.size());
+
+                if (!configurations.isEmpty()) {
+                    updateConf(configurations);
                 }
             }
 
@@ -61,10 +79,15 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         });
     }
 
-    private void processPosts(List<Post> posts) {
+    private void updateConf(Map<String, Boolean> configurations){
+        showAD = configurations.get(Constants.SHOW_AD_CONF);
+    }
+
+
+    private synchronized void processPosts(List<Post> posts) {
         this.posts = posts;
 
-        if (!posts.isEmpty() && startShowingPosts) {
+        if (!this.posts.isEmpty() && startShowingPosts) {
             DelayedPosts(0);
             startShowingPosts = false;
         }
@@ -112,17 +135,20 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         }
     }
 
-    private List<Post> getActive(List<Post> allPosts) {
+    private List<Post> getFilteredPosts(List<Post> allPosts) {
         ArrayList<Post> activePosts = new ArrayList<>();
 
         for (Post p : allPosts) {
             if (p.isState()) {
-                activePosts.add(p);
+                if(!(p.getType().equals(AD) && showAD)) {
+                    activePosts.add(p);
+                }
             }
         }
 
         return activePosts;
     }
+
 
     @Override
     public void startShowingPosts() {
@@ -133,7 +159,12 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         handler = new Handler();
         startShowingPosts = true;
 
-        loadPosts();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadPosts();
+            }
+        }, 100);
     }
 
     @Override

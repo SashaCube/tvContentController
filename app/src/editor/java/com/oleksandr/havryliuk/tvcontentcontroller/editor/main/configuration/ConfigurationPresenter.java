@@ -5,9 +5,9 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 
 import java.util.Map;
 
-public class ConfigurationPresenter implements ConfigurationContract.IConfigurationPresenter {
-    public final static String show_ad_conf = "show_ad";
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
 
+public class ConfigurationPresenter implements ConfigurationContract.IConfigurationPresenter {
     private ConfigurationContract.IConfigurationView view;
     private PostsRepository mRepository;
     private boolean show_ad;
@@ -20,12 +20,12 @@ public class ConfigurationPresenter implements ConfigurationContract.IConfigurat
             @Override
             public void onConfigLoaded(Map<String, Boolean> configurations) {
                 if (!configurations.isEmpty()) {
-                    Boolean value = configurations.get(show_ad_conf);
+                    Boolean value = configurations.get(SHOW_AD_CONF);
                     if (value != null) {
                         show_ad = value;
                     }
                 } else {
-                    mRepository.saveConf(show_ad_conf, true);
+                    mRepository.saveConf(SHOW_AD_CONF, true);
 
                     if (view.isActive()) {
                         view.initAdConfiguration(true);
@@ -43,7 +43,7 @@ public class ConfigurationPresenter implements ConfigurationContract.IConfigurat
 
     @Override
     public void setAdConfiguration(boolean showAd) {
-        mRepository.saveConf(show_ad_conf, showAd);
+        mRepository.saveConf(SHOW_AD_CONF, showAd);
         view.showAdConfigurationChange();
     }
 

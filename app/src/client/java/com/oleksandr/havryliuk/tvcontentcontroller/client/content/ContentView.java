@@ -53,7 +53,7 @@ public class ContentView implements ContentContract.IContentView {
     public void showADPost(Post post) {
         ImageManager.loadInto(root.getContext(), post.getImagePath(), adPostImage);
 
-        if (post.getText().equals("none")) {
+        if (post.getText().isEmpty()) {
             adPostText.setVisibility(View.GONE);
         } else {
             adPostText.setVisibility(View.VISIBLE);

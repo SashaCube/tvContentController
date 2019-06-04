@@ -18,9 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class PostsRemoteDataSource implements PostsDataSource {
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
 
-    public final static String AD_CONF = "ad_configuration";
+public class PostsRemoteDataSource implements PostsDataSource {
 
     private DatabaseReference databaseReference;
 
@@ -126,9 +126,9 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
         HashMap<String, Boolean> map = (HashMap<String, Boolean>) dataSnapshot.getValue();
 
-            CONF_SERVICE_DATA.put(AD_CONF, map.get(AD_CONF));
-            Log.i("DataSnapshot", "Conf from remote repo " + AD_CONF +
-                    " " + map.get(AD_CONF));
+            CONF_SERVICE_DATA.put(SHOW_AD_CONF, map.get(SHOW_AD_CONF));
+            Log.i("DataSnapshot", "Conf from remote repo " + SHOW_AD_CONF +
+                    " " + map.get(SHOW_AD_CONF));
     }
 
     private void saveNewUser(String userId) {

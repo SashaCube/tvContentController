@@ -3,6 +3,7 @@ package com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.validat
 import android.net.Uri;
 import android.text.TextUtils;
 
+import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.TEXT;
 
@@ -22,6 +23,9 @@ public class PostValidator {
                     break;
                 case TEXT:
                     validate = validateText(view, text);
+                    break;
+                case AD:
+                    validate = validateImage(view, uri, path);
                     break;
                 default:
                     validate = validateImage(view, uri, path);
