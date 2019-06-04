@@ -1,6 +1,7 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,7 +11,18 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.ImageManager;
 
+import java.util.List;
+import java.util.Objects;
+
+import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
+import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
+import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.NEWS;
+import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.TEXT;
+
 public class ContentView implements ContentContract.IContentView {
+
+    private final static String TAG = ContentPresenter.class.getName();
+    private final static int LOAD = -1;
 
     private ContentContract.IContentPresenter presenter;
     private Fragment fragment;
@@ -19,6 +31,10 @@ public class ContentView implements ContentContract.IContentView {
     private ViewGroup adPostView, newsPostView, imagePostView, textPostView;
     private ImageView adPostImage, imagePostImage, newsPostImage;
     private TextView textPostText, adPostText, newsPostText;
+
+    private Thread displayPostThread;
+    private int postIndex = LOAD;
+    private volatile static List<Post> posts;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -49,8 +65,7 @@ public class ContentView implements ContentContract.IContentView {
         this.presenter = presenter;
     }
 
-    @Override
-    public void showADPost(Post post) {
+    private void showADPost(Post post) {
         ImageManager.loadInto(root.getContext(), post.getImagePath(), adPostImage);
 
         if (post.getText().isEmpty()) {
@@ -64,8 +79,7 @@ public class ContentView implements ContentContract.IContentView {
         adPostView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void showNewsPost(Post post) {
+    private void showNewsPost(Post post) {
         ImageManager.loadInto(root.getContext(), post.getImagePath(), newsPostImage);
         newsPostText.setText(post.getText());
 
@@ -73,16 +87,16 @@ public class ContentView implements ContentContract.IContentView {
         newsPostView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void showTextPost(Post post) {
+
+    private void showTextPost(Post post) {
         textPostText.setText(post.getText());
 
         hideAll();
         textPostView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void showImagePost(Post post) {
+
+    private void showImagePost(Post post) {
         ImageManager.loadInto(root.getContext(), post.getImagePath(), imagePostImage);
 
         hideAll();
@@ -109,5 +123,89 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void showLoadingTasksError() {
 
+    }
+
+    @Override
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+
+        if (postIndex == LOAD || postIndex >= posts.size()) {
+            postIndex = 0;
+        }
+    }
+
+    private void showPost(Post post) {
+        switch (post.getType()) {
+            case NEWS:
+                showNewsPost(post);
+                break;
+            case AD:
+                showADPost(post);
+                break;
+            case IMAGE:
+                showImagePost(post);
+                break;
+            case TEXT:
+                showTextPost(post);
+                break;
+        }
+    }
+
+    @Override
+    public void startDisplayPosts() {
+        Log.i(TAG, "start display posts");
+        initDisplayPostThread();
+        displayPostThread.start();
+    }
+
+    @Override
+    public void stopDisplayPosts() {
+        Log.i(TAG, "syop display posts");
+        if (isActive()) {
+            displayPostThread.interrupt();
+        }
+    }
+
+    private void initDisplayPostThread() {
+        displayPostThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    final long[] duration = {2000};
+                    while (!isInterrupted()) {
+                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if ((posts != null && !posts.isEmpty()) && postIndex != LOAD) {
+                                    Post post;
+                                    if (postIndex < posts.size()) {
+                                        post = posts.get(postIndex);
+                                        postIndex++;
+                                    } else {
+                                        post = posts.get(0);
+                                        postIndex = 0;
+                                    }
+
+                                    showPost(post);
+                                    duration[0] = post.getDuration() * 1000;
+                                    Log.i(TAG, "display post : " + post);
+                                } else {
+                                    showEmptyScreen();
+                                    Log.i(TAG, "show empty screen");
+                                }
+                            }
+                        });
+
+                        Thread.sleep(duration[0]);
+                    }
+                } catch (InterruptedException e) {
+
+                }
+            }
+        };
+    }
+
+    private void showEmptyScreen() {
+        hideAll();
     }
 }

@@ -22,13 +22,10 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private ContentContract.IContentView view;
     private PostsDataSource repository;
-    private volatile static boolean state;
-    private boolean startShowingPosts;
     private boolean showAD = false;
-
-    private Handler handler;
-
     private volatile List<Post> posts;
+    private Handler updateHandler;
+
 
     public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository) {
         this.view = view;
@@ -37,25 +34,11 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     @Override
     public void loadPosts() {
-        if (!state) {
-            return;
-        }
 
         repository.getPosts(new PostsDataSource.LoadPostsCallback() {
             @Override
             public void onPostsLoaded(final List<Post> posts) {
                 processPosts(getFilteredPosts(posts));
-                Log.i(TAG, "Loaded Posts " + posts.size());
-
-                // refresh posts regularly
-                if (handler != null) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadPosts();
-                        }
-                    }, 60000);
-                }
             }
 
             @Override
@@ -66,7 +49,6 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         repository.getConf(new PostsDataSource.LoadConfCallback() {
             @Override
             public void onConfigLoaded(Map<String, Boolean> configurations) {
-                Log.i(TAG, "Loaded configuration " + posts.size());
 
                 if (!configurations.isEmpty()) {
                     updateConf(configurations);
@@ -79,60 +61,17 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         });
     }
 
-    private void updateConf(Map<String, Boolean> configurations){
+    private void updateConf(Map<String, Boolean> configurations) {
+        Log.i(TAG, "Update configuration " + configurations.size());
         showAD = configurations.get(Constants.SHOW_AD_CONF);
     }
 
 
-    private synchronized void processPosts(List<Post> posts) {
+    private void processPosts(List<Post> posts) {
+        Log.i(TAG, "Update posts " + posts.size());
+
         this.posts = posts;
-
-        if (!this.posts.isEmpty() && startShowingPosts) {
-            DelayedPosts(0);
-            startShowingPosts = false;
-        }
-    }
-
-    private void DelayedPosts(int index) {
-        if (!state) {
-            return;
-        }
-
-        if (index >= posts.size() || index < 0) {
-            index = 0;
-        }
-
-        Post post = posts.get(index);
-        showPost(post);
-        Log.i(TAG, "show post(" + index + "/" + posts.size() + ") : "
-                + post.getTitle() + "| duration: " + post.getDuration());
-
-        final int finalIndex = index;
-        if (handler != null) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    DelayedPosts(finalIndex + 1);
-                }
-            }, post.getDuration() * 1000);
-        }
-    }
-
-    private void showPost(Post post) {
-        switch (post.getType()) {
-            case NEWS:
-                view.showNewsPost(post);
-                break;
-            case AD:
-                view.showADPost(post);
-                break;
-            case IMAGE:
-                view.showImagePost(post);
-                break;
-            case TEXT:
-                view.showTextPost(post);
-                break;
-        }
+        view.setPosts(posts);
     }
 
     private List<Post> getFilteredPosts(List<Post> allPosts) {
@@ -140,7 +79,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
         for (Post p : allPosts) {
             if (p.isState()) {
-                if(!(p.getType().equals(AD) && showAD)) {
+                if (!(p.getType().equals(AD) && !showAD)) {
                     activePosts.add(p);
                 }
             }
@@ -154,24 +93,26 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     public void startShowingPosts() {
         Log.i(TAG, "Start showing Posts");
 
-        state = true;
+        updateHandler = new Handler();
 
-        handler = new Handler();
-        startShowingPosts = true;
-
-        handler.postDelayed(new Runnable() {
-            @Override
+        Runnable r = new Runnable() {
             public void run() {
                 loadPosts();
+                if(updateHandler != null) {
+                    updateHandler.postDelayed(this, 60 * 1000);
+                }
             }
-        }, 100);
+        };
+        updateHandler.post(r);
+
+        view.startDisplayPosts();
     }
 
     @Override
     public void stopShowingPosts() {
         Log.i(TAG, "Stop showing Posts");
+        view.stopDisplayPosts();
 
-        state = false;
-        handler = null;
+        updateHandler = null;
     }
 }
