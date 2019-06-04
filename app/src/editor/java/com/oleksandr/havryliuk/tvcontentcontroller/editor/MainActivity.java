@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openMainFragment() {
+        currentMenuLayout = mainMenuLayout;
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
                 MainPostsFragment.class.getName())) {
             getSupportFragmentManager().popBackStackImmediate(MainPostsFragment.class.getName(), 0);
@@ -74,13 +75,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openAllPostsFragment() {
+        currentMenuLayout = allPostsMenuLayout;
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
                 AllPostsFragment.class.getName())) {
             getSupportFragmentManager().popBackStackImmediate(AllPostsFragment.class.getName(), 0);
-            AllPostsFragment fragment = (AllPostsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-            if (fragment != null) {
-//                fragment.update();
-            }
         } else {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     new AllPostsFragment(), R.id.fragment, AllPostsFragment.class.getName());
@@ -88,6 +86,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openNewPostFragment() {
+        currentMenuLayout = newPostMenuLayout;
+
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
                 NewPostFragment.class.getName())) {
             getSupportFragmentManager().popBackStackImmediate(NewPostFragment.class.getName(), 0);
@@ -110,19 +110,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.main_menu_layout:
                 if (currentMenuLayout != mainMenuLayout) {
-                    currentMenuLayout = mainMenuLayout;
                     openMainFragment();
                 }
                 break;
             case R.id.new_post_menu_layout:
                 if (currentMenuLayout != newPostMenuLayout) {
-                    currentMenuLayout = newPostMenuLayout;
                     openNewPostFragment();
                 }
                 break;
             case R.id.all_posts_menu_layout:
                 if (currentMenuLayout != allPostsMenuLayout) {
-                    currentMenuLayout = allPostsMenuLayout;
                     openAllPostsFragment();
                 }
                 break;
