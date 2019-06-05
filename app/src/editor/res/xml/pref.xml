@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#FFFFFF">
+
+    <PreferenceCategory></PreferenceCategory>
+    <Preference/>
+
+         <Preference
+            app:key="about"
+            app:title="@string/about"/>
+
+        <Preference
+            app:key="feedback"
+            app:title="Send feedback"
+            app:summary="Report technical issues or suggest new features"/>
+    <PreferenceCategory>
+    <Preference
+        app:key="sign_out"
+        app:title="@string/sign_out"
+        />
+    </PreferenceCategory>
+
+</PreferenceScreen>

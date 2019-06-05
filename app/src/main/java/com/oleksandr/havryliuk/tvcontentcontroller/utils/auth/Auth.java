@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 
+import java.util.Objects;
+
 public class Auth {
 
     public final static int RC_SIGN_IN = 2;
@@ -146,6 +148,10 @@ public class Auth {
             return false;
         }
         return true;
+    }
+
+    public static String getEmail(){
+        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
     }
 
     public static GoogleSignInClient getGoogleClient(Context context) {

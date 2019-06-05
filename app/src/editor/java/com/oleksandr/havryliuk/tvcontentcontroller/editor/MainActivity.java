@@ -15,6 +15,8 @@ import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.AllPostsFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.main.MainPostsFragment;
+import com.oleksandr.havryliuk.tvcontentcontroller.editor.main.settings.AboutFragment;
+import com.oleksandr.havryliuk.tvcontentcontroller.editor.main.settings.SettingsFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.edit_post.EditPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.new_post.NewPostFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
@@ -102,7 +104,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fragment.init(post);
         ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                 fragment, R.id.fragment, EditPostFragment.class.getName());
+    }
 
+    public void openSettingsFragment() {
+        currentMenuLayout = null;
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                new SettingsFragment(), R.id.fragment, SettingsFragment.class.getName());
+    }
+
+    public void openAboutFragment() {
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                new AboutFragment(), R.id.fragment, AboutFragment.class.getName());
     }
 
     @Override
