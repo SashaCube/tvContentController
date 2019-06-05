@@ -26,7 +26,7 @@ public interface NewPostContract {
 
         void showImagePicker(MainActivity.IImagePicker imagePicker);
 
-        void showMainPostsScreen();
+        void showAllPostsScreen();
 
         void showPostAdded();
     }

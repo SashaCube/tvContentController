@@ -108,8 +108,8 @@ public class NewPostView implements NewPostContract.INewPostView, View.OnClickLi
     }
 
     @Override
-    public void showMainPostsScreen() {
-        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openMainFragment();
+    public void showAllPostsScreen() {
+        ((MainActivity) Objects.requireNonNull(fragment.getActivity())).openAllPostsFragment();
     }
 
     @Override

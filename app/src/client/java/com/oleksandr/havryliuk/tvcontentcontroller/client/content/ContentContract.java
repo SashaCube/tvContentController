@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 
+import java.util.List;
+
 public interface ContentContract {
 
     interface IContentView {
@@ -13,19 +15,17 @@ public interface ContentContract {
 
         void setPresenter(IContentPresenter presenter);
 
-        void showADPost(Post post);
-
-        void showNewsPost(Post post);
-
-        void showTextPost(Post post);
-
-        void showImagePost(Post post);
+        void setPosts(List<Post> posts);
 
         boolean isActive();
 
         void setLoadingIndicator(boolean value);
 
         void showLoadingTasksError();
+
+        void startDisplayPosts();
+
+        void stopDisplayPosts();
     }
 
     interface IContentPresenter {

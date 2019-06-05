@@ -79,7 +79,7 @@ public class NewPostPresenter implements NewPostContract.INewPostPresenter,
     }
 
     private void finish() {
-        view.showMainPostsScreen();
+        view.showAllPostsScreen();
     }
 
     private void showImageType() {

@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
@@ -20,12 +22,10 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private ContentContract.IContentView view;
     private PostsDataSource repository;
-    private volatile static boolean state;
-    private boolean startShowingPosts;
+    private boolean showAD = false;
+    private volatile List<Post> posts;
+    private Handler updateHandler;
 
-    private Handler handler;
-
-    private List<Post> posts;
 
     public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository) {
         this.view = view;
@@ -34,24 +34,24 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     @Override
     public void loadPosts() {
-        if (!state) {
-            return;
-        }
 
         repository.getPosts(new PostsDataSource.LoadPostsCallback() {
             @Override
             public void onPostsLoaded(final List<Post> posts) {
-                processPosts(getActive(posts));
-                Log.i(TAG, "Load Posts " + posts.size());
+                processPosts(getFilteredPosts(posts));
+            }
 
-                // refresh posts regularly
-                if (handler != null) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadPosts();
-                        }
-                    }, 50000);
+            @Override
+            public void onDataNotAvailable() {
+            }
+        });
+
+        repository.getConf(new PostsDataSource.LoadConfCallback() {
+            @Override
+            public void onConfigLoaded(Map<String, Boolean> configurations) {
+
+                if (!configurations.isEmpty()) {
+                    updateConf(configurations);
                 }
             }
 
@@ -61,86 +61,58 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         });
     }
 
+    private void updateConf(Map<String, Boolean> configurations) {
+        Log.i(TAG, "Update configuration " + configurations.size());
+        showAD = configurations.get(Constants.SHOW_AD_CONF);
+    }
+
+
     private void processPosts(List<Post> posts) {
+        Log.i(TAG, "Update posts " + posts.size());
+
         this.posts = posts;
-
-        if (!posts.isEmpty() && startShowingPosts) {
-            DelayedPosts(0);
-            startShowingPosts = false;
-        }
+        view.setPosts(posts);
     }
 
-    private void DelayedPosts(int index) {
-        if (!state) {
-            return;
-        }
-
-        if (index >= posts.size() || index < 0) {
-            index = 0;
-        }
-
-        Post post = posts.get(index);
-        showPost(post);
-        Log.i(TAG, "show post(" + index + "/" + posts.size() + ") : "
-                + post.getTitle() + "| duration: " + post.getDuration());
-
-        final int finalIndex = index;
-        if (handler != null) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    DelayedPosts(finalIndex + 1);
-                }
-            }, post.getDuration() * 1000);
-        }
-    }
-
-    private void showPost(Post post) {
-        switch (post.getType()) {
-            case NEWS:
-                view.showNewsPost(post);
-                break;
-            case AD:
-                view.showADPost(post);
-                break;
-            case IMAGE:
-                view.showImagePost(post);
-                break;
-            case TEXT:
-                view.showTextPost(post);
-                break;
-        }
-    }
-
-    private List<Post> getActive(List<Post> allPosts) {
+    private List<Post> getFilteredPosts(List<Post> allPosts) {
         ArrayList<Post> activePosts = new ArrayList<>();
 
         for (Post p : allPosts) {
             if (p.isState()) {
-                activePosts.add(p);
+                if (!(p.getType().equals(AD) && !showAD)) {
+                    activePosts.add(p);
+                }
             }
         }
 
         return activePosts;
     }
 
+
     @Override
     public void startShowingPosts() {
         Log.i(TAG, "Start showing Posts");
 
-        state = true;
+        updateHandler = new Handler();
 
-        handler = new Handler();
-        startShowingPosts = true;
+        Runnable r = new Runnable() {
+            public void run() {
+                loadPosts();
+                if(updateHandler != null) {
+                    updateHandler.postDelayed(this, 60 * 1000);
+                }
+            }
+        };
+        updateHandler.post(r);
 
-        loadPosts();
+        view.startDisplayPosts();
     }
 
     @Override
     public void stopShowingPosts() {
         Log.i(TAG, "Stop showing Posts");
+        view.stopDisplayPosts();
 
-        state = false;
-        handler = null;
+        updateHandler = null;
     }
 }

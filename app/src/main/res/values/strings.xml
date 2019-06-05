@@ -71,9 +71,18 @@
     <string name="no_active_posts_add">Go to All Posts and activate some</string>
     <string name="show_ad">Show AD</string>
     <string name="ad_configuration_changed">AD configuration changed</string>
+    <string name="sign_out">Sign out</string>
+    <string name="about_us">This is app that allow to edit/control content,
+        for connected android TV</string>
+    <string name="created_by">created by Oleksandr Havryliuk
+        under supervision Taras Teslyuk</string>
+    <string name="feedback_email">sashagavgavgav@gmail.com</string>
+    <string name="feedback_subject">feedback</string>
+    <string name="feedback_text">your feedback</string>
+    <string name="no_email_app_msg">There are no email applications installed.</string>
 
 
-    <string name="connecting">connecting ...</string>
+    <string name="connecting">connecting …</string>
     <string name="ad">AD</string>
 
 
