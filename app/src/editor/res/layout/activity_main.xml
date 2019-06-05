@@ -4,23 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/large_x_dimen"
-        android:background="@drawable/background"
-        android:orientation="horizontal">
-
-    <TextView
-        style="@style/Title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_dimen"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/settings"
-        android:textStyle="bold" />
-
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragment"

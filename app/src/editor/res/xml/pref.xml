@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
-
-    <PreferenceCategory></PreferenceCategory>
-    <Preference/>
-
-         <Preference
+    <PreferenceCategory>
+        <Preference
             app:key="about"
-            app:title="@string/about"/>
+            app:title="@string/about" />
 
         <Preference
             app:key="feedback"
-            app:title="Send feedback"
-            app:summary="Report technical issues or suggest new features"/>
+            app:summary="Report technical issues or suggest new features"
+            app:title="Send feedback" />
+    </PreferenceCategory>
     <PreferenceCategory>
-    <Preference
-        app:key="sign_out"
-        app:title="@string/sign_out"
-        />
+        <Preference
+            app:key="sign_out"
+            app:title="@string/sign_out" />
     </PreferenceCategory>
 
 </PreferenceScreen>
