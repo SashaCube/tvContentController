@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
 
@@ -52,7 +53,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
     // Prevent direct instantiation.
     private PostsRemoteDataSource() {
-        USERID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        USERID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         Log.i("Remote", "connected: user");
         databaseReference = FirebaseDatabase.getInstance()

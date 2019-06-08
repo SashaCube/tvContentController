@@ -49,7 +49,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         repository.getConf(new PostsDataSource.LoadConfCallback() {
             @Override
             public void onConfigLoaded(Map<String, Boolean> configurations) {
-
+                // TODO: 08.06.19 save all configuration in Preference
                 if (!configurations.isEmpty()) {
                     updateConf(configurations);
                 }
