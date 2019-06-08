@@ -19,8 +19,13 @@ public class ConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connection);
 
         if (Auth.isUserAuth()) {
-            startActivity(getStartMainActivityIntent());
-            finish();
+            if (!Auth.getEmail().equals(email)) {
+                Auth.signOut();
+                Auth.signIn(email, password, this, getStartMainActivityIntent());
+            } else {
+                startActivity(getStartMainActivityIntent());
+                finish();
+            }
         } else {
             Auth.signIn(email, password, this, getStartMainActivityIntent());
         }

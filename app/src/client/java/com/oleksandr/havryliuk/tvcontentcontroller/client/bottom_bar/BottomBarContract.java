@@ -3,7 +3,7 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.bottom_bar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.oleksandr.havryliuk.tvcontentcontroller.client.weather.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ public interface BottomBarContract {
         void startDisplayDateTime();
 
         void stopDisplayDateTime();
+
+        void setWeather(List<MyWeather> weatherList);
     }
 
     interface IBottomBarPresenter {
@@ -26,6 +28,6 @@ public interface BottomBarContract {
 
         void stopDisplayInfo();
 
-        List<MyWeather> getWeather();
+        void loadWeather();
     }
 }

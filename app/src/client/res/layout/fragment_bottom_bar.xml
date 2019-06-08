@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/background">
 
     <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="match_parent"
+
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <TextView
@@ -20,34 +20,100 @@
             android:layout_height="match_parent"
             android:background="@color/dark_purple"/>
 
+        <View
+            android:background="@color/independence"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:id="@+id/date_text_view"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@color/independence"
+            android:gravity="center"
+            android:textColor="@color/diamond"
+            android:textSize="@dimen/small_text_size" />
 
     </LinearLayout>
 
-    <View
-        android:background="@color/independence"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"/>
 
     <LinearLayout
         android:layout_weight="1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <TextView
-            android:background="@color/independence"
-            android:id="@+id/date_text_view"
-            android:gravity="center"
-            android:textSize="@dimen/small_text_size"
-            android:textColor="@color/diamond"
+            android:id="@+id/weather_text_view"
             android:layout_width="80dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/independence"
+            android:gravity="center"
+            android:textColor="@color/diamond"
+            android:textSize="@dimen/small_text_size" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <LinearLayout
+            android:background="@color/dark_purple"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="@dimen/small_dimen"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/large_dimen"
+                android:layout_height="@dimen/large_dimen"
+                android:src="@drawable/ic_hot_thermometer"/>
+
+            <TextView
+                android:layout_marginEnd="@dimen/small_dimen"
+                android:layout_marginStart="@dimen/small_dimen"
+                android:id="@+id/temperature_text_view"
+                android:textColor="@color/diamond"
+                android:gravity="center"
+                android:textSize="@dimen/small_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_marginStart="@dimen/small_dimen"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/large_dimen"
+                android:layout_height="@dimen/large_dimen"
+                android:src="@drawable/ic_cloud"/>
+
+            <TextView
+                android:layout_marginEnd="@dimen/small_dimen"
+                android:layout_marginStart="@dimen/small_dimen"
+                android:id="@+id/cloudiness_text_view"
+                android:textColor="@color/diamond"
+                android:gravity="center"
+                android:textSize="@dimen/small_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_marginStart="@dimen/small_dimen"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/large_dimen"
+                android:layout_height="@dimen/large_dimen"
+                android:src="@drawable/ic_drop_of_water"/>
+
+            <TextView
+                android:layout_marginEnd="@dimen/small_dimen"
+                android:layout_marginStart="@dimen/small_dimen"
+                android:id="@+id/humidity_text_view"
+                android:textColor="@color/diamond"
+                android:gravity="center"
+                android:textSize="@dimen/small_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.weather.room;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room;
 
 
 import android.arch.persistence.db.SupportSQLiteDatabase;

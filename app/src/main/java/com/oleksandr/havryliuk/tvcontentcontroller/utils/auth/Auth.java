@@ -34,7 +34,6 @@ public class Auth {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //if login success
-                    Toast.makeText(activity, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
                     auth.getCurrentUser();
                     startMainActivity(activity, intent);
                 } else {

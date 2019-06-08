@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-import com.oleksandr.havryliuk.tvcontentcontroller.client.weather.WeatherRepository;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class BottomBarFragment extends Fragment {
 
     private void initPresenter() {
         presenter = new BottomBarPresenter(view,
-                WeatherRepository.getRepository(
+                WeatherRepository.getInstance(
                         Objects.requireNonNull(Objects.requireNonNull(
                                 getActivity()).getApplication())));
         view.setPresenter(presenter);

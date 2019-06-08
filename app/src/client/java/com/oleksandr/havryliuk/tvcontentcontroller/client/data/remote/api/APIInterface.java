@@ -1,7 +1,7 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.weather.api;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api;
 
 
-import com.oleksandr.havryliuk.tvcontentcontroller.client.weather.models.Data;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.models.Data;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

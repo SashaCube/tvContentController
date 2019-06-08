@@ -173,27 +173,12 @@ public class ContentView implements ContentContract.IContentView {
                 try {
                     final long[] duration = {2000};
                     while (!isInterrupted()) {
-                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if ((posts != null && !posts.isEmpty()) && postIndex != LOAD) {
-                                    Post post;
-                                    if (postIndex < posts.size()) {
-                                        post = posts.get(postIndex);
-                                        postIndex++;
-                                    } else {
-                                        post = posts.get(0);
-                                        postIndex = 0;
-                                    }
+                        if (fragment.getActivity() == null) {
+                            return;
+                        }
 
-                                    showPost(post);
-                                    duration[0] = post.getDuration() * 1000;
-                                    Log.i(TAG, "display post : " + post);
-                                } else {
-                                    showEmptyScreen();
-                                    Log.i(TAG, "show empty screen");
-                                }
-                            }
+                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(() -> {
+                            duration[0] = displayPost();
                         });
 
                         Thread.sleep(duration[0]);
@@ -203,6 +188,27 @@ public class ContentView implements ContentContract.IContentView {
                 }
             }
         };
+    }
+
+    private long displayPost() {
+        if ((posts != null && !posts.isEmpty()) && postIndex != LOAD) {
+            Post post;
+            if (postIndex < posts.size()) {
+                post = posts.get(postIndex);
+                postIndex++;
+            } else {
+                post = posts.get(0);
+                postIndex = 0;
+            }
+
+            showPost(post);
+            Log.i(TAG, "display post : " + post);
+            return post.getDuration() * 1000;
+        } else {
+            showEmptyScreen();
+            Log.i(TAG, "show empty screen");
+            return 10 * 1000;
+        }
     }
 
     private void showEmptyScreen() {

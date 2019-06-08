@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.weather.models;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.models;
 
 
 import com.google.gson.annotations.Expose;

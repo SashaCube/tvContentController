@@ -1,11 +1,11 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.weather.room;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.oleksandr.havryliuk.tvcontentcontroller.client.weather.models.List;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.models.List;
 
 @Entity(tableName = "weather_table")
 public class MyWeather {

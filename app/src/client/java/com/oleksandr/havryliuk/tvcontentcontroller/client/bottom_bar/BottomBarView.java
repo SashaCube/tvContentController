@@ -5,11 +5,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-import com.oleksandr.havryliuk.tvcontentcontroller.client.weather.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
+
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.isUpToDate;
 
 public class BottomBarView implements BottomBarContract.IBottomBarView {
 
@@ -17,8 +22,10 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
     private Fragment fragment;
     private BottomBarContract.IBottomBarPresenter presenter;
     private Thread time, weather;
+    private List<MyWeather> weatherList;
 
-    private TextView timeTextView, dateTextView;
+    private TextView timeTextView, dateTextView, temperatureTextView, weatherTextView,
+            cloudenessTextView, humidityTextView;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -36,6 +43,10 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
     private void initView() {
         timeTextView = root.findViewById(R.id.time_text_view);
         dateTextView = root.findViewById(R.id.date_text_view);
+        temperatureTextView = root.findViewById(R.id.temperature_text_view);
+        humidityTextView = root.findViewById(R.id.humidity_text_view);
+        cloudenessTextView = root.findViewById(R.id.cloudiness_text_view);
+        weatherTextView = root.findViewById(R.id.weather_text_view);
     }
 
     private void initDataTime() {
@@ -45,19 +56,8 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
                 try {
                     while (!isInterrupted()) {
                         Thread.sleep(1000);
-                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(() -> {
-                            long date = System.currentTimeMillis();
-                            SimpleDateFormat sdf;
-                            String dateString;
-
-                            sdf = new SimpleDateFormat("HH:mm:ss");
-                            dateString = sdf.format(date);
-                            timeTextView.setText(dateString);
-
-                            sdf = new SimpleDateFormat("dd.MM");
-                            dateString = sdf.format(date);
-                            dateTextView.setText(dateString);
-                        });
+                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(() ->
+                                setDateTimeView());
                     }
                 } catch (InterruptedException e) {
                 }
@@ -65,13 +65,25 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
         };
     }
 
+    private void setDateTimeView() {
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf;
+        String dateString;
+
+        sdf = new SimpleDateFormat("HH:mm:ss");
+        dateString = sdf.format(date);
+        timeTextView.setText(dateString);
+
+        sdf = new SimpleDateFormat("dd.MM");
+        dateString = sdf.format(date);
+        dateTextView.setText(dateString);
+    }
+
+
     @Override
     public void startDisplayDateTime() {
         initDataTime();
         time.start();
-
-        initWeatherThread();
-        weather.start();
     }
 
     @Override
@@ -80,8 +92,21 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
             time.interrupt();
         }
 
-        if (weather.isAlive()) {
+        if (weather != null && weather.isAlive()) {
             weather.interrupt();
+        }
+    }
+
+    @Override
+    public void setWeather(List<MyWeather> weatherList) {
+        this.weatherList = weatherList;
+        if (!isUpToDate(weatherList.get(weatherList.size() - 1).getTime())) {
+            presenter.loadWeather();
+        }
+
+        if (weather == null) {
+            initWeatherThread();
+            weather.start();
         }
     }
 
@@ -91,20 +116,34 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Thread.sleep(60 * 60 * 1000);
                         Objects.requireNonNull(fragment.getActivity()).runOnUiThread(() -> {
-                            List<MyWeather> weatherList = presenter.getWeather();
-
-                            if (weatherList.isEmpty()) {
-                                // TODO: 08.06.19 marked weather as not up to date
-                            } else {
-                                // TODO: 08.06.19 set weather view
-                            }
+                            setWeatherView();
                         });
+                        Thread.sleep(30 * 1000);
                     }
                 } catch (InterruptedException e) {
                 }
             }
         };
+    }
+
+    private void setWeatherView() {
+        if ((weatherList != null && !weatherList.isEmpty()) &&
+                isUpToDate(weatherList.get(weatherList.size() - 1).getTime())) {
+
+            MyWeather weather = getUpToDateWeather(weatherList);
+
+            assert weather != null;
+            weatherTextView.setText(weather.getMain());
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            temperatureTextView.setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
+
+            humidityTextView.setText(weather.getHumidity() + "%");
+            cloudenessTextView.setText(weather.getCloudiness() + "%");
+
+        } else {
+            presenter.loadWeather();
+        }
     }
 }
