@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.MainActivity;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.auth.Auth;
 
 public class ConnectionActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class ConnectionActivity extends AppCompatActivity {
         if (Auth.isUserAuth()) {
             if (!Auth.getEmail().equals(email)) {
                 Auth.signOut();
+                PostsLocalDataSource.getInstance(getApplicationContext()).deleteAllPosts();
                 Auth.signIn(email, password, this, getStartMainActivityIntent());
             } else {
                 startActivity(getStartMainActivityIntent());

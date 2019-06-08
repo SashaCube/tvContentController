@@ -4,10 +4,10 @@ import android.net.Uri;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.ImageManager;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.MainActivity;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.validator.IValidateView;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.validator.PostValidator;
-import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.TEXT;
@@ -78,12 +78,8 @@ public class EditPostPresenter implements EditPostContract.IEditPostPresenter, M
             editedPost.setText(text);
             editedPost.setType(type);
 
-            if (path != null) {
-                editedPost.setImagePath(path);
-            } else {
-                if (uri != null) {
-                    editedPost.setImagePath(ActivityUtils.UriPath(uri));
-                }
+            if (uri != null) {
+                editedPost.setImagePath(ImageManager.uploadImage(uri));
             }
 
             editedPost.setState(state);

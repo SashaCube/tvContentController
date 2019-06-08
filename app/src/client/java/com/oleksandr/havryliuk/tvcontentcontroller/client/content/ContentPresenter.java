@@ -103,7 +103,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
                 }
             }
         };
-        updateHandler.post(r);
+        updateHandler.postDelayed(r, 4 * 1000);
 
         view.startDisplayPosts();
     }
