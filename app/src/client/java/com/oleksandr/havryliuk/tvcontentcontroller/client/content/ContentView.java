@@ -1,5 +1,7 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +31,7 @@ public class ContentView implements ContentContract.IContentView {
     private View root;
 
     private ViewGroup adPostView, newsPostView, imagePostView, textPostView;
-    private ImageView adPostImage, imagePostImage, newsPostImage;
+    private ImageView adPostImage, imagePostImage, newsPostImage, emptyImage;
     private TextView textPostText, adPostText, newsPostText;
 
     private Thread displayPostThread;
@@ -43,6 +45,7 @@ public class ContentView implements ContentContract.IContentView {
 
         initView();
         hideAll();
+        animation();
     }
 
     private void initView() {
@@ -58,6 +61,25 @@ public class ContentView implements ContentContract.IContentView {
         adPostText = root.findViewById(R.id.ad_post_text);
         newsPostText = root.findViewById(R.id.news_post_text);
         textPostText = root.findViewById(R.id.text_post_text);
+
+        emptyImage = root.findViewById(R.id.empty_image_view);
+    }
+
+    private void animation(){
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.5f);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.5f);
+        scaleDownX.setDuration(1000);
+        scaleDownY.setDuration(1000);
+
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.7f);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.7f);
+        scaleUpX.setDuration(1000);
+        scaleUpY.setDuration(1000);
+
+        AnimatorSet scale = new AnimatorSet();
+        scale.play(scaleDownX).with(scaleDownY).before(scaleUpX).before(scaleUpY);
+
+        scale.start();
     }
 
     @Override
