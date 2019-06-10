@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openMainFragment() {
+        ActivityUtils.hideKeyboard(this);
         currentMenuLayout = mainMenuLayout;
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
                 MainPostsFragment.class.getName())) {
@@ -77,6 +78,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openAllPostsFragment() {
+        ActivityUtils.hideKeyboard(this);
         currentMenuLayout = allPostsMenuLayout;
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
                 AllPostsFragment.class.getName())) {
@@ -88,6 +90,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void openNewPostFragment() {
+        ActivityUtils.hideKeyboard(this);
         currentMenuLayout = newPostMenuLayout;
 
         if (ActivityUtils.isFragmentInBackstack(getSupportFragmentManager(),
