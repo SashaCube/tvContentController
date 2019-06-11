@@ -19,6 +19,7 @@ import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.TEXT;
 public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private final static String TAG = ContentPresenter.class.getName();
+    public final static String WEATHER = "weather";
 
     private ContentContract.IContentView view;
     private PostsDataSource repository;

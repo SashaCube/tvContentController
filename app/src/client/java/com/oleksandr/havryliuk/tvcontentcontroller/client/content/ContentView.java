@@ -16,6 +16,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.Ima
 import java.util.List;
 import java.util.Objects;
 
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter.WEATHER;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.NEWS;
@@ -30,7 +31,7 @@ public class ContentView implements ContentContract.IContentView {
     private Fragment fragment;
     private View root;
 
-    private ViewGroup adPostView, newsPostView, imagePostView, textPostView;
+    private ViewGroup adPostView, newsPostView, imagePostView, textPostView, weatherPostView;
     private ImageView adPostImage, imagePostImage, newsPostImage, emptyImage;
     private TextView textPostText, adPostText, newsPostText;
 
@@ -46,6 +47,7 @@ public class ContentView implements ContentContract.IContentView {
         initView();
         hideAll();
         animation();
+        showWeatherPost();
     }
 
     private void initView() {
@@ -53,6 +55,8 @@ public class ContentView implements ContentContract.IContentView {
         newsPostView = root.findViewById(R.id.post_news);
         imagePostView = root.findViewById(R.id.post_image);
         textPostView = root.findViewById(R.id.post_text);
+        weatherPostView = root.findViewById(R.id.post_weather_forecast);
+
 
         adPostImage = root.findViewById(R.id.ad_post_image);
         newsPostImage = root.findViewById(R.id.news_post_image);
@@ -63,6 +67,19 @@ public class ContentView implements ContentContract.IContentView {
         textPostText = root.findViewById(R.id.text_post_text);
 
         emptyImage = root.findViewById(R.id.empty_image_view);
+
+        initWeatherForecastView();
+    }
+
+    private void initWeatherForecastView(){
+
+    }
+
+    private void showWeatherPost(){
+
+
+        hideAll();
+        weatherPostView.setVisibility(View.VISIBLE);
     }
 
     private void animation(){
@@ -88,7 +105,7 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private void showADPost(Post post) {
-        ImageManager.loadInto(root.getContext(), post.getImagePath(), adPostImage);
+        ImageManager.loadInto(root.getContext(), post.getImagePath(), adPostImage, null);
 
         if (post.getText().isEmpty()) {
             adPostText.setVisibility(View.GONE);
@@ -102,7 +119,7 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private void showNewsPost(Post post) {
-        ImageManager.loadInto(root.getContext(), post.getImagePath(), newsPostImage);
+        ImageManager.loadInto(root.getContext(), post.getImagePath(), newsPostImage, null);
         newsPostText.setText(post.getText());
 
         hideAll();
@@ -119,7 +136,7 @@ public class ContentView implements ContentContract.IContentView {
 
 
     private void showImagePost(Post post) {
-        ImageManager.loadInto(root.getContext(), post.getImagePath(), imagePostImage);
+        ImageManager.loadInto(root.getContext(), post.getImagePath(), imagePostImage, null);
 
         hideAll();
         imagePostView.setVisibility(View.VISIBLE);
@@ -130,6 +147,7 @@ public class ContentView implements ContentContract.IContentView {
         newsPostView.setVisibility(View.GONE);
         imagePostView.setVisibility(View.GONE);
         textPostView.setVisibility(View.GONE);
+        weatherPostView.setVisibility(View.GONE);;
     }
 
     @Override
@@ -169,6 +187,9 @@ public class ContentView implements ContentContract.IContentView {
                 break;
             case TEXT:
                 showTextPost(post);
+                break;
+            case WEATHER:
+                showWeatherPost();
                 break;
         }
     }
@@ -235,5 +256,6 @@ public class ContentView implements ContentContract.IContentView {
 
     private void showEmptyScreen() {
         hideAll();
+        showWeatherPost();
     }
 }

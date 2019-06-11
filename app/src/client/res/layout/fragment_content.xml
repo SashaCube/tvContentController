@@ -34,5 +34,8 @@
         android:id="@+id/post_text"
         layout="@layout/post_text">
     </include>
-
+    <include
+        android:id="@+id/post_weather_forecast"
+        layout="@layout/post_weather_forecast">
+    </include>
 </android.support.constraint.ConstraintLayout>

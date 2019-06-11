@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/future_weather_forecast_layout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/first_future_weather_forecast_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="future forecast_one"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/second_future_weather_forecast_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="future forecast second"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/third_future_weather_forecast_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="third forecast_one"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/current_weather_forecast_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="24"
+                app:startValue="20"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="21"
+                app:startValue="24"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="20"
+                app:startValue="21"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="30"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"
+                app:startValue="20" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="32"
+                app:startValue="30"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="27"
+                app:startValue="32"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="24"
+                app:startValue="27"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_about_weather_layout_8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bottomPartColor="#ffcd82"
+                app:endValue="22"
+                app:startValue="24"
+                app:maxValue="70"
+                app:minValue="0"
+                app:separatorColor="#f4ad42"
+                app:textSize="11sp"
+                app:textColor="@color/slate_gray"
+                app:separatorWidth="10"
+                app:shoeEndValue="false"
+                app:showSeparator="true"
+                app:showStartValue="true"/> />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
