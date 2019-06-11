@@ -75,13 +75,28 @@
                     android:layout_height="wrap_content"
                     android:text="@string/add_image" />
 
-                <ImageView
-                    android:id="@+id/add_image_view"
-                    android:layout_width="@dimen/large_icon_size"
-                    android:layout_height="@dimen/large_icon_size"
+                <RelativeLayout
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/large_dimen"
-                    android:src="@drawable/ic_add_image" />
+                    android:layout_width="@dimen/large_icon_size"
+                    android:layout_height="@dimen/large_icon_size">
+
+                    <ImageView
+                        android:id="@+id/add_image_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_image" />
+
+                    <ProgressBar
+                        android:visibility="invisible"
+                        android:id="@+id/progress_load_photo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        style="@android:style/Widget.ProgressBar.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/image_error_text_view"
