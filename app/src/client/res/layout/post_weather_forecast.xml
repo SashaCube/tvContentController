@@ -33,7 +33,6 @@
             android:layout_marginStart="160dp"
             android:layout_marginTop="50dp"
             android:fontFamily="sans-serif-smalcaps"
-            android:text="22 C"
             android:textColor="@color/black"
             android:textSize="50sp" />
 
@@ -108,7 +107,7 @@
     <LinearLayout
         android:id="@+id/current_weather_forecast_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -122,29 +121,17 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="24"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="20"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
             <TextView
                 android:id="@+id/time_text_view_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -159,19 +146,8 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv2"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="21"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="24"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
 
@@ -179,10 +155,9 @@
                 android:id="@+id/time_text_view_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -197,19 +172,8 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="20"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="21"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
 
@@ -217,10 +181,9 @@
                 android:id="@+id/time_text_view_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -235,19 +198,8 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv4"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="30"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="20"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
 
@@ -255,10 +207,9 @@
                 android:id="@+id/time_text_view_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -273,30 +224,17 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv5"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="32"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="30"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
-
 
             <TextView
                 android:id="@+id/time_text_view_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -311,29 +249,17 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv6"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="27"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="32"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
             <TextView
                 android:id="@+id/time_text_view_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -348,19 +274,8 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv7"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="24"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="27"
-                app:textColor="@color/slate_gray"
                 app:textSize="@dimen/small_text_size" />
 
 
@@ -368,10 +283,9 @@
                 android:id="@+id/time_text_view_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -386,31 +300,17 @@
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
                 android:id="@+id/tv8"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2
-"
-                app:bottomPartColor="#ffcd82"
-                app:endValue="22"
-                app:maxValue="70"
-                app:minValue="0"
-                app:separatorColor="#f4ad42"
-                app:separatorWidth="10"
-                app:shoeEndValue="false"
-                app:showSeparator="true"
-                app:showStartValue="true"
-                app:startValue="24"
-                app:textColor="@color/slate_gray"
-                app:textSize="@dimen/small_text_size"
-                tools:ignore="NestedWeights" />
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                app:textSize="@dimen/small_text_size" />
 
             <TextView
                 android:id="@+id/time_text_view_8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_dimen"
+                android:layout_margin="@dimen/small_small_dimen"
                 android:gravity="center"
-                android:text="12:00"
-                android:textSize="@dimen/default_text_size" />
+                android:textSize="@dimen/small_text_size" />
 
 
         </LinearLayout>
@@ -420,7 +320,7 @@
     <LinearLayout
         android:id="@+id/future_weather_forecast_layout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
         <TextView
@@ -428,8 +328,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="end|center_vertical"
-            android:text="чт" />
+            android:gravity="end|center_vertical"/>
 
         <ImageView
             android:id="@+id/future_weather_image_1"
@@ -442,16 +341,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:text="29 C" />
+            android:gravity="start|center_vertical"/>
 
         <TextView
             android:id="@+id/day_future_weather_text_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="end|center_vertical"
-            android:text="чт" />
+            android:gravity="end|center_vertical"/>
 
         <ImageView
             android:id="@+id/future_weather_image_2"
@@ -464,16 +361,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:text="29 C" />
+            android:gravity="start|center_vertical"/>
 
         <TextView
             android:id="@+id/day_future_weather_text_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="end|center_vertical"
-            android:text="чт" />
+            android:gravity="end|center_vertical"/>
 
         <ImageView
             android:id="@+id/future_weather_image_3"
@@ -486,8 +381,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:text="29 C" />
+            android:gravity="start|center_vertical"/>
 
     </LinearLayout>
 

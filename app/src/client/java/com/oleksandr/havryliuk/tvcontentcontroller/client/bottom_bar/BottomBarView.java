@@ -10,6 +10,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -131,12 +132,12 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
         if ((weatherList != null && !weatherList.isEmpty()) &&
                 isUpToDate(weatherList.get(weatherList.size() - 1).getTime())) {
 
-            MyWeather weather = getUpToDateWeather(weatherList);
+            MyWeather weather = getUpToDateWeather(weatherList, new Date());
 
             assert weather != null;
             weatherTextView.setText(weather.getMain());
 
-            DecimalFormat df = new DecimalFormat("#.##");
+            DecimalFormat df = new DecimalFormat("#");
             temperatureTextView.setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
 
             humidityTextView.setText(weather.getHumidity() + "%");

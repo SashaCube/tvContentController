@@ -19,11 +19,15 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.Ima
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter.WEATHER;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.kelvinToCelsius;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.NEWS;
@@ -118,6 +122,13 @@ public class ContentView implements ContentContract.IContentView {
         timeTextViews.add(root.findViewById(R.id.time_text_view_7));
         timeTextViews.add(root.findViewById(R.id.time_text_view_8));
 
+        for (TemperatureView tv : temperatureViews) {
+            tv.setBottomPartColor(fragment.getContext().getResources().getColor(R.color.light_orange));
+            tv.setSeparatorColor(fragment.getContext().getResources().getColor(R.color.orange));
+            tv.setTextColor(fragment.getContext().getResources().getColor(R.color.slate_gray));
+            tv.setShowSeparator(true);
+            tv.setShowStartValue(true);
+        }
 
         //future weather
         furureDays = new ArrayList<>();
@@ -136,8 +147,8 @@ public class ContentView implements ContentContract.IContentView {
         futuresImages.add(root.findViewById(R.id.future_weather_image_3));
     }
 
-    private void showWeatherPost(){
-        if(weatherList == null || weatherList.isEmpty()){
+    private void showWeatherPost() {
+        if (weatherList == null || weatherList.isEmpty()) {
             return;
         }
 
@@ -148,32 +159,97 @@ public class ContentView implements ContentContract.IContentView {
         hideAll();
         weatherPostView.setVisibility(View.VISIBLE);
 
-        if(presenter != null) {
+        if (presenter != null) {
             presenter.loadWeather();
         }
     }
 
-    private void showMainWeather(){
-            MyWeather weather = getUpToDateWeather(weatherList);
+    private void showMainWeather() {
+        MyWeather weather = getUpToDateWeather(weatherList, new Date());
 
-            assert weather != null;
-            aboutWeatherText.setText(weather.getMain());
+        assert weather != null;
+        aboutWeatherText.setText(weather.getMain());
+
+        DecimalFormat df = new DecimalFormat("#");
+        mainTemperatureText.setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
+
+        humidityText.setText(" " + weather.getHumidity() + "%");
+        cloudinessText.setText(" " + weather.getCloudiness() + "%");
+        pressureText.setText(" " + weather.getPressure());
+
+        Glide.with(fragment).load(getIconUrl(weather.getIconId())).into(mainWeatherImage);
+    }
+
+    private void showMainTemperature() {
+        MyWeather weather = getUpToDateWeather(weatherList, new Date());
+        int startTemp, endTemp, index, i = 0, minTemp, maxTemp;
+
+        endTemp = (kelvinToCelsius(weather.getTemp())).intValue();
+        minTemp = endTemp;
+        maxTemp = endTemp;
+
+        for (TemperatureView tv : temperatureViews) {
+            index = weatherList.indexOf(weather);
+            startTemp = endTemp;
+
+            if (index + 1 < weatherList.size()) {
+                endTemp = kelvinToCelsius(weatherList.get(index + 1).getTemp()).intValue();
+            }
+
+            tv.setStartValue(startTemp);
+            tv.setEndValue(endTemp);
+
+            timeTextViews.get(i++).setText(getOnlyTime(weather.getTime()));
+            weather = weatherList.get(index + 1);
+
+
+            if(endTemp < minTemp){
+                minTemp = endTemp;
+            }
+            if(endTemp > maxTemp){
+                maxTemp = endTemp;
+            }
+        }
+
+        minTemp = (int) (minTemp * 0.8);
+        maxTemp = (int) (maxTemp * 1.2);
+
+        for (TemperatureView tv : temperatureViews) {
+            tv.setMaxValue(maxTemp);
+            tv.setMinValue(minTemp);
+        }
+    }
+
+    private void showFutureWeather() {
+        List<MyWeather> futureWeather = getFutureWeather(weatherList);
+        MyWeather weather;
+
+        for (int i = 0; i < 3; i++) {
+            weather = futureWeather.get(i);
+
+            Glide.with(fragment)
+                    .load(getIconUrl(weather.getIconId()))
+                    .into(futuresImages.get(i));
+
+            furureDays.get(i).setText(getOnlyDay(weather.getTime()));
 
             DecimalFormat df = new DecimalFormat("#.##");
-            mainTemperatureText.setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
-
-            humidityText.setText(weather.getHumidity() + "%");
-            cloudinessText.setText(weather.getCloudiness() + "%");
-            pressureText.setText(weather.getPressure() + "%");
-
-            Glide.with(fragment).load(getIconUrl(weather.getIconId())).into(mainWeatherImage);
+            futureTemperatures.get(i)
+                    .setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
+        }
     }
 
-    private void showMainTemperature(){
+    private List<MyWeather> getFutureWeather(List<MyWeather> weatherList) {
+        ArrayList<MyWeather> futureWeather = new ArrayList<>();
+        Date date = new Date();
 
-    }
+        for (int i = 0; i < 3; i++) {
+            date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+            date.setHours(12);
+            futureWeather.add(getUpToDateWeather(weatherList, date));
+        }
 
-    private void showFutureWeather(){
+        return futureWeather;
 
     }
 
@@ -182,7 +258,7 @@ public class ContentView implements ContentContract.IContentView {
         this.weatherList = weatherList;
     }
 
-    private void animation(){
+    private void animation() {
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.5f);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.5f);
         scaleDownX.setDuration(1000);
@@ -248,7 +324,8 @@ public class ContentView implements ContentContract.IContentView {
         newsPostView.setVisibility(View.GONE);
         imagePostView.setVisibility(View.GONE);
         textPostView.setVisibility(View.GONE);
-        weatherPostView.setVisibility(View.GONE);;
+        weatherPostView.setVisibility(View.GONE);
+        ;
     }
 
     @Override
@@ -360,7 +437,7 @@ public class ContentView implements ContentContract.IContentView {
         showWeatherPost();
     }
 
-    private String getIconUrl(String iconId){
+    private String getIconUrl(String iconId) {
         return APIInterface.BASE_URL + "img/w/" + iconId + ".png";
     }
 }

@@ -5,6 +5,7 @@
     <dimen name="large_text_size">20sp</dimen>
 
     <dimen name="zero_dimen">0dp</dimen>
+    <dimen name="small_small_dimen">4dp</dimen>
     <dimen name="small_dimen">8dp</dimen>
     <dimen name="default_dimen">12dp</dimen>
     <dimen name="large_dimen">20dp</dimen>

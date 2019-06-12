@@ -27,7 +27,7 @@ public class Utils {
         return weatherList;
     }
 
-    public static double kelvinToCelsius(double kelvin) {
+    public static Double kelvinToCelsius(double kelvin) {
         return kelvin - TEMP;
     }
 
@@ -53,6 +53,16 @@ public class Utils {
         }
     }
 
+    public static String getOnlyTime(String date) {
+        DateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        return format.format(stringToDateConverter(date));
+    }
+
+    public static String getOnlyDay(String date) {
+        DateFormat format = new SimpleDateFormat("EEE", Locale.ENGLISH);
+        return format.format(stringToDateConverter(date));
+    }
+
     public static boolean isUpToDate(String weatherTime) {
         long fourDays = 1000 * 60 * 60 * 24 * 4;
         Date now = new Date(),
@@ -66,15 +76,14 @@ public class Utils {
         }
     }
 
-    public static MyWeather getUpToDateWeather(java.util.List<MyWeather> weatherList) {
+    public static MyWeather getUpToDateWeather(java.util.List<MyWeather> weatherList, Date date) {
         long threeHours = 1000 * 60 * 60 * 3;
 
         for (MyWeather w : weatherList) {
-            Date now = new Date(),
-                    weather = stringToDateConverter(w.getTime());
+            Date weather = stringToDateConverter(w.getTime());
 
             assert weather != null;
-            if (Math.abs((weather.getTime() - now.getTime())) <= threeHours) {
+            if (Math.abs((weather.getTime() - date.getTime())) <= threeHours) {
                 return w;
             }
         }

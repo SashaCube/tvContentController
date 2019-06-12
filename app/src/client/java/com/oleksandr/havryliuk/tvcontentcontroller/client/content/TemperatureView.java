@@ -157,12 +157,12 @@ public class TemperatureView extends View {
     }
 
     private int getStartHeight() {
-        double procent = 1.0 - (double) startValue / (double) (maxValue - minValue);
+        double procent = 1.0 - (double) (startValue - minValue) / (double) (maxValue - minValue);
         return (int) ((double) height * procent);
     }
 
     private int getEndHeight() {
-        double procent = 1.0 - (double) endValue / (double) (maxValue - minValue);
+        double procent = 1.0 - (double) (endValue - minValue) / (double) (maxValue - minValue);
         return (int) ((double) height * procent);
     }
 
@@ -257,6 +257,14 @@ public class TemperatureView extends View {
 
     public void setShowEndValue(boolean showEndValue) {
         this.showEndValue = showEndValue;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
     }
 
     public boolean isShowSeparator() {

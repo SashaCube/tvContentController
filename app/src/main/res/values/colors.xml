@@ -12,4 +12,8 @@
     <color name="diamond">#b8f3ff</color>
     <color name="none">#00ffffff</color>
 
+    <!--Weather forecast colors-->
+    <color name="orange">#FDA92C</color>
+    <color name="light_orange">#ffcd82</color>
+
 </resources>
