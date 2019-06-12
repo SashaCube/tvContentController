@@ -3,6 +3,7 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface ContentContract {
         void startDisplayPosts();
 
         void stopDisplayPosts();
+
+        void setWeather(List<MyWeather> weatherList);
     }
 
     interface IContentPresenter {
@@ -35,5 +38,7 @@ public interface ContentContract {
         void stopShowingPosts();
 
         void loadPosts();
+
+        void loadWeather();
     }
 }

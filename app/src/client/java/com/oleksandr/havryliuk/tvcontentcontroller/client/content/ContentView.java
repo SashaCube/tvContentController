@@ -9,14 +9,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.APIInterface;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.ImageManager;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter.WEATHER;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.NEWS;
@@ -38,6 +45,16 @@ public class ContentView implements ContentContract.IContentView {
     private Thread displayPostThread;
     private int postIndex = LOAD;
     private volatile static List<Post> posts;
+
+    //for weather forecast
+    private ImageView mainWeatherImage;
+    private TextView aboutWeatherText, mainTemperatureText, humidityText, cloudinessText,
+            pressureText;
+
+    private List<TextView> timeTextViews, futureTemperatures, furureDays;
+    private List<ImageView> futuresImages;
+    private List<TemperatureView> temperatureViews;
+    private List<MyWeather> weatherList;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -71,15 +88,98 @@ public class ContentView implements ContentContract.IContentView {
         initWeatherForecastView();
     }
 
-    private void initWeatherForecastView(){
+    private void initWeatherForecastView() {
+        //main weather
+        mainWeatherImage = root.findViewById(R.id.main_weather_image_view);
+        aboutWeatherText = root.findViewById(R.id.about_weather_text_view);
+        mainTemperatureText = root.findViewById(R.id.temperature_text_view);
+        humidityText = root.findViewById(R.id.humidity_text_view);
+        cloudinessText = root.findViewById(R.id.cloudiness_text_view);
+        pressureText = root.findViewById(R.id.pressure_text_view);
 
+        //main temperature
+        temperatureViews = new ArrayList<>();
+        temperatureViews.add(root.findViewById(R.id.tv1));
+        temperatureViews.add(root.findViewById(R.id.tv2));
+        temperatureViews.add(root.findViewById(R.id.tv3));
+        temperatureViews.add(root.findViewById(R.id.tv4));
+        temperatureViews.add(root.findViewById(R.id.tv5));
+        temperatureViews.add(root.findViewById(R.id.tv6));
+        temperatureViews.add(root.findViewById(R.id.tv7));
+        temperatureViews.add(root.findViewById(R.id.tv8));
+
+        timeTextViews = new ArrayList<>();
+        timeTextViews.add(root.findViewById(R.id.time_text_view_1));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_2));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_3));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_4));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_5));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_6));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_7));
+        timeTextViews.add(root.findViewById(R.id.time_text_view_8));
+
+
+        //future weather
+        furureDays = new ArrayList<>();
+        furureDays.add(root.findViewById(R.id.day_future_weather_text_1));
+        furureDays.add(root.findViewById(R.id.day_future_weather_text_2));
+        furureDays.add(root.findViewById(R.id.day_future_weather_text_3));
+
+        futureTemperatures = new ArrayList<>();
+        futureTemperatures.add(root.findViewById(R.id.temperature_future_weather_text_1));
+        futureTemperatures.add(root.findViewById(R.id.temperature_future_weather_text_2));
+        futureTemperatures.add(root.findViewById(R.id.temperature_future_weather_text_3));
+
+        futuresImages = new ArrayList<>();
+        futuresImages.add(root.findViewById(R.id.future_weather_image_1));
+        futuresImages.add(root.findViewById(R.id.future_weather_image_2));
+        futuresImages.add(root.findViewById(R.id.future_weather_image_3));
     }
 
     private void showWeatherPost(){
+        if(weatherList == null || weatherList.isEmpty()){
+            return;
+        }
 
+        showMainWeather();
+        showMainTemperature();
+        showFutureWeather();
 
         hideAll();
         weatherPostView.setVisibility(View.VISIBLE);
+
+        if(presenter != null) {
+            presenter.loadWeather();
+        }
+    }
+
+    private void showMainWeather(){
+            MyWeather weather = getUpToDateWeather(weatherList);
+
+            assert weather != null;
+            aboutWeatherText.setText(weather.getMain());
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            mainTemperatureText.setText(df.format(Utils.kelvinToCelsius(weather.getTemp())) + "°C");
+
+            humidityText.setText(weather.getHumidity() + "%");
+            cloudinessText.setText(weather.getCloudiness() + "%");
+            pressureText.setText(weather.getPressure() + "%");
+
+            Glide.with(fragment).load(getIconUrl(weather.getIconId())).into(mainWeatherImage);
+    }
+
+    private void showMainTemperature(){
+
+    }
+
+    private void showFutureWeather(){
+
+    }
+
+    @Override
+    public void setWeather(List<MyWeather> weatherList) {
+        this.weatherList = weatherList;
     }
 
     private void animation(){
@@ -102,6 +202,7 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void setPresenter(ContentContract.IContentPresenter presenter) {
         this.presenter = presenter;
+        presenter.loadWeather();
     }
 
     private void showADPost(Post post) {
@@ -257,5 +358,9 @@ public class ContentView implements ContentContract.IContentView {
     private void showEmptyScreen() {
         hideAll();
         showWeatherPost();
+    }
+
+    private String getIconUrl(String iconId){
+        return APIInterface.BASE_URL + "img/w/" + iconId + ".png";
     }
 }

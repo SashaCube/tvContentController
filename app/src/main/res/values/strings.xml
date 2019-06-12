@@ -84,6 +84,9 @@
 
     <string name="connecting">connecting …</string>
     <string name="ad">AD</string>
+    <string name="humidity">humidity: </string>
+    <string name="cloudiness">cloudiness: </string>
+    <string name="pressure">pressure: </string>
 
 
     <string-array name="type_list">

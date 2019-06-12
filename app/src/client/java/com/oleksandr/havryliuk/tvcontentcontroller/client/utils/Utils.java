@@ -54,12 +54,12 @@ public class Utils {
     }
 
     public static boolean isUpToDate(String weatherTime) {
-        long twoDays = 1000 * 60 * 60 * 24 * 2;
+        long fourDays = 1000 * 60 * 60 * 24 * 4;
         Date now = new Date(),
                 weather = stringToDateConverter(weatherTime);
 
         assert weather != null;
-        if ((weather.getTime() - now.getTime()) > twoDays) {
+        if ((weather.getTime() - now.getTime()) > fourDays) {
             return true;
         } else {
             return false;

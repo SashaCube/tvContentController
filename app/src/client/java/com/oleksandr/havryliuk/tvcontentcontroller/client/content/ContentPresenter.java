@@ -3,6 +3,9 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 import android.os.Handler;
 import android.util.Log;
 
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants;
@@ -12,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
-import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
-import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.NEWS;
-import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.TEXT;
 
 public class ContentPresenter implements ContentContract.IContentPresenter {
 
@@ -22,21 +22,34 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     public final static String WEATHER = "weather";
 
     private ContentContract.IContentView view;
-    private PostsDataSource repository;
+    private PostsDataSource postsRepository;
+    private WeatherRepository weatherRepository;
     private boolean showAD = false;
     private volatile List<Post> posts;
     private Handler updateHandler;
 
+    class WeatherCallback implements WeatherDataSource.LoadWeatherCallback {
+        @Override
+        public void onDataLoaded(List<MyWeather> data) {
+            view.setWeather(data);
+        }
 
-    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository) {
+        @Override
+        public void onDataNotAvailable() {
+
+        }
+    }
+
+    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
         this.view = view;
-        this.repository = repository;
+        this.postsRepository = repository;
+        this.weatherRepository = weatherRepository;
     }
 
     @Override
     public void loadPosts() {
 
-        repository.getPosts(new PostsDataSource.LoadPostsCallback() {
+        postsRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
             @Override
             public void onPostsLoaded(final List<Post> posts) {
                 processPosts(getFilteredPosts(posts));
@@ -47,7 +60,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
             }
         });
 
-        repository.getConf(new PostsDataSource.LoadConfCallback() {
+        postsRepository.getConf(new PostsDataSource.LoadConfCallback() {
             @Override
             public void onConfigLoaded(Map<String, Boolean> configurations) {
                 // TODO: 08.06.19 save all configuration in Preference
@@ -99,7 +112,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         Runnable r = new Runnable() {
             public void run() {
                 loadPosts();
-                if(updateHandler != null) {
+                if (updateHandler != null) {
                     updateHandler.postDelayed(this, 60 * 1000);
                 }
             }
@@ -115,5 +128,10 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         view.stopDisplayPosts();
 
         updateHandler = null;
+    }
+
+    @Override
+    public void loadWeather() {
+        weatherRepository.getWeatherByCity("Lviv", new WeatherCallback());
     }
 }

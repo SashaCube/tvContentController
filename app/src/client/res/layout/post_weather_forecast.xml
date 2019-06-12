@@ -1,71 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/future_weather_forecast_layout"
+    <RelativeLayout
+        android:id="@+id/main_weather_forecast_layout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/about_weather_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_dimen"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/main_weather_image_view"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp" />
+
+        <TextView
+            android:id="@+id/temperature_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="sans-serif-smalcaps"
+            android:text="22 C"
+            android:textColor="@color/black"
+            android:textSize="50sp" />
 
         <LinearLayout
-            android:id="@+id/first_future_weather_forecast_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="40dp"
             android:orientation="vertical">
 
-            <TextView
-                android:text="future forecast_one"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/humidity"
+                    android:textSize="@dimen/large_text_size" />
+
+                <TextView
+                    android:id="@+id/humidity_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/large_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cloudiness"
+                    android:textSize="@dimen/large_text_size" />
+
+                <TextView
+                    android:id="@+id/cloudiness_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/large_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pressure"
+                    android:textSize="@dimen/large_text_size" />
+
+                <TextView
+                    android:id="@+id/pressure_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/large_text_size" />
+
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/second_future_weather_forecast_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
 
-            <TextView
-                android:text="future forecast second"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/third_future_weather_forecast_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:text="third forecast_one"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/current_weather_forecast_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
-
-
+        android:layout_height="100dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/detail_about_weather_layout_1"
@@ -75,20 +120,31 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="24"
-                app:startValue="20"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="20"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:id="@+id/time_text_view_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -101,20 +157,32 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="21"
-                app:startValue="24"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="24"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+
+            <TextView
+                android:id="@+id/time_text_view_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -127,20 +195,32 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="20"
-                app:startValue="21"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="21"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+
+            <TextView
+                android:id="@+id/time_text_view_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -153,20 +233,32 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="30"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
                 app:showStartValue="true"
-                app:startValue="20" />
+                app:startValue="20"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+
+            <TextView
+                android:id="@+id/time_text_view_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -179,20 +271,32 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="32"
-                app:startValue="30"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="30"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+
+            <TextView
+                android:id="@+id/time_text_view_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -205,20 +309,31 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="27"
-                app:startValue="32"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="32"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:id="@+id/time_text_view_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -231,20 +346,32 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv7"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="24"
-                app:startValue="27"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/>
+                app:showStartValue="true"
+                app:startValue="27"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size" />
+
+
+            <TextView
+                android:id="@+id/time_text_view_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
@@ -257,23 +384,110 @@
             android:orientation="vertical">
 
             <com.oleksandr.havryliuk.tvcontentcontroller.client.content.TemperatureView
+                android:id="@+id/tv8"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2
+"
                 app:bottomPartColor="#ffcd82"
                 app:endValue="22"
-                app:startValue="24"
                 app:maxValue="70"
                 app:minValue="0"
                 app:separatorColor="#f4ad42"
-                app:textSize="11sp"
-                app:textColor="@color/slate_gray"
                 app:separatorWidth="10"
                 app:shoeEndValue="false"
                 app:showSeparator="true"
-                app:showStartValue="true"/> />
+                app:showStartValue="true"
+                app:startValue="24"
+                app:textColor="@color/slate_gray"
+                app:textSize="@dimen/small_text_size"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/time_text_view_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
+                android:gravity="center"
+                android:text="12:00"
+                android:textSize="@dimen/default_text_size" />
 
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/future_weather_forecast_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/day_future_weather_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="чт" />
+
+        <ImageView
+            android:id="@+id/future_weather_image_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/temperature_future_weather_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="29 C" />
+
+        <TextView
+            android:id="@+id/day_future_weather_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="чт" />
+
+        <ImageView
+            android:id="@+id/future_weather_image_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/temperature_future_weather_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="29 C" />
+
+        <TextView
+            android:id="@+id/day_future_weather_text_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="чт" />
+
+        <ImageView
+            android:id="@+id/future_weather_image_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/temperature_future_weather_text_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="29 C" />
 
     </LinearLayout>
 

@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {MyWeather.class}, version = 1)
+@Database(entities = {MyWeather.class}, version = 2)
 public abstract class WeatherRoomDatabase extends RoomDatabase {
 
     public abstract MyWeatherDao myWeatherDao();
@@ -24,6 +24,7 @@ public abstract class WeatherRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             WeatherRoomDatabase.class, "weather_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

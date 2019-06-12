@@ -1,5 +1,6 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.bottom_bar;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
@@ -18,12 +19,12 @@ public class BottomBarPresenter implements BottomBarContract.IBottomBarPresenter
     class WeatherCallback implements WeatherDataSource.LoadWeatherCallback {
         @Override
         public void onDataLoaded(List<MyWeather> data) {
+
             view.setWeather(data);
         }
 
         @Override
         public void onDataNotAvailable() {
-
         }
     }
 
@@ -45,7 +46,11 @@ public class BottomBarPresenter implements BottomBarContract.IBottomBarPresenter
     public void startDisplayInfo() {
         Log.i(TAG, "Start showing Bottom Bar");
         view.startDisplayDateTime();
-        getSavedWeather();
+        Log.i(TAG, "Weather forecast -> data not available");
+
+        Handler handler = new Handler();
+        Runnable r = this::getSavedWeather;
+        handler.post(r);
     }
 
     @Override
