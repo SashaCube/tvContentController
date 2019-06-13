@@ -15,12 +15,22 @@ public interface ConfigurationContract {
 
         void showAdConfigurationChange();
 
+        void initWeatherConfiguration(boolean showWeather, String city);
+
+        void showWeatherConfigurationChange();
+
+        void showWeatherCityChange(String city);
+
         boolean isActive();
     }
 
     interface IConfigurationPresenter{
 
         void setAdConfiguration(boolean showAd);
+
+        void setWeatherConfiguration(boolean showWeather);
+
+        void setWeatherCity(String city);
 
         void loadConfiguration();
 

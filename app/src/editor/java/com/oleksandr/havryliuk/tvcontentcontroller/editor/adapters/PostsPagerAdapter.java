@@ -2,13 +2,13 @@ package com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.ADTypeFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.AllTypeFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.NewsTypeFragment;
 
-public class PostsPagerAdapter extends FragmentStatePagerAdapter {
+public class PostsPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 3;
 

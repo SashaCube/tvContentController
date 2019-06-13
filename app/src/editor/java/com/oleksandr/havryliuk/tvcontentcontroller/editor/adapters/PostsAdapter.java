@@ -37,7 +37,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.WordViewHold
             stateSwitch = itemView.findViewById(R.id.state_switch);
             dateLayout = itemView.findViewById(R.id.date_layout);
             editLayout = itemView.findViewById(R.id.edit_layout);
-            stateLayout = itemView.findViewById(R.id.state_layout);
+            stateLayout = itemView.findViewById(R.id.ad_state_layout);
             editButton = itemView.findViewById(R.id.edit_button);
             deleteButton = itemView.findViewById(R.id.delete_button);
 

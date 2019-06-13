@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.CITY_WEATHER_CONF;
 import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_WEATHER_CONF;
 
 public class PostsRemoteDataSource implements PostsDataSource {
 
@@ -28,7 +30,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     private static PostsRemoteDataSource INSTANCE;
 
     private static HashMap<String, Post> POSTS_SERVICE_DATA;
-    private static HashMap<String, Boolean> CONF_SERVICE_DATA;
+    private static HashMap<String, Object> CONF_SERVICE_DATA;
 
     private String USERID;
 
@@ -125,11 +127,19 @@ public class PostsRemoteDataSource implements PostsDataSource {
     private void getConfFromSnapShot(DataSnapshot dataSnapshot) {
         CONF_SERVICE_DATA.clear();
 
-        HashMap<String, Boolean> map = (HashMap<String, Boolean>) dataSnapshot.getValue();
+        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
 
-            CONF_SERVICE_DATA.put(SHOW_AD_CONF, map.get(SHOW_AD_CONF));
-            Log.i("DataSnapshot", "Conf from remote repo " + SHOW_AD_CONF +
-                    " " + map.get(SHOW_AD_CONF));
+        CONF_SERVICE_DATA.put(SHOW_AD_CONF, map.get(SHOW_AD_CONF));
+        Log.i("DataSnapshot", "Conf from remote repo " + SHOW_AD_CONF +
+                " " + map.get(SHOW_AD_CONF));
+
+        CONF_SERVICE_DATA.put(SHOW_WEATHER_CONF, map.get(SHOW_WEATHER_CONF));
+        Log.i("DataSnapshot", "Conf from remote repo " + SHOW_WEATHER_CONF +
+                " " + map.get(SHOW_WEATHER_CONF));
+
+        CONF_SERVICE_DATA.put(CITY_WEATHER_CONF, map.get(CITY_WEATHER_CONF));
+        Log.i("DataSnapshot", "Conf from remote repo " + CITY_WEATHER_CONF +
+                " " + map.get(CITY_WEATHER_CONF));
     }
 
     private void saveNewUser(String userId) {
@@ -150,7 +160,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     }
 
     @Override
-    public void saveConf(@NonNull String key, Boolean value) {
+    public void saveConf(@NonNull String key, Object value) {
         CONF_SERVICE_DATA.put(key, value);
         databaseReference.child("conf").setValue(CONF_SERVICE_DATA);
     }

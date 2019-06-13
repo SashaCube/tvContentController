@@ -117,7 +117,7 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
-    public void saveConf(@NonNull String key, Boolean value) {
+    public void saveConf(@NonNull String key, Object value) {
 
     }
 

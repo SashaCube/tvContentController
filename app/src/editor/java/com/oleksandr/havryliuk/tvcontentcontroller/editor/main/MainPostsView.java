@@ -51,16 +51,17 @@ public class MainPostsView implements MainPostsContract.IMainFragmentView, View.
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             viewPager.setCurrentItem(tab.getPosition());
+            viewPager.getAdapter().notifyDataSetChanged();
         }
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
-
+            viewPager.getAdapter().notifyDataSetChanged();
         }
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
-
+            viewPager.getAdapter().notifyDataSetChanged();
         }
     }
 

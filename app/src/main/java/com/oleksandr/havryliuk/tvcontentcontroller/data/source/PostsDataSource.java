@@ -18,7 +18,7 @@ public interface PostsDataSource {
 
     interface LoadConfCallback {
 
-        void onConfigLoaded(Map<String, Boolean> configurations);
+        void onConfigLoaded(Map<String, Object> configurations);
 
         void onDataNotAvailable();
     }
@@ -42,7 +42,7 @@ public interface PostsDataSource {
 
     void getConf( @NonNull LoadConfCallback callback);
 
-    void saveConf(@NonNull String key, Boolean value);
+    void saveConf(@NonNull String key, Object value);
 
     void refreshPosts();
 

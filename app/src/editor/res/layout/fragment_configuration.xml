@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/state_layout"
+        android:id="@+id/ad_state_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/large_dimen"
@@ -31,6 +31,75 @@
             android:layout_weight="1"
             android:paddingEnd="@dimen/large_x_dimen"
             android:layout_margin="@dimen/small_dimen"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Separator"
+        android:layout_width="match_parent"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/weather_state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/large_dimen"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/SmallTitle"
+            android:textSize="@dimen/large_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/show_weather"
+            android:layout_margin="@dimen/small_dimen"/>
+
+        <Switch
+            android:id="@+id/show_weather_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/large_dimen"
+            android:layout_marginTop="@dimen/large_dimen"
+            android:layout_marginRight="@dimen/large_dimen"
+            android:layout_weight="1"
+            android:paddingEnd="@dimen/large_x_dimen"
+            android:layout_margin="@dimen/small_dimen"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/large_dimen"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/SmallTitle"
+            android:textSize="@dimen/large_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/weather_city"
+            android:layout_margin="@dimen/small_dimen"/>
+
+        <TextView
+            android:id="@+id/weather_city_text_view"
+            style="@style/SmallTitle"
+            android:textSize="@dimen/large_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/weather_city"
+            android:layout_margin="@dimen/small_dimen"/>
+        
+        <ImageView
+            android:id="@+id/edit_button_image"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pencil_edit_button"
+            android:layout_marginTop="@dimen/small_dimen"/>
 
     </LinearLayout>
 
