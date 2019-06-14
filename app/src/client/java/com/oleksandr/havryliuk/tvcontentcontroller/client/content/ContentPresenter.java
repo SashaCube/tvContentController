@@ -24,8 +24,10 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     private ContentContract.IContentView view;
     private PostsDataSource postsRepository;
     private WeatherRepository weatherRepository;
-    private boolean showAD = false;
+    private boolean showAD = false, showWeather = false;
     private volatile List<Post> posts;
+    private volatile String  weatherCity = "Lviv";
+    private volatile String newWeatherCity = "Lviv";
     private Handler updateHandler;
 
     class WeatherCallback implements WeatherDataSource.LoadWeatherCallback {
@@ -49,6 +51,21 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     @Override
     public void loadPosts() {
 
+        postsRepository.getConf(new PostsDataSource.LoadConfCallback() {
+            @Override
+            public void onConfigLoaded(Map<String, Object> configurations) {
+                // TODO: 08.06.19 save all configuration in Preference
+                if (!configurations.isEmpty()) {
+                    updateConf(configurations);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                //
+            }
+        });
+
         postsRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
             @Override
             public void onPostsLoaded(final List<Post> posts) {
@@ -59,27 +76,21 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
             public void onDataNotAvailable() {
             }
         });
-
-        postsRepository.getConf(new PostsDataSource.LoadConfCallback() {
-            @Override
-            public void onConfigLoaded(Map<String, Boolean> configurations) {
-                // TODO: 08.06.19 save all configuration in Preference
-                if (!configurations.isEmpty()) {
-                    updateConf(configurations);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-            }
-        });
     }
 
-    private void updateConf(Map<String, Boolean> configurations) {
+    private void updateConf(Map<String, Object> configurations) {
         Log.i(TAG, "Update configuration " + configurations.size());
-        showAD = configurations.get(Constants.SHOW_AD_CONF);
-    }
+        showAD = (Boolean) configurations.get(Constants.SHOW_AD_CONF);
+        showWeather = (Boolean) configurations.get(Constants.SHOW_WEATHER_CONF);
+        newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);
 
+        view.showWeather(showWeather);
+
+        if (!weatherCity.equals(newWeatherCity)) {
+            weatherCity = newWeatherCity;
+            loadWeather();
+        }
+    }
 
     private void processPosts(List<Post> posts) {
         Log.i(TAG, "Update posts " + posts.size());
@@ -132,6 +143,6 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     @Override
     public void loadWeather() {
-        weatherRepository.getWeatherByCity("Lviv", new WeatherCallback());
+        weatherRepository.getWeatherByCity(weatherCity, new WeatherCallback());
     }
 }

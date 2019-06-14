@@ -59,6 +59,7 @@ public class ContentView implements ContentContract.IContentView {
     private List<ImageView> futuresImages;
     private List<TemperatureView> temperatureViews;
     private List<MyWeather> weatherList;
+    private boolean showWeather;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -68,7 +69,6 @@ public class ContentView implements ContentContract.IContentView {
         initView();
         hideAll();
         animation();
-        showWeatherPost();
     }
 
     private void initView() {
@@ -221,6 +221,9 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private void showFutureWeather() {
+        if(weatherList == null || weatherList.isEmpty()){
+            return;
+        }
         List<MyWeather> futureWeather = getFutureWeather(weatherList);
         MyWeather weather;
 
@@ -258,6 +261,11 @@ public class ContentView implements ContentContract.IContentView {
         this.weatherList = weatherList;
     }
 
+    @Override
+    public void showWeather(boolean showWeather) {
+        this.showWeather = showWeather;
+    }
+
     private void animation() {
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.5f);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.5f);
@@ -278,7 +286,6 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void setPresenter(ContentContract.IContentPresenter presenter) {
         this.presenter = presenter;
-        presenter.loadWeather();
     }
 
     private void showADPost(Post post) {
@@ -325,7 +332,6 @@ public class ContentView implements ContentContract.IContentView {
         imagePostView.setVisibility(View.GONE);
         textPostView.setVisibility(View.GONE);
         weatherPostView.setVisibility(View.GONE);
-        ;
     }
 
     @Override
@@ -366,9 +372,6 @@ public class ContentView implements ContentContract.IContentView {
             case TEXT:
                 showTextPost(post);
                 break;
-            case WEATHER:
-                showWeatherPost();
-                break;
         }
     }
 
@@ -381,7 +384,7 @@ public class ContentView implements ContentContract.IContentView {
 
     @Override
     public void stopDisplayPosts() {
-        Log.i(TAG, "syop display posts");
+        Log.i(TAG, "shop display posts");
         if (isActive()) {
             displayPostThread.interrupt();
         }
@@ -418,8 +421,13 @@ public class ContentView implements ContentContract.IContentView {
                 post = posts.get(postIndex);
                 postIndex++;
             } else {
-                post = posts.get(0);
                 postIndex = 0;
+                if (showWeather) {
+                    showWeatherPost();
+                    return 10 * 1000;
+                }else{
+                    post = posts.get(postIndex);
+                }
             }
 
             showPost(post);
@@ -434,7 +442,9 @@ public class ContentView implements ContentContract.IContentView {
 
     private void showEmptyScreen() {
         hideAll();
-        showWeatherPost();
+        if(showWeather){
+            showWeatherPost();
+        }
     }
 
     private String getIconUrl(String iconId) {

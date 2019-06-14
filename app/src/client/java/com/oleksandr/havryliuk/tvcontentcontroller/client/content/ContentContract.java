@@ -29,6 +29,8 @@ public interface ContentContract {
         void stopDisplayPosts();
 
         void setWeather(List<MyWeather> weatherList);
+
+        void showWeather(boolean showWeather);
     }
 
     interface IContentPresenter {
