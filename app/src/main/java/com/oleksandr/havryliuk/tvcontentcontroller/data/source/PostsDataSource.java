@@ -7,7 +7,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import java.util.List;
 import java.util.Map;
 
-public interface PostsDataSource {
+public interface PostsDataSource extends Subject {
 
     interface LoadPostsCallback {
 

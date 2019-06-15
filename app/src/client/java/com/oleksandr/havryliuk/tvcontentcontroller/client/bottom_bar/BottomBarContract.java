@@ -27,7 +27,5 @@ public interface BottomBarContract {
         void startDisplayInfo();
 
         void stopDisplayInfo();
-
-        void loadWeather();
     }
 }

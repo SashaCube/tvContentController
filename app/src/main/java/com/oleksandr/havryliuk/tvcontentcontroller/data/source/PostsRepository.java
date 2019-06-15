@@ -213,4 +213,24 @@ public class PostsRepository implements PostsDataSource {
             return mCachedPosts.get(id);
         }
     }
+
+    @Override
+    public void registerObserver(RepositoryObserver repositoryObserver) {
+        mPostsRemoteDataSource.registerObserver(repositoryObserver);
+    }
+
+    @Override
+    public void removeObserver(RepositoryObserver repositoryObserver) {
+        mPostsRemoteDataSource.removeObserver((repositoryObserver));
+    }
+
+    @Override
+    public void notifyObserversPostsChanged() {
+        mPostsRemoteDataSource.notifyObserversPostsChanged();
+    }
+
+    @Override
+    public void notifyObserversConfChanged() {
+        mPostsRemoteDataSource.notifyObserversConfChanged();
+    }
 }

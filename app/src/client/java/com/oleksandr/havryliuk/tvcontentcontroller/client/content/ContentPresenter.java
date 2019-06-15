@@ -1,6 +1,5 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
@@ -10,25 +9,41 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 
 public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private final static String TAG = ContentPresenter.class.getName();
-    public final static String WEATHER = "weather";
 
     private ContentContract.IContentView view;
     private PostsDataSource postsRepository;
     private WeatherRepository weatherRepository;
-    private boolean showAD = false, showWeather = false;
-    private volatile List<Post> posts;
-    private volatile String  weatherCity = "Lviv";
-    private volatile String newWeatherCity = "Lviv";
-    private Handler updateHandler;
+    private String weatherCity = "";
+
+    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
+        this.view = view;
+        this.postsRepository = repository;
+        this.weatherRepository = weatherRepository;
+    }
+
+    @Override
+    public void onPostDataChanged(List<Post> posts) {
+        if (posts == null || posts.isEmpty()) {
+            // TODO: 15.06.19 handle that
+        } else {
+            updatePosts(posts);
+        }
+    }
+
+    @Override
+    public void onConfDataChanged(Map<String, Object> conf) {
+        if (conf == null || conf.isEmpty()) {
+            // TODO: 15.06.19 handle that
+        } else {
+            updateConf(conf);
+        }
+    }
 
     class WeatherCallback implements WeatherDataSource.LoadWeatherCallback {
         @Override
@@ -42,107 +57,56 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         }
     }
 
-    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
-        this.view = view;
-        this.postsRepository = repository;
-        this.weatherRepository = weatherRepository;
-    }
-
-    @Override
-    public void loadPosts() {
-
-        postsRepository.getConf(new PostsDataSource.LoadConfCallback() {
-            @Override
-            public void onConfigLoaded(Map<String, Object> configurations) {
-                // TODO: 08.06.19 save all configuration in Preference
-                if (!configurations.isEmpty()) {
-                    updateConf(configurations);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                //
-            }
-        });
-
-        postsRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
-            @Override
-            public void onPostsLoaded(final List<Post> posts) {
-                processPosts(getFilteredPosts(posts));
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-            }
-        });
-    }
-
     private void updateConf(Map<String, Object> configurations) {
-        Log.i(TAG, "Update configuration " + configurations.size());
-        showAD = (Boolean) configurations.get(Constants.SHOW_AD_CONF);
-        showWeather = (Boolean) configurations.get(Constants.SHOW_WEATHER_CONF);
-        newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);
+        Log.i(TAG, "Update configuration");
 
-        view.showWeather(showWeather);
+        Boolean showAD = (Boolean) configurations.get(Constants.SHOW_AD_CONF);
+        if (showAD != null) {
+            view.setADShowingState(showAD);
+        }
+
+        Boolean showWeather = (Boolean) configurations.get(Constants.SHOW_WEATHER_CONF);
+        if (showWeather != null) {
+            view.setWeatherShowingState(showWeather);
+        }
+
+        String newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);
+        if (newWeatherCity == null) {
+            // TODO: 15.06.19 init weather city by default from preferences and an comment loadWeather()
+            newWeatherCity = "Lviv";
+        }
 
         if (!weatherCity.equals(newWeatherCity)) {
             weatherCity = newWeatherCity;
             loadWeather();
+            Log.i(TAG, "set Weather city " + weatherCity);
         }
     }
 
-    private void processPosts(List<Post> posts) {
-        Log.i(TAG, "Update posts " + posts.size());
-
-        this.posts = posts;
+    private void updatePosts(List<Post> posts) {
         view.setPosts(posts);
+        Log.i(TAG, "Update posts " + posts.size());
     }
-
-    private List<Post> getFilteredPosts(List<Post> allPosts) {
-        ArrayList<Post> activePosts = new ArrayList<>();
-
-        for (Post p : allPosts) {
-            if (p.isState()) {
-                if (!(p.getType().equals(AD) && !showAD)) {
-                    activePosts.add(p);
-                }
-            }
-        }
-
-        return activePosts;
-    }
-
 
     @Override
     public void startShowingPosts() {
-        Log.i(TAG, "Start showing Posts");
-
-        updateHandler = new Handler();
-
-        Runnable r = new Runnable() {
-            public void run() {
-                loadPosts();
-                if (updateHandler != null) {
-                    updateHandler.postDelayed(this, 60 * 1000);
-                }
-            }
-        };
-        updateHandler.post(r);
-
+        postsRepository.registerObserver(this);
+        postsRepository.notifyObserversConfChanged();
+        postsRepository.notifyObserversPostsChanged();
         view.startDisplayPosts();
+        Log.i(TAG, "Start showing Posts");
     }
 
     @Override
     public void stopShowingPosts() {
-        Log.i(TAG, "Stop showing Posts");
         view.stopDisplayPosts();
-
-        updateHandler = null;
+        postsRepository.removeObserver(this);
+        Log.i(TAG, "Stop showing Posts");
     }
 
     @Override
     public void loadWeather() {
-        weatherRepository.getWeatherByCity(weatherCity, new WeatherCallback());
+        weatherRepository.loadWeather(weatherCity, new WeatherCallback());
+        Log.i(TAG, "load Weather city " + weatherCity);
     }
 }

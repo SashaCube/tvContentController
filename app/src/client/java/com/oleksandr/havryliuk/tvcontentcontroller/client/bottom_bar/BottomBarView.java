@@ -22,7 +22,7 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
     private View root;
     private Fragment fragment;
     private BottomBarContract.IBottomBarPresenter presenter;
-    private Thread time, weather;
+    private Thread time;
     private List<MyWeather> weatherList;
 
     private TextView timeTextView, dateTextView, temperatureTextView, weatherTextView,
@@ -92,40 +92,15 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
         if (time.isAlive()) {
             time.interrupt();
         }
-
-        if (weather != null && weather.isAlive()) {
-            weather.interrupt();
-        }
     }
 
     @Override
     public void setWeather(List<MyWeather> weatherList) {
         this.weatherList = weatherList;
-        if (!isUpToDate(weatherList.get(weatherList.size() - 1).getTime())) {
-            presenter.loadWeather();
-        }
 
-        if (weather == null) {
-            initWeatherThread();
-            weather.start();
+        if (weatherList != null) {
+            setWeatherView();
         }
-    }
-
-    private void initWeatherThread() {
-        weather = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Objects.requireNonNull(fragment.getActivity()).runOnUiThread(() -> {
-                            setWeatherView();
-                        });
-                        Thread.sleep(30 * 1000);
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
     }
 
     private void setWeatherView() {
@@ -142,9 +117,6 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
 
             humidityTextView.setText(weather.getHumidity() + "%");
             cloudenessTextView.setText(weather.getCloudiness() + "%");
-
-        } else {
-            presenter.loadWeather();
         }
     }
 }

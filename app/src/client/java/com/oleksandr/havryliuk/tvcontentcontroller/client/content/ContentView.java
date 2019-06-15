@@ -1,7 +1,5 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
-import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.APIInterface;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.ImageManager;
@@ -23,10 +20,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter.WEATHER;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.animation;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getFutureWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getIconUrl;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getPostsWithoutAD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.isUpToDate;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.kelvinToCelsius;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.AD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.IMAGE;
@@ -48,7 +49,11 @@ public class ContentView implements ContentContract.IContentView {
 
     private Thread displayPostThread;
     private int postIndex = LOAD;
-    private volatile static List<Post> posts;
+    private static volatile List<Post> posts;
+
+    //for AD
+    private List<Post> allPosts;
+    private boolean showADState;
 
     //for weather forecast
     private ImageView mainWeatherImage;
@@ -59,7 +64,7 @@ public class ContentView implements ContentContract.IContentView {
     private List<ImageView> futuresImages;
     private List<TemperatureView> temperatureViews;
     private List<MyWeather> weatherList;
-    private boolean showWeather;
+    private boolean showWeatherState;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -68,7 +73,7 @@ public class ContentView implements ContentContract.IContentView {
 
         initView();
         hideAll();
-        animation();
+        animation(emptyImage);
     }
 
     private void initView() {
@@ -149,6 +154,12 @@ public class ContentView implements ContentContract.IContentView {
 
     private void showWeatherPost() {
         if (weatherList == null || weatherList.isEmpty()) {
+            presenter.loadWeather();
+            return;
+        }
+
+        if(isUpToDate(weatherList.get(0).getTime())) {
+            presenter.loadWeather();
             return;
         }
 
@@ -158,10 +169,6 @@ public class ContentView implements ContentContract.IContentView {
 
         hideAll();
         weatherPostView.setVisibility(View.VISIBLE);
-
-        if (presenter != null) {
-            presenter.loadWeather();
-        }
     }
 
     private void showMainWeather() {
@@ -203,10 +210,10 @@ public class ContentView implements ContentContract.IContentView {
             weather = weatherList.get(index + 1);
 
 
-            if(endTemp < minTemp){
+            if (endTemp < minTemp) {
                 minTemp = endTemp;
             }
-            if(endTemp > maxTemp){
+            if (endTemp > maxTemp) {
                 maxTemp = endTemp;
             }
         }
@@ -221,7 +228,7 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private void showFutureWeather() {
-        if(weatherList == null || weatherList.isEmpty()){
+        if (weatherList == null || weatherList.isEmpty()) {
             return;
         }
         List<MyWeather> futureWeather = getFutureWeather(weatherList);
@@ -242,45 +249,35 @@ public class ContentView implements ContentContract.IContentView {
         }
     }
 
-    private List<MyWeather> getFutureWeather(List<MyWeather> weatherList) {
-        ArrayList<MyWeather> futureWeather = new ArrayList<>();
-        Date date = new Date();
-
-        for (int i = 0; i < 3; i++) {
-            date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-            date.setHours(12);
-            futureWeather.add(getUpToDateWeather(weatherList, date));
-        }
-
-        return futureWeather;
-
-    }
-
     @Override
     public void setWeather(List<MyWeather> weatherList) {
         this.weatherList = weatherList;
     }
 
     @Override
-    public void showWeather(boolean showWeather) {
-        this.showWeather = showWeather;
+    public void setWeatherShowingState(boolean showWeather) {
+        this.showWeatherState = showWeather;
+        Log.i(TAG, (showWeather ? "add" : "remove") + " weather forecast");
     }
 
-    private void animation() {
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.5f);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.5f);
-        scaleDownX.setDuration(1000);
-        scaleDownY.setDuration(1000);
+    @Override
+    public void setADShowingState(boolean showAD) {
+        this.showADState = showAD;
+        if (showAD) {
+            addAD();
+        } else {
+            removeAD();
+        }
+    }
 
-        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(emptyImage, "scaleX", 0.7f);
-        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(emptyImage, "scaleY", 0.7f);
-        scaleUpX.setDuration(1000);
-        scaleUpY.setDuration(1000);
+    private void removeAD() {
+        posts = getPostsWithoutAD(allPosts);
+        Log.i(TAG, "remove AD posts");
+    }
 
-        AnimatorSet scale = new AnimatorSet();
-        scale.play(scaleDownX).with(scaleDownY).before(scaleUpX).before(scaleUpY);
-
-        scale.start();
+    private void addAD() {
+        posts = allPosts;
+        Log.i(TAG, "add AD posts");
     }
 
     @Override
@@ -340,21 +337,14 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     @Override
-    public void setLoadingIndicator(boolean value) {
-
-    }
-
-    @Override
-    public void showLoadingTasksError() {
-
-    }
-
-    @Override
     public void setPosts(List<Post> posts) {
-        this.posts = posts;
+        this.allPosts = posts;
+        if(posts != null) {
+            setADShowingState(showADState);
 
-        if (postIndex == LOAD || postIndex >= posts.size()) {
-            postIndex = 0;
+            if (postIndex == LOAD || postIndex >= posts.size()) {
+                postIndex = 0;
+            }
         }
     }
 
@@ -384,7 +374,7 @@ public class ContentView implements ContentContract.IContentView {
 
     @Override
     public void stopDisplayPosts() {
-        Log.i(TAG, "shop display posts");
+        Log.i(TAG, "stop display posts");
         if (isActive()) {
             displayPostThread.interrupt();
         }
@@ -422,12 +412,14 @@ public class ContentView implements ContentContract.IContentView {
                 postIndex++;
             } else {
                 postIndex = 0;
-                if (showWeather) {
+
+                if (showWeatherState) {
                     showWeatherPost();
                     return 10 * 1000;
-                }else{
-                    post = posts.get(postIndex);
                 }
+
+                post = posts.get(postIndex);
+
             }
 
             showPost(post);
@@ -442,12 +434,8 @@ public class ContentView implements ContentContract.IContentView {
 
     private void showEmptyScreen() {
         hideAll();
-        if(showWeather){
+        if (showWeatherState) {
             showWeatherPost();
         }
-    }
-
-    private String getIconUrl(String iconId) {
-        return APIInterface.BASE_URL + "img/w/" + iconId + ".png";
     }
 }
