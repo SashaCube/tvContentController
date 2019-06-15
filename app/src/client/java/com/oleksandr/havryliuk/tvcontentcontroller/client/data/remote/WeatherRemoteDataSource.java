@@ -3,11 +3,13 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote;
 import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.APIInterface;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.RetrofitClient;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.models.Data;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.List;
 
@@ -71,6 +73,21 @@ public class WeatherRemoteDataSource implements WeatherDataSource {
 
     @Override
     public void deleteWeatherByCity(@NonNull String city) {
+
+    }
+
+    @Override
+    public void registerObserver(WeatherRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void removeObserver(WeatherRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void notifyObserversWeatherChanged() {
 
     }
 }

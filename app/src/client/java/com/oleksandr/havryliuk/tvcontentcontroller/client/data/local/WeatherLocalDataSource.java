@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeatherDao;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.WeatherRoomDatabase;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.AppExecutors;
 
@@ -81,5 +83,20 @@ public class WeatherLocalDataSource implements WeatherDataSource {
     public void deleteWeatherByCity(@NonNull String city) {
         Runnable clearPostsRunnable = () -> myWeatherDao.deleteByCity(city);
         appExecutors.diskIO().execute(clearPostsRunnable);
+    }
+
+    @Override
+    public void registerObserver(WeatherRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void removeObserver(WeatherRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void notifyObserversWeatherChanged() {
+
     }
 }

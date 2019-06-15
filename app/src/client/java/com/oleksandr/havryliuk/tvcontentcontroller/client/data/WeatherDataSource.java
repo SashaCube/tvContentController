@@ -6,7 +6,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeat
 
 import java.util.List;
 
-public interface WeatherDataSource {
+public interface WeatherDataSource extends WeatherSubject {
 
     interface LoadWeatherCallback {
 

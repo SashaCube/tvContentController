@@ -5,7 +5,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import java.util.List;
 import java.util.Map;
 
-public interface RepositoryObserver {
+public interface PostsRepositoryObserver {
     void onPostDataChanged(List<Post> posts);
 
     void onConfDataChanged(Map<String, Object> conf);

@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.RepositoryObserver;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.AppExecutors;
 
 import java.util.List;
@@ -154,12 +154,12 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
-    public void registerObserver(RepositoryObserver repositoryObserver) {
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
 
     }
 
     @Override
-    public void removeObserver(RepositoryObserver repositoryObserver) {
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
 
     }
 

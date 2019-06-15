@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.RepositoryObserver;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
     private static HashMap<String, Post> POSTS_SERVICE_DATA;
     private static HashMap<String, Object> CONF_SERVICE_DATA;
-    private ArrayList<RepositoryObserver> mObservers;
+    private ArrayList<PostsRepositoryObserver> mObservers;
 
     private String USERID;
 
@@ -203,14 +203,14 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
 
     @Override
-    public void registerObserver(RepositoryObserver repositoryObserver) {
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
         if (!mObservers.contains(repositoryObserver)) {
             mObservers.add(repositoryObserver);
         }
     }
 
     @Override
-    public void removeObserver(RepositoryObserver repositoryObserver) {
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
         if (mObservers.contains(repositoryObserver)) {
             mObservers.remove(repositoryObserver);
         }
@@ -218,14 +218,14 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
     @Override
     public void notifyObserversPostsChanged() {
-        for (RepositoryObserver observer : mObservers) {
+        for (PostsRepositoryObserver observer : mObservers) {
             observer.onPostDataChanged(new ArrayList<>(POSTS_SERVICE_DATA.values()));
         }
     }
 
     @Override
     public void notifyObserversConfChanged() {
-        for (RepositoryObserver observer : mObservers) {
+        for (PostsRepositoryObserver observer : mObservers) {
             observer.onConfDataChanged(CONF_SERVICE_DATA);
         }
     }

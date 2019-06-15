@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.RepositoryObserver;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public interface ContentContract {
         void setADShowingState(boolean showWeather);
     }
 
-    interface IContentPresenter extends RepositoryObserver {
+    interface IContentPresenter extends PostsRepositoryObserver {
 
         void startShowingPosts();
 

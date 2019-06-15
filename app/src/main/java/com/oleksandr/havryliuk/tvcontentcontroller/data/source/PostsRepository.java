@@ -215,12 +215,12 @@ public class PostsRepository implements PostsDataSource {
     }
 
     @Override
-    public void registerObserver(RepositoryObserver repositoryObserver) {
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
         mPostsRemoteDataSource.registerObserver(repositoryObserver);
     }
 
     @Override
-    public void removeObserver(RepositoryObserver repositoryObserver) {
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
         mPostsRemoteDataSource.removeObserver((repositoryObserver));
     }
 
