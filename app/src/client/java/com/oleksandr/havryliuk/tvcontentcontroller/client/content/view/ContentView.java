@@ -23,9 +23,10 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.animation;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getActivePosts;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getFutureWeather;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getIconUrl;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getPostsWithoutAD;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getActivePostsWithoutAD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
@@ -60,7 +61,7 @@ public class ContentView implements ContentContract.IContentView {
     //for weather forecast
     private ImageView mainWeatherImage;
     private TextView aboutWeatherText, mainTemperatureText, humidityText, cloudinessText,
-            pressureText;
+            pressureText, cityWeatherText;
 
     private List<TextView> timeTextViews, futureTemperatures, futureDays;
     private List<ImageView> futuresImages;
@@ -107,6 +108,7 @@ public class ContentView implements ContentContract.IContentView {
         humidityText = root.findViewById(R.id.humidity_text_view);
         cloudinessText = root.findViewById(R.id.cloudiness_text_view);
         pressureText = root.findViewById(R.id.pressure_text_view);
+        cityWeatherText = root.findViewById(R.id.city_weather_text_view);
 
         //main temperature
         temperatureViews = new ArrayList<>();
@@ -178,6 +180,7 @@ public class ContentView implements ContentContract.IContentView {
         MyWeather weather = getUpToDateWeather(weatherList, new Date());
 
         assert weather != null;
+        cityWeatherText.setText(weather.getCity());
         aboutWeatherText.setText(weather.getMain());
 
         DecimalFormat df = new DecimalFormat("#");
@@ -274,12 +277,12 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private void removeAD() {
-        posts = getPostsWithoutAD(allPosts);
+        posts = getActivePostsWithoutAD(allPosts);
         Log.i(TAG, "remove AD posts");
     }
 
     private void addAD() {
-        posts = allPosts;
+        posts = getActivePosts(allPosts);
         Log.i(TAG, "add AD posts");
     }
 

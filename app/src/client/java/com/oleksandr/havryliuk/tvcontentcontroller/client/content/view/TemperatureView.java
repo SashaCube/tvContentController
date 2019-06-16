@@ -185,6 +185,7 @@ public class TemperatureView extends View {
 
     public void setTopPartColor(int topPartColor) {
         this.topPartColor = topPartColor;
+        invalidate();
     }
 
     public int getBottomPartColor() {
@@ -193,6 +194,7 @@ public class TemperatureView extends View {
 
     public void setBottomPartColor(int bottomPartColor) {
         this.bottomPartColor = bottomPartColor;
+        invalidate();
     }
 
     public int getSeparatorColor() {
@@ -201,6 +203,7 @@ public class TemperatureView extends View {
 
     public void setSeparatorColor(int separatorColor) {
         this.separatorColor = separatorColor;
+        invalidate();
     }
 
     public int getStartValue() {
@@ -209,6 +212,7 @@ public class TemperatureView extends View {
 
     public void setStartValue(int startValue) {
         this.startValue = startValue;
+        invalidate();
     }
 
     public int getEndValue() {
@@ -217,6 +221,7 @@ public class TemperatureView extends View {
 
     public void setEndValue(int endValue) {
         this.endValue = endValue;
+        invalidate();
     }
 
     public int getMaxValue() {
@@ -225,6 +230,7 @@ public class TemperatureView extends View {
 
     public void setMaxValue(int maxValue) {
         this.maxValue = maxValue;
+        invalidate();
     }
 
     public int getMinValue() {
@@ -233,6 +239,7 @@ public class TemperatureView extends View {
 
     public void setMinValue(int minValue) {
         this.minValue = minValue;
+        invalidate();
     }
 
     public int getSeparatorWidth() {
@@ -241,6 +248,7 @@ public class TemperatureView extends View {
 
     public void setSeparatorWidth(int separatorWidth) {
         this.separatorWidth = separatorWidth;
+        invalidate();
     }
 
     public boolean isShowStartValue() {
@@ -249,6 +257,7 @@ public class TemperatureView extends View {
 
     public void setShowStartValue(boolean showStartValue) {
         this.showStartValue = showStartValue;
+        invalidate();
     }
 
     public boolean isShowEndValue() {
@@ -257,6 +266,7 @@ public class TemperatureView extends View {
 
     public void setShowEndValue(boolean showEndValue) {
         this.showEndValue = showEndValue;
+        invalidate();
     }
 
     public int getTextColor() {
@@ -265,6 +275,7 @@ public class TemperatureView extends View {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+        invalidate();
     }
 
     public boolean isShowSeparator() {
@@ -273,5 +284,6 @@ public class TemperatureView extends View {
 
     public void setShowSeparator(boolean showSeparator) {
         this.showSeparator = showSeparator;
+        invalidate();
     }
 }

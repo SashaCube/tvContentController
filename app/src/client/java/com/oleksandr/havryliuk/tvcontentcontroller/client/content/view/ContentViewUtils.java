@@ -38,7 +38,7 @@ public class ContentViewUtils {
         return APIInterface.BASE_URL + "img/w/" + iconId + ".png";
     }
 
-    public static List<Post> getPostsWithoutAD(List<Post> allPosts) {
+    public static List<Post> getActivePostsWithoutAD(List<Post> allPosts) {
 
         if(allPosts == null){
             return null;
@@ -51,6 +51,23 @@ public class ContentViewUtils {
                 if (!(p.getType().equals(AD))) {
                     activePosts.add(p);
                 }
+            }
+        }
+
+        return activePosts;
+    }
+
+    public static List<Post> getActivePosts(List<Post> allPosts) {
+
+        if(allPosts == null){
+            return null;
+        }
+
+        ArrayList<Post> activePosts = new ArrayList<>();
+
+        for (Post p : allPosts) {
+            if (p.isState()) {
+
             }
         }
 
