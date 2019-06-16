@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

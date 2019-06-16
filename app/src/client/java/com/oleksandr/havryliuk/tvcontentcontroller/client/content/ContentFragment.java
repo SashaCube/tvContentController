@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentView;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 

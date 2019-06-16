@@ -17,7 +17,7 @@ public interface WeatherDataSource extends WeatherSubject {
 
     void destroyInstance();
 
-    void loadWeather(String city, @NonNull LoadWeatherCallback callback);
+    void loadWeather(String city, LoadWeatherCallback callback);
 
     void getWeatherByCity(String city, @NonNull WeatherDataSource.LoadWeatherCallback callback);
 

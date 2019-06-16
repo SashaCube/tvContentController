@@ -3,6 +3,9 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.bottom_bar;
 import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+
+import java.util.List;
 
 public class BottomBarPresenter implements BottomBarContract.IBottomBarPresenter {
 
@@ -18,14 +21,24 @@ public class BottomBarPresenter implements BottomBarContract.IBottomBarPresenter
 
     @Override
     public void startDisplayInfo() {
-        Log.i(TAG, "Start showing Bottom Bar");
         view.startDisplayDateTime();
-        Log.i(TAG, "Weather forecast -> data not available");
+        repository.registerObserver(this);
+
+        Log.i(TAG, "Start showing Bottom Bar");
     }
 
     @Override
     public void stopDisplayInfo() {
-        Log.i(TAG, "Stop showing Bottom Bar");
+        repository.removeObserver(this);
         view.stopDisplayDateTime();
+
+        Log.i(TAG, "Stop showing Bottom Bar");
+    }
+
+    @Override
+    public void onWeatherDataChanged(List<MyWeather> weatherList) {
+        view.setWeather(weatherList);
+
+        Log.i(TAG, "Update Weather");
     }
 }

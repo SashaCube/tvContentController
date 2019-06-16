@@ -2,7 +2,6 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
 import android.util.Log;
 
-import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
@@ -19,7 +18,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     private ContentContract.IContentView view;
     private PostsDataSource postsRepository;
     private WeatherRepository weatherRepository;
-    private String weatherCity = "";
+    private volatile String weatherCity = "";
 
     public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
         this.view = view;
@@ -29,32 +28,20 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     @Override
     public void onPostDataChanged(List<Post> posts) {
-        if (posts == null || posts.isEmpty()) {
-            // TODO: 15.06.19 handle that
-        } else {
-            updatePosts(posts);
-        }
+        updatePosts(posts);
     }
 
     @Override
     public void onConfDataChanged(Map<String, Object> conf) {
-        if (conf == null || conf.isEmpty()) {
-            // TODO: 15.06.19 handle that
-        } else {
+        if (conf != null && !conf.isEmpty()) {
             updateConf(conf);
         }
     }
 
-    class WeatherCallback implements WeatherDataSource.LoadWeatherCallback {
-        @Override
-        public void onDataLoaded(List<MyWeather> data) {
-            view.setWeather(data);
-        }
-
-        @Override
-        public void onDataNotAvailable() {
-
-        }
+    @Override
+    public void onWeatherDataChanged(List<MyWeather> weatherList) {
+        view.setWeather(weatherList);
+        Log.i(TAG, "Update Weather");
     }
 
     private void updateConf(Map<String, Object> configurations) {
@@ -72,7 +59,6 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
         String newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);
         if (newWeatherCity == null) {
-            // TODO: 15.06.19 init weather city by default from preferences and an comment loadWeather()
             newWeatherCity = "Lviv";
         }
 
@@ -85,28 +71,36 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private void updatePosts(List<Post> posts) {
         view.setPosts(posts);
-        Log.i(TAG, "Update posts " + posts.size());
+        Log.i(TAG, "Update posts " + posts);
     }
 
     @Override
     public void startShowingPosts() {
         postsRepository.registerObserver(this);
+        weatherRepository.registerObserver(this);
+
         postsRepository.notifyObserversConfChanged();
         postsRepository.notifyObserversPostsChanged();
+        weatherRepository.notifyObserversWeatherChanged();
+
         view.startDisplayPosts();
-        Log.i(TAG, "Start showing Posts");
+
+        Log.i(TAG, "Start showing Content");
     }
 
     @Override
     public void stopShowingPosts() {
         view.stopDisplayPosts();
+
         postsRepository.removeObserver(this);
-        Log.i(TAG, "Stop showing Posts");
+        weatherRepository.removeObserver(this);
+
+        Log.i(TAG, "Stop showing Content");
     }
 
     @Override
     public void loadWeather() {
-        weatherRepository.loadWeather(weatherCity, new WeatherCallback());
+        weatherRepository.loadWeather(weatherCity, null);
         Log.i(TAG, "load Weather city " + weatherCity);
     }
 }

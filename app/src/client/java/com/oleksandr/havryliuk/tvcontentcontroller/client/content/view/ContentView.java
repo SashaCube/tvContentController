@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentContract;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
@@ -20,10 +22,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.animation;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getFutureWeather;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getIconUrl;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentViewUtils.getPostsWithoutAD;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.animation;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getFutureWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getIconUrl;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getPostsWithoutAD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
@@ -60,7 +62,7 @@ public class ContentView implements ContentContract.IContentView {
     private TextView aboutWeatherText, mainTemperatureText, humidityText, cloudinessText,
             pressureText;
 
-    private List<TextView> timeTextViews, futureTemperatures, furureDays;
+    private List<TextView> timeTextViews, futureTemperatures, futureDays;
     private List<ImageView> futuresImages;
     private List<TemperatureView> temperatureViews;
     private List<MyWeather> weatherList;
@@ -128,7 +130,7 @@ public class ContentView implements ContentContract.IContentView {
         timeTextViews.add(root.findViewById(R.id.time_text_view_8));
 
         for (TemperatureView tv : temperatureViews) {
-            tv.setBottomPartColor(fragment.getContext().getResources().getColor(R.color.light_orange));
+            tv.setBottomPartColor(Objects.requireNonNull(fragment.getContext()).getResources().getColor(R.color.light_orange));
             tv.setSeparatorColor(fragment.getContext().getResources().getColor(R.color.orange));
             tv.setTextColor(fragment.getContext().getResources().getColor(R.color.slate_gray));
             tv.setShowSeparator(true);
@@ -136,10 +138,10 @@ public class ContentView implements ContentContract.IContentView {
         }
 
         //future weather
-        furureDays = new ArrayList<>();
-        furureDays.add(root.findViewById(R.id.day_future_weather_text_1));
-        furureDays.add(root.findViewById(R.id.day_future_weather_text_2));
-        furureDays.add(root.findViewById(R.id.day_future_weather_text_3));
+        futureDays = new ArrayList<>();
+        futureDays.add(root.findViewById(R.id.day_future_weather_text_1));
+        futureDays.add(root.findViewById(R.id.day_future_weather_text_2));
+        futureDays.add(root.findViewById(R.id.day_future_weather_text_3));
 
         futureTemperatures = new ArrayList<>();
         futureTemperatures.add(root.findViewById(R.id.temperature_future_weather_text_1));
@@ -152,7 +154,8 @@ public class ContentView implements ContentContract.IContentView {
         futuresImages.add(root.findViewById(R.id.future_weather_image_3));
     }
 
-    private void showWeatherPost() {
+    private void showWeatherForecast() {
+
         if (weatherList == null || weatherList.isEmpty()) {
             presenter.loadWeather();
             return;
@@ -241,7 +244,7 @@ public class ContentView implements ContentContract.IContentView {
                     .load(getIconUrl(weather.getIconId()))
                     .into(futuresImages.get(i));
 
-            furureDays.get(i).setText(getOnlyDay(weather.getTime()));
+            futureDays.get(i).setText(getOnlyDay(weather.getTime()));
 
             DecimalFormat df = new DecimalFormat("#.##");
             futureTemperatures.get(i)
@@ -414,7 +417,7 @@ public class ContentView implements ContentContract.IContentView {
                 postIndex = 0;
 
                 if (showWeatherState) {
-                    showWeatherPost();
+                    showWeatherForecast();
                     return 10 * 1000;
                 }
 
@@ -435,7 +438,7 @@ public class ContentView implements ContentContract.IContentView {
     private void showEmptyScreen() {
         hideAll();
         if (showWeatherState) {
-            showWeatherPost();
+            showWeatherForecast();
         }
     }
 }

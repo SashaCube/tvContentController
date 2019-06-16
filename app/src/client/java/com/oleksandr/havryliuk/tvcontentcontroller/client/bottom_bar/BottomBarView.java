@@ -98,9 +98,15 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
     public void setWeather(List<MyWeather> weatherList) {
         this.weatherList = weatherList;
 
-        if (weatherList != null) {
+        if (weatherList != null && !weatherList.isEmpty()) {
             setWeatherView();
+        } else{
+            showEmptyWeather();
         }
+    }
+
+    private void showEmptyWeather(){
+        // TODO: 16.06.19 add empty view for forecast when weather null
     }
 
     private void setWeatherView() {

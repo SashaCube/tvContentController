@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.WeatherLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.WeatherRemoteDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class WeatherRepository implements WeatherDataSource {
 
     private WeatherDataSource mWeatherLocalDataSource;
 
-    private List<MyWeather> weatherList;
+    private volatile List<MyWeather> weatherList;
 
     private List<WeatherRepositoryObserver> weatherRepositoryObservers;
 
@@ -45,24 +46,53 @@ public class WeatherRepository implements WeatherDataSource {
     }
 
     @Override
-    public void loadWeather(String city, @NonNull WeatherDataSource.LoadWeatherCallback callback) {
-        mWeatherLocalDataSource.getWeatherByCity(city, callback);
+    public void loadWeather(String city, WeatherDataSource.LoadWeatherCallback callback) {
 
-        // Fetch new data from the network.
-        mWeatherRemoteDataSource.loadWeather(city, new LoadWeatherCallback() {
+        mWeatherLocalDataSource.getWeatherByCity(city, new LoadWeatherCallback() {
             @Override
-            public void onDataLoaded(List<MyWeather> weatherList) {
+            public void onDataLoaded(List<MyWeather> data) {
+                weatherList = data;
+                if(Utils.isUpToDate(data.get(data.size() - 1).getTime())) {
+                    notifyObserversWeatherChanged();
+                } else{
+                    mWeatherRemoteDataSource.loadWeather(city, new LoadWeatherCallback() {
+                        @Override
+                        public void onDataLoaded(List<MyWeather> data) {
 
-                if (weatherList != null && !weatherList.isEmpty()) {
-                    deleteWeatherByCity(city);
-                    mWeatherLocalDataSource.insertWeather(weatherList);
+                            if (data != null && !data.isEmpty()) {
+                                weatherList = data;
+                                deleteWeatherByCity(city);
+                                mWeatherLocalDataSource.insertWeather(data);
+                            }
+                            notifyObserversWeatherChanged();
+                        }
+
+                        @Override
+                        public void onDataNotAvailable() {
+
+                        }
+                    });
                 }
-                notifyObserversWeatherChanged();
             }
-
             @Override
             public void onDataNotAvailable() {
+                mWeatherRemoteDataSource.loadWeather(city, new LoadWeatherCallback() {
+                    @Override
+                    public void onDataLoaded(List<MyWeather> data) {
 
+                        if (data != null && !data.isEmpty()) {
+                            weatherList = data;
+                            deleteWeatherByCity(city);
+                            mWeatherLocalDataSource.insertWeather(data);
+                        }
+                        notifyObserversWeatherChanged();
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
             }
         });
     }
