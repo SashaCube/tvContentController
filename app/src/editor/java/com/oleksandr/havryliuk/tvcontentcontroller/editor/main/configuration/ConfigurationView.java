@@ -22,41 +22,33 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
     public void init(Fragment fragment, View root) {
         this.fragment = fragment;
         this.root = root;
+
+        initView();
     }
 
+    private void initView() {
+        cityTextView = root.findViewById(R.id.weather_city_text_view);
+
+        editButton = root.findViewById(R.id.edit_button_image);
+        editButton.setOnClickListener(v -> editCity());
+
+        showWeatherSwitch = root.findViewById(R.id.show_weather_switch);
+        showWeatherSwitch.setOnCheckedChangeListener((buttonView, isChecked)
+                -> presenter.setWeatherShowing(isChecked));
+
+        showAdSwitch = root.findViewById(R.id.show_ad_switch);
+        showAdSwitch.setOnCheckedChangeListener((buttonView, isChecked)
+                -> presenter.setAdShowing(isChecked));
+    }
 
     @Override
     public void setPresenter(ConfigurationContract.IConfigurationPresenter presenter) {
         this.presenter = presenter;
-        presenter.loadConfiguration();
-    }
-
-    @Override
-    public void initAdConfiguration(boolean showAd) {
-        if (showAdSwitch == null) {
-            showAdSwitch = root.findViewById(R.id.show_ad_switch);
-            showAdSwitch.setChecked(showAd);
-            showAdSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.setAdConfiguration(isChecked));
-        }
     }
 
     @Override
     public void showAdConfigurationChange() {
         showMessage(fragment.getString(R.string.ad_configuration_changed));
-    }
-
-    @Override
-    public void initWeatherConfiguration(boolean showWeather, String city) {
-        if (showWeatherSwitch == null) {
-            showWeatherSwitch = root.findViewById(R.id.show_weather_switch);
-            showWeatherSwitch.setChecked(showWeather);
-            showWeatherSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.setWeatherConfiguration(isChecked));
-        }
-        cityTextView = root.findViewById(R.id.weather_city_text_view);
-        editButton = root.findViewById(R.id.edit_button_image);
-
-        editButton.setOnClickListener(v -> editCity());
-        cityTextView.setText(city);
     }
 
     @Override
@@ -70,15 +62,29 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
     }
 
     @Override
-    public boolean isActive() {
-        return fragment.isAdded();
+    public void setWeatherCityView(String city) {
+        cityTextView.setText(city);
+    }
+
+    @Override
+    public void setShowingWeatherView(boolean showWeather) {
+        if (showWeatherSwitch.isChecked() != showWeather) {
+            showWeatherSwitch.toggle();
+        }
+    }
+
+    @Override
+    public void setShowingADView(boolean showAD) {
+        if (showAdSwitch.isChecked() != showAD) {
+            showAdSwitch.toggle();
+        }
     }
 
     private void showMessage(String message) {
         Snackbar.make(root, message, Snackbar.LENGTH_LONG).show();
     }
 
-    private void editCity(){
+    private void editCity() {
 
         // TODO: 13.06.19 new small window to edit city
 
