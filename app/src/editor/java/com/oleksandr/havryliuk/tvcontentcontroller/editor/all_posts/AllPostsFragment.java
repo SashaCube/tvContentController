@@ -7,12 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters.PostsPagerAdapter;
 
 import java.util.Objects;
@@ -49,27 +49,21 @@ public class AllPostsFragment extends Fragment {
     }
 
     private void initSortMenu() {
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMenu.show();
-            }
-        });
+        sortButton.setOnClickListener(v -> popupMenu.show());
 
         popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), sortButton);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.sort_by_date:
-                        AllPostsPresenter.setSorting(DATE);
-                        break;
-                    case R.id.sort_by_title:
-                        AllPostsPresenter.setSorting(TITLE);
-                        break;
-                }
-                return true;
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.sort_by_date:
+                    AllPostsPresenter.setSorting(DATE);
+                    break;
+                case R.id.sort_by_title:
+                    AllPostsPresenter.setSorting(TITLE);
+                    break;
             }
+            PostsRepository.getInstance(Objects.requireNonNull(getContext()))
+                    .notifyObserversPostsChanged();
+            return true;
         });
 
         popupMenu.inflate(R.menu.sorter_posts);
