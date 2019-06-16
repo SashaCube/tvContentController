@@ -11,6 +11,7 @@
     <color name="dark_sky_blue">#8ac6d0</color>
     <color name="diamond">#b8f3ff</color>
     <color name="none">#00ffffff</color>
+    <color name="transparent_black">#2A111111</color>
 
     <!--Weather forecast colors-->
     <color name="orange">#FDA92C</color>

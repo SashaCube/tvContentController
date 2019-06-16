@@ -71,6 +71,7 @@ public class AllPostsFragment extends Fragment {
 
     private void initViewPager() {
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.setOffscreenPageLimit(4);
         PostsPagerAdapter adapterViewPager = new PostsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(0);

@@ -22,19 +22,16 @@ public class ConfigurationPresenter implements ConfigurationContract.IConfigurat
     @Override
     public void setAdShowing(boolean showAd) {
         mRepository.saveConf(SHOW_AD_CONF, showAd);
-        view.showAdConfigurationChange();
     }
 
     @Override
     public void setWeatherShowing(boolean showWeather) {
         mRepository.saveConf(SHOW_WEATHER_CONF, showWeather);
-        view.showWeatherConfigurationChange();
     }
 
     @Override
     public void setWeatherCity(String city) {
         mRepository.saveConf(CITY_WEATHER_CONF, city);
-        view.showWeatherCityChange(city);
     }
 
     @Override

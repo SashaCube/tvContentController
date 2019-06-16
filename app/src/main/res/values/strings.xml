@@ -85,6 +85,7 @@
     <string name="show_weather">Show weather</string>
     <string name="weather_city">Weather city</string>
     <string name="edit_weather_city">Edit weather city</string>
+    <string name="edit_weather_city_hint"> your city …</string>
 
     <string name="connecting">connecting …</string>
     <string name="ad">AD</string>

@@ -2,13 +2,13 @@ package com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.ADTypeFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.AllTypeFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.NewsTypeFragment;
 
-public class PostsPagerAdapter extends FragmentPagerAdapter {
+public class PostsPagerAdapter extends FragmentStatePagerAdapter {
 
     private static int NUM_ITEMS = 3;
 
@@ -32,5 +32,11 @@ public class PostsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return NUM_ITEMS;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        // POSITION_NONE makes it possible to reload the PagerAdapter
+        return POSITION_NONE;
     }
 }

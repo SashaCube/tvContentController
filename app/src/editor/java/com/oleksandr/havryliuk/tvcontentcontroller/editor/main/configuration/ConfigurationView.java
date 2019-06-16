@@ -1,15 +1,19 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.main.configuration;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.utils.ActivityUtils;
 
-public class ConfigurationView implements ConfigurationContract.IConfigurationView {
+import java.util.Objects;
+
+public class ConfigurationView implements ConfigurationContract.IConfigurationView, View.OnClickListener {
 
     private Fragment fragment;
     private ConfigurationContract.IConfigurationPresenter presenter;
@@ -17,6 +21,10 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
     private Switch showAdSwitch, showWeatherSwitch;
     private ImageView editButton;
     private TextView cityTextView;
+
+    private ViewGroup editCityLayout;
+    private TextView saveButton, cancelButton;
+    private EditText editCityEditText;
 
     @Override
     public void init(Fragment fragment, View root) {
@@ -39,26 +47,23 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
         showAdSwitch = root.findViewById(R.id.show_ad_switch);
         showAdSwitch.setOnCheckedChangeListener((buttonView, isChecked)
                 -> presenter.setAdShowing(isChecked));
+
+        initEditCityLayout();
+    }
+
+    private void initEditCityLayout() {
+        editCityLayout = root.findViewById(R.id.city_edit_layout);
+        editCityEditText = root.findViewById(R.id.input_city_edit_text);
+        saveButton = root.findViewById(R.id.save_button);
+        cancelButton = root.findViewById(R.id.cancel_button);
+
+        saveButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
     }
 
     @Override
     public void setPresenter(ConfigurationContract.IConfigurationPresenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void showAdConfigurationChange() {
-        showMessage(fragment.getString(R.string.ad_configuration_changed));
-    }
-
-    @Override
-    public void showWeatherConfigurationChange() {
-        showMessage(fragment.getString(R.string.weather_configuration_changed));
-    }
-
-    @Override
-    public void showWeatherCityChange(String city) {
-        showMessage(fragment.getString(R.string.weather_city_changed) + " : " + city);
     }
 
     @Override
@@ -80,16 +85,35 @@ public class ConfigurationView implements ConfigurationContract.IConfigurationVi
         }
     }
 
-    private void showMessage(String message) {
-        Snackbar.make(root, message, Snackbar.LENGTH_LONG).show();
+    private void editCity() {
+        showEditCityLayout();
+        editCityEditText.setText(cityTextView.getText());
     }
 
-    private void editCity() {
+    private void showEditCityLayout() {
+        editCityLayout.setVisibility(View.VISIBLE);
+        showAdSwitch.setClickable(false);
+        showWeatherSwitch.setClickable(false);
+    }
 
-        // TODO: 13.06.19 new small window to edit city
+    private void hideEditCityLayout() {
+        ActivityUtils.hideKeyboard(Objects.requireNonNull(fragment.getActivity()));
+        editCityLayout.setVisibility(View.GONE);
+        showAdSwitch.setClickable(true);
+        showWeatherSwitch.setClickable(true);
+    }
 
-        String city = "Bogo";
-        presenter.setWeatherCity(city);
-        cityTextView.setText(city);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.save_button:
+                presenter.setWeatherCity(editCityEditText.getText().toString());
+                cityTextView.setText(editCityEditText.getText().toString());
+                hideEditCityLayout();
+                break;
+            case R.id.cancel_button:
+                hideEditCityLayout();
+                break;
+        }
     }
 }

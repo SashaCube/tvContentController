@@ -13,12 +13,6 @@ public interface ConfigurationContract {
 
         void setPresenter(IConfigurationPresenter presenter);
 
-        void showAdConfigurationChange();
-
-        void showWeatherConfigurationChange();
-
-        void showWeatherCityChange(String city);
-
         void setWeatherCityView(String city);
 
         void setShowingWeatherView(boolean showWeather);

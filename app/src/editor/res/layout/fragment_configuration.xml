@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <LinearLayout
         android:id="@+id/ad_state_layout"
         android:layout_width="match_parent"
@@ -107,6 +110,12 @@
         style="@style/Separator"
         android:layout_width="match_parent"
         />
+    </LinearLayout>
 
+    <include
+        android:visibility="gone"
+        android:id="@+id/city_edit_layout"
+        layout="@layout/layout_edit_city">
+    </include>
 
-</LinearLayout>
+</RelativeLayout>
