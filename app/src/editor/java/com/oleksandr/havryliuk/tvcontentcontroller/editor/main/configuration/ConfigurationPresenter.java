@@ -1,53 +1,78 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.main.configuration;
 
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 
+import java.util.List;
 import java.util.Map;
 
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.CITY_WEATHER_CONF;
 import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
+import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_WEATHER_CONF;
 
 public class ConfigurationPresenter implements ConfigurationContract.IConfigurationPresenter {
     private ConfigurationContract.IConfigurationView view;
     private PostsRepository mRepository;
-    private boolean show_ad;
 
     public ConfigurationPresenter(final ConfigurationContract.IConfigurationView view, PostsRepository postsRepository) {
         this.view = view;
         mRepository = postsRepository;
-
-        mRepository.getConf(new PostsDataSource.LoadConfCallback() {
-            @Override
-            public void onConfigLoaded(Map<String, Boolean> configurations) {
-                if (!configurations.isEmpty()) {
-                    Boolean value = configurations.get(SHOW_AD_CONF);
-                    if (value != null) {
-                        show_ad = value;
-                    }
-                } else {
-                    mRepository.saveConf(SHOW_AD_CONF, true);
-
-                    if (view.isActive()) {
-                        view.initAdConfiguration(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
     }
-
 
     @Override
-    public void setAdConfiguration(boolean showAd) {
+    public void setAdShowing(boolean showAd) {
         mRepository.saveConf(SHOW_AD_CONF, showAd);
-        view.showAdConfigurationChange();
     }
 
-    public void loadConfiguration() {
-        view.initAdConfiguration(show_ad);
+    @Override
+    public void setWeatherShowing(boolean showWeather) {
+        mRepository.saveConf(SHOW_WEATHER_CONF, showWeather);
+    }
+
+    @Override
+    public void setWeatherCity(String city) {
+        mRepository.saveConf(CITY_WEATHER_CONF, city);
+    }
+
+    @Override
+    public void start() {
+        mRepository.registerObserver(this);
+        mRepository.notifyObserversConfChanged();
+    }
+
+    @Override
+    public void stop() {
+        mRepository.removeObserver(this);
+    }
+
+    @Override
+    public void onPostDataChanged(List<Post> posts) {
+
+    }
+
+    @Override
+    public void onConfDataChanged(Map<String, Object> conf) {
+        updateConf(conf);
+    }
+
+    private void updateConf(Map<String, Object> conf) {
+        if (!conf.isEmpty()) {
+            Boolean value;
+
+            value = (Boolean) conf.get(SHOW_AD_CONF);
+            if (value != null) {
+                view.setShowingADView(value);
+            }
+
+            value = (Boolean) conf.get(SHOW_WEATHER_CONF);
+            if (value != null) {
+                view.setShowingWeatherView(value);
+            }
+
+            String weatherCity = (String) conf.get(CITY_WEATHER_CONF);
+            if (weatherCity != null) {
+                view.setWeatherCityView(weatherCity);
+            }
+        }
     }
 }

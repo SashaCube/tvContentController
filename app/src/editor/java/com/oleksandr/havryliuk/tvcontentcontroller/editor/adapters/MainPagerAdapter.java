@@ -2,12 +2,12 @@ package com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.main.active_posts.ActivePostsFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.main.configuration.ConfigurationFragment;
 
-public class MainPagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 2;
 

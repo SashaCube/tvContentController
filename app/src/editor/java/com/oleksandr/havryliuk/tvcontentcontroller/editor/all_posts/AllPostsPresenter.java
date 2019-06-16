@@ -1,13 +1,12 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.data.Post.ALL;
 
@@ -23,50 +22,12 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     public AllPostsPresenter(AllPostsContract.IAllPostsView view, PostsRepository postsRepository) {
         this.view = view;
         mRepository = postsRepository;
-        loadPosts(true);
-    }
-
-    @Override
-    public void loadPosts(final boolean showLoadingUI) {
-
-        if (showLoadingUI) {
-            view.setLoadingIndicator(true);
-        }
-
-        mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
-            @Override
-            public void onPostsLoaded(List<Post> posts) {
-                processPosts(posts);
-
-                if (!view.isActive()) {
-                    return;
-                }
-
-                if (showLoadingUI) {
-                    view.setLoadingIndicator(false);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                // The view may not be able to handle UI updates anymore
-                if (!view.isActive()) {
-                    return;
-                }
-                view.showLoadingTasksError();
-
-                if (showLoadingUI) {
-                    view.setLoadingIndicator(false);
-                }
-            }
-        });
     }
 
     @Override
     public void clickDelete(final Post post) {
         mRepository.deletePost(post.getId());
         view.showPostDeleted();
-        loadPosts(true);
     }
 
     @Override
@@ -77,7 +38,6 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
     @Override
     public void clickSetPost(final Post post) {
         mRepository.savePost(post);
-        loadPosts(true);
     }
 
     public static void setSorting(String type) {
@@ -88,20 +48,10 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
 
         switch (sortedPostsBy) {
             case TITLE:
-                Collections.sort(posts, new Comparator<Post>() {
-                    @Override
-                    public int compare(Post o1, Post o2) {
-                        return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
-                    }
-                });
+                Collections.sort(posts, (o1, o2) -> o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase()));
                 break;
             case DATE:
-                Collections.sort(posts, new Comparator<Post>() {
-                    @Override
-                    public int compare(Post o1, Post o2) {
-                        return o1.getCreateDate().compareTo(o2.getCreateDate());
-                    }
-                });
+                Collections.sort(posts, (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
                 break;
         }
         return posts;
@@ -130,5 +80,26 @@ public class AllPostsPresenter implements AllPostsContract.IAllPostsPresenter {
             }
             return filteredPosts;
         }
+    }
+
+    @Override
+    public void onPostDataChanged(List<Post> posts) {
+        processPosts(posts);
+    }
+
+    @Override
+    public void onConfDataChanged(Map<String, Object> conf) {
+
+    }
+
+    @Override
+    public void start() {
+        mRepository.registerObserver(this);
+        mRepository.notifyObserversPostsChanged();
+    }
+
+    @Override
+    public void stop() {
+        mRepository.removeObserver(this);
     }
 }

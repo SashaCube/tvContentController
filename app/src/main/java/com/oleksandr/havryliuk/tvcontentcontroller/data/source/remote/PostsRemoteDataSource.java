@@ -11,23 +11,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants.SHOW_AD_CONF;
+import java.util.Objects;
 
 public class PostsRemoteDataSource implements PostsDataSource {
+
+    private final static String POSTS = "posts";
+    private final static String CONF = "conf";
+    private final static String USERS = "users";
 
     private DatabaseReference databaseReference;
 
     private static PostsRemoteDataSource INSTANCE;
 
     private static HashMap<String, Post> POSTS_SERVICE_DATA;
-    private static HashMap<String, Boolean> CONF_SERVICE_DATA;
+    private static HashMap<String, Object> CONF_SERVICE_DATA;
+    private ArrayList<PostsRepositoryObserver> mObservers;
 
     private String USERID;
 
@@ -52,47 +57,50 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
     // Prevent direct instantiation.
     private PostsRemoteDataSource() {
-        USERID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mObservers = new ArrayList<>();
+        USERID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        Log.i("Remote", "connected: user");
+        Log.i("Remote", "connected: user" + USERID);
         databaseReference = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("users")
+                .child(USERS)
                 .child(USERID);
 
-        databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(POSTS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     getPostsFromSnapShot(dataSnapshot);
-                    Log.i("Firebase DB", "update value for user " + USERID);
+                    notifyObserversPostsChanged();
+                    Log.i("Remote DB", "update posts");
                 } else {
                     saveNewUser(USERID);
-                    Log.i("Firebase DB", "create new posts List for user " + USERID);
+                    Log.i("Remote DB", "create new posts List");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("Firebase", "error");
+                Log.i("Remote", "error - posts cancelled");
             }
         });
 
-        databaseReference.child("conf").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(CONF).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     getConfFromSnapShot(dataSnapshot);
-                    Log.i("Firebase DB", "update value for user " + USERID);
+                    notifyObserversConfChanged();
+                    Log.i("Remote DB", "update conf");
                 } else {
                     saveNewUser(USERID);
-                    Log.i("Firebase DB", "create new conf List for user " + USERID);
+                    Log.i("Remote DB", "create new conf List");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("Firebase", "error");
+                Log.i("Remote", "error - conf cancelled");
             }
         });
     }
@@ -117,23 +125,22 @@ public class PostsRemoteDataSource implements PostsDataSource {
             Post post = new Post(postId, title, about, createDate, type, imagePath, text, state,
                     duration);
             POSTS_SERVICE_DATA.put(postId, post);
-            Log.i("DataSnapshot", "Post from remote repo " + post);
         }
     }
+
 
     private void getConfFromSnapShot(DataSnapshot dataSnapshot) {
         CONF_SERVICE_DATA.clear();
 
-        HashMap<String, Boolean> map = (HashMap<String, Boolean>) dataSnapshot.getValue();
+        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
 
-            CONF_SERVICE_DATA.put(SHOW_AD_CONF, map.get(SHOW_AD_CONF));
-            Log.i("DataSnapshot", "Conf from remote repo " + SHOW_AD_CONF +
-                    " " + map.get(SHOW_AD_CONF));
+        assert map != null;
+        CONF_SERVICE_DATA.putAll(map);
     }
 
     private void saveNewUser(String userId) {
-        databaseReference.child(userId).child("posts").setValue(POSTS_SERVICE_DATA);
-        databaseReference.child(userId).child("conf").setValue(CONF_SERVICE_DATA);
+        databaseReference.child(userId).child(POSTS).setValue(POSTS_SERVICE_DATA);
+        databaseReference.child(userId).child(CONF).setValue(CONF_SERVICE_DATA);
     }
 
     @Override
@@ -149,9 +156,9 @@ public class PostsRemoteDataSource implements PostsDataSource {
     }
 
     @Override
-    public void saveConf(@NonNull String key, Boolean value) {
+    public void saveConf(@NonNull String key, Object value) {
         CONF_SERVICE_DATA.put(key, value);
-        databaseReference.child("conf").setValue(CONF_SERVICE_DATA);
+        databaseReference.child(CONF).setValue(CONF_SERVICE_DATA);
     }
 
     @Override
@@ -162,7 +169,7 @@ public class PostsRemoteDataSource implements PostsDataSource {
     @Override
     public void savePost(@NonNull Post post) {
         POSTS_SERVICE_DATA.put(post.getId(), post);
-        databaseReference.child("posts").setValue(POSTS_SERVICE_DATA);
+        databaseReference.child(POSTS).setValue(POSTS_SERVICE_DATA);
     }
 
     @Override
@@ -180,8 +187,6 @@ public class PostsRemoteDataSource implements PostsDataSource {
 
     @Override
     public void refreshPosts() {
-        // Not required because the PostsRepository handles the logic of refreshing the
-        // posts from all the available data sources.
     }
 
     @Override
@@ -194,5 +199,34 @@ public class PostsRemoteDataSource implements PostsDataSource {
     public void deletePost(@NonNull String postId) {
         POSTS_SERVICE_DATA.remove(postId);
         databaseReference.setValue(POSTS_SERVICE_DATA);
+    }
+
+
+    @Override
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
+        if (!mObservers.contains(repositoryObserver)) {
+            mObservers.add(repositoryObserver);
+        }
+    }
+
+    @Override
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
+        if (mObservers.contains(repositoryObserver)) {
+            mObservers.remove(repositoryObserver);
+        }
+    }
+
+    @Override
+    public void notifyObserversPostsChanged() {
+        for (PostsRepositoryObserver observer : mObservers) {
+            observer.onPostDataChanged(new ArrayList<>(POSTS_SERVICE_DATA.values()));
+        }
+    }
+
+    @Override
+    public void notifyObserversConfChanged() {
+        for (PostsRepositoryObserver observer : mObservers) {
+            observer.onConfDataChanged(CONF_SERVICE_DATA);
+        }
     }
 }

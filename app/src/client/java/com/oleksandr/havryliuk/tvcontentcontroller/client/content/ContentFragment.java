@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentView;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 
 import java.util.Objects;
@@ -36,7 +38,8 @@ public class ContentFragment extends Fragment {
 
     private void initPresenter() {
         presenter = new ContentPresenter(view,
-                PostsRepository.getInstance(Objects.requireNonNull(getContext())));
+                PostsRepository.getInstance(Objects.requireNonNull(getContext())),
+                WeatherRepository.getInstance(getContext()));
         view.setPresenter(presenter);
     }
 

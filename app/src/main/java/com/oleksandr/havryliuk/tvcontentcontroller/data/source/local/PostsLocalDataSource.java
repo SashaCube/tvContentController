@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.AppExecutors;
 
 import java.util.List;
@@ -117,7 +118,7 @@ public class PostsLocalDataSource implements PostsDataSource {
     }
 
     @Override
-    public void saveConf(@NonNull String key, Boolean value) {
+    public void saveConf(@NonNull String key, Object value) {
 
     }
 
@@ -150,5 +151,25 @@ public class PostsLocalDataSource implements PostsDataSource {
 
     static void clearInstance() {
         INSTANCE = null;
+    }
+
+    @Override
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
+
+    }
+
+    @Override
+    public void notifyObserversPostsChanged() {
+
+    }
+
+    @Override
+    public void notifyObserversConfChanged() {
+
     }
 }

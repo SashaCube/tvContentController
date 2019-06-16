@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -35,6 +36,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     private LinearLayout addImageLayout, addTextLayout;
     private View root;
     private Fragment fragment;
+    private ProgressBar progressBar;
 
     @Override
     public void setPresenter(EditPostContract.IEditPostPresenter presenter) {
@@ -65,6 +67,7 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
         addImageLayout = root.findViewById(R.id.add_image_layout);
         addTextLayout = root.findViewById(R.id.add_text_layout);
         imageErrorTextView = root.findViewById(R.id.image_error_text_view);
+        progressBar = root.findViewById(R.id.progress_load_photo);
     }
 
     private void initListeners() {
@@ -86,7 +89,8 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
 
     @Override
     public void setImage(String path) {
-        ImageManager.loadInto(root.getContext(), path, addImageView);
+        progressBar.setVisibility(View.VISIBLE);
+        ImageManager.loadInto(root.getContext(), path, addImageView, progressBar);
     }
 
     @Override
@@ -123,13 +127,11 @@ public class EditPostView implements EditPostContract.IEditPostView, View.OnClic
     @Override
     public void showAddImageLayout() {
         addImageLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override
     public void showAddTextLayout() {
         addTextLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override

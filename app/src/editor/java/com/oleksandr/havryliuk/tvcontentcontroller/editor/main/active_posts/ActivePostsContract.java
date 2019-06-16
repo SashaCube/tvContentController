@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters.IPostAdapterPresenter;
 
 import java.util.List;
@@ -18,11 +19,7 @@ public interface ActivePostsContract {
 
         void setPosts(List<Post> posts);
 
-        void setLoadingIndicator(boolean value);
-
         void showNoPosts();
-
-        void showLoadingTasksError();
 
         void showPostDeleted();
 
@@ -31,9 +28,11 @@ public interface ActivePostsContract {
         boolean isActive();
     }
 
-    interface IActivePostPresenter extends IPostAdapterPresenter {
+    interface IActivePostPresenter extends IPostAdapterPresenter, PostsRepositoryObserver {
 
-        void loadPosts(boolean showLoadingUI);
+        void start();
+
+        void stop();
 
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,7 +35,6 @@ public class Auth {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //if login success
-                    Toast.makeText(activity, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
                     auth.getCurrentUser();
                     startMainActivity(activity, intent);
                 } else {
@@ -78,11 +78,17 @@ public class Auth {
 
     public static void signOut() {
         if (googleSignInClient != null) {
-            googleSignInClient.revokeAccess();
+            googleSignInClient.revokeAccess().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    FirebaseAuth.getInstance().signOut();
+                }
+            });
+        }else {
+            FirebaseAuth.getInstance().signOut();
         }
-
-        FirebaseAuth.getInstance().signOut();
     }
+
 
     public static void googleSignIn(Activity activity) {
         GoogleSignInClient googleSignInClient = getGoogleClient(activity);

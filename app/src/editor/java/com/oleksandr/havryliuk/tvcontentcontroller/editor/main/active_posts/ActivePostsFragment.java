@@ -38,4 +38,20 @@ public class ActivePostsFragment extends Fragment {
                 PostsRepository.getInstance(Objects.requireNonNull(getContext())));
         view.setPresenter(presenter);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(presenter != null){
+            presenter.start();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(presenter != null){
+            presenter.stop();
+        }
+    }
 }

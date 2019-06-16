@@ -6,6 +6,7 @@ import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ActivePostsPresenter implements ActivePostsContract.IActivePostPresenter {
 
@@ -15,50 +16,12 @@ public class ActivePostsPresenter implements ActivePostsContract.IActivePostPres
     public ActivePostsPresenter(ActivePostsContract.IActivePostsView view, PostsRepository postsRepository) {
         this.view = view;
         mRepository = postsRepository;
-        loadPosts(true);
-    }
-
-    @Override
-    public void loadPosts(final boolean showLoadingUI) {
-
-        if (showLoadingUI) {
-            view.setLoadingIndicator(true);
-        }
-
-        mRepository.getPosts(new PostsDataSource.LoadPostsCallback() {
-            @Override
-            public void onPostsLoaded(List<Post> posts) {
-                processPosts(posts);
-
-                if (!view.isActive()) {
-                    return;
-                }
-
-                if (showLoadingUI) {
-                    view.setLoadingIndicator(false);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                // The view may not be able to handle UI updates anymore
-                if (!view.isActive()) {
-                    return;
-                }
-                view.showLoadingTasksError();
-
-                if (showLoadingUI) {
-                    view.setLoadingIndicator(false);
-                }
-            }
-        });
     }
 
     @Override
     public void clickDelete(final Post post) {
         mRepository.deletePost(post.getId());
         view.showPostDeleted();
-        loadPosts(true);
     }
 
     @Override
@@ -69,7 +32,6 @@ public class ActivePostsPresenter implements ActivePostsContract.IActivePostPres
     @Override
     public void clickSetPost(final Post post) {
         mRepository.savePost(post);
-        loadPosts(true);
     }
 
     private void processPosts(List<Post> posts) {
@@ -90,5 +52,26 @@ public class ActivePostsPresenter implements ActivePostsContract.IActivePostPres
         }
 
         return activePosts;
+    }
+
+    @Override
+    public void start() {
+        mRepository.registerObserver(this);
+        mRepository.notifyObserversPostsChanged();
+    }
+
+    @Override
+    public void stop() {
+        mRepository.removeObserver(this);
+    }
+
+    @Override
+    public void onPostDataChanged(List<Post> posts) {
+        processPosts(posts);
+    }
+
+    @Override
+    public void onConfDataChanged(Map<String, Object> conf) {
+
     }
 }

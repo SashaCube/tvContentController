@@ -144,7 +144,7 @@ public class PostsRepository implements PostsDataSource {
     }
 
     @Override
-    public void saveConf(@NonNull String key, Boolean value) {
+    public void saveConf(@NonNull String key, Object value) {
         mPostsRemoteDataSource.saveConf(key, value);
     }
 
@@ -212,5 +212,25 @@ public class PostsRepository implements PostsDataSource {
         } else {
             return mCachedPosts.get(id);
         }
+    }
+
+    @Override
+    public void registerObserver(PostsRepositoryObserver repositoryObserver) {
+        mPostsRemoteDataSource.registerObserver(repositoryObserver);
+    }
+
+    @Override
+    public void removeObserver(PostsRepositoryObserver repositoryObserver) {
+        mPostsRemoteDataSource.removeObserver((repositoryObserver));
+    }
+
+    @Override
+    public void notifyObserversPostsChanged() {
+        mPostsRemoteDataSource.notifyObserversPostsChanged();
+    }
+
+    @Override
+    public void notifyObserversConfChanged() {
+        mPostsRemoteDataSource.notifyObserversConfChanged();
     }
 }

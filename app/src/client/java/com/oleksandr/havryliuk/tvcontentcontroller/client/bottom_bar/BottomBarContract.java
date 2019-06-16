@@ -3,6 +3,11 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.bottom_bar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+
+import java.util.List;
+
 public interface BottomBarContract {
 
     interface IBottomBarView {
@@ -14,9 +19,11 @@ public interface BottomBarContract {
         void startDisplayDateTime();
 
         void stopDisplayDateTime();
+
+        void setWeather(List<MyWeather> weatherList);
     }
 
-    interface IBottomBarPresenter {
+    interface IBottomBarPresenter extends WeatherRepositoryObserver {
 
         void startDisplayInfo();
 

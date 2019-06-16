@@ -3,26 +3,33 @@ package com.oleksandr.havryliuk.tvcontentcontroller.editor.main.configuration;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
+
 public interface ConfigurationContract {
 
-    interface IConfigurationView{
+    interface IConfigurationView {
 
         void init(Fragment fragment, View root);
 
         void setPresenter(IConfigurationPresenter presenter);
 
-        void initAdConfiguration(boolean showAd);
+        void setWeatherCityView(String city);
 
-        void showAdConfigurationChange();
+        void setShowingWeatherView(boolean showWeather);
 
-        boolean isActive();
+        void setShowingADView(boolean showAD);
     }
 
-    interface IConfigurationPresenter{
+    interface IConfigurationPresenter extends PostsRepositoryObserver {
 
-        void setAdConfiguration(boolean showAd);
+        void setAdShowing(boolean showAd);
 
-        void loadConfiguration();
+        void setWeatherShowing(boolean showWeather);
 
+        void setWeatherCity(String city);
+
+        void start();
+
+        void stop();
     }
 }

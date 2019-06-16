@@ -3,7 +3,10 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
+import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.List;
 
@@ -19,21 +22,25 @@ public interface ContentContract {
 
         boolean isActive();
 
-        void setLoadingIndicator(boolean value);
-
-        void showLoadingTasksError();
-
         void startDisplayPosts();
 
         void stopDisplayPosts();
+
+        void setWeather(List<MyWeather> weatherList);
+
+        void setWeatherShowingState(boolean showWeather);
+
+        void setADShowingState(boolean showWeather);
     }
 
-    interface IContentPresenter {
+    interface IContentPresenter extends PostsRepositoryObserver, WeatherRepositoryObserver {
 
         void startShowingPosts();
 
         void stopShowingPosts();
 
-        void loadPosts();
+        void loadWeather();
+
+
     }
 }
