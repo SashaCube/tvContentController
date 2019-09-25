@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-import com.oleksandr.havryliuk.tvcontentcontroller.client.MainActivity;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.TestParseActivity;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.auth.Auth;
 
@@ -34,7 +34,7 @@ public class ConnectionActivity extends AppCompatActivity {
     }
 
     private Intent getStartMainActivityIntent() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TestParseActivity.class); //TODO set to MainActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
