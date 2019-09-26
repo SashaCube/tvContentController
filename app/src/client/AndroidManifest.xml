@@ -28,7 +28,7 @@
             android:name="com.oleksandr.havryliuk.tvcontentcontroller.client.MainActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name="com.oleksandr.havryliuk.tvcontentcontroller.client.TestParseActivity"
+            android:name="com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.TestParseActivity"
             android:screenOrientation="landscape"/>
 
 

@@ -16,5 +16,6 @@
     <!--Weather forecast colors-->
     <color name="orange">#FDA92C</color>
     <color name="light_orange">#ffcd82</color>
+    <color name="light_green">#608000</color>
 
 </resources>

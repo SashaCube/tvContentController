@@ -1,7 +1,7 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.data.source;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;

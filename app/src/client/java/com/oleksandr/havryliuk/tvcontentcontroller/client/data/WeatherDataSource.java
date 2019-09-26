@@ -1,6 +1,6 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.data;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 

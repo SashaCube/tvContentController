@@ -1,7 +1,8 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;

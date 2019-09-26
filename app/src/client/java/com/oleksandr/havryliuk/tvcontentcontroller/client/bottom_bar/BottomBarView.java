@@ -1,8 +1,9 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.bottom_bar;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
@@ -100,12 +101,12 @@ public class BottomBarView implements BottomBarContract.IBottomBarView {
 
         if (weatherList != null && !weatherList.isEmpty()) {
             setWeatherView();
-        } else{
+        } else {
             showEmptyWeather();
         }
     }
 
-    private void showEmptyWeather(){
+    private void showEmptyWeather() {
         // TODO: 16.06.19 add empty view for forecast when weather null
     }
 

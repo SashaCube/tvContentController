@@ -1,11 +1,12 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
 
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
@@ -24,9 +25,9 @@ import java.util.Objects;
 
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.animation;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getActivePosts;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getActivePostsWithoutAD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getFutureWeather;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getIconUrl;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getActivePostsWithoutAD;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
@@ -163,7 +164,7 @@ public class ContentView implements ContentContract.IContentView {
             return;
         }
 
-        if(isUpToDate(weatherList.get(0).getTime())) {
+        if (isUpToDate(weatherList.get(0).getTime())) {
             presenter.loadWeather();
             return;
         }
@@ -345,7 +346,7 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void setPosts(List<Post> posts) {
         this.allPosts = posts;
-        if(posts != null) {
+        if (posts != null) {
             setADShowingState(showADState);
 
             if (postIndex == LOAD || postIndex >= posts.size()) {

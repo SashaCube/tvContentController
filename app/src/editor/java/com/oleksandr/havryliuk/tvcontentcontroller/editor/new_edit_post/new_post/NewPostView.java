@@ -1,7 +1,7 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.new_edit_post.new_post;
 
 import android.net.Uri;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;

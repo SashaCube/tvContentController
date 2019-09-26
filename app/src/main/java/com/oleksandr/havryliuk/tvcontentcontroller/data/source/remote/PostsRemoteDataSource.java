@@ -1,6 +1,6 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.data.source.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,7 +1,8 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.data;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.WeatherLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
@@ -52,9 +53,9 @@ public class WeatherRepository implements WeatherDataSource {
             @Override
             public void onDataLoaded(List<MyWeather> data) {
                 weatherList = data;
-                if(Utils.isUpToDate(data.get(data.size() - 1).getTime())) {
+                if (Utils.isUpToDate(data.get(data.size() - 1).getTime())) {
                     notifyObserversWeatherChanged();
-                } else{
+                } else {
                     mWeatherRemoteDataSource.loadWeather(city, new LoadWeatherCallback() {
                         @Override
                         public void onDataLoaded(List<MyWeather> data) {
@@ -74,6 +75,7 @@ public class WeatherRepository implements WeatherDataSource {
                     });
                 }
             }
+
             @Override
             public void onDataNotAvailable() {
                 mWeatherRemoteDataSource.loadWeather(city, new LoadWeatherCallback() {

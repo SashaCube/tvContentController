@@ -1,8 +1,8 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.ADTypeFragment;
 import com.oleksandr.havryliuk.tvcontentcontroller.editor.all_posts.view.AllTypeFragment;

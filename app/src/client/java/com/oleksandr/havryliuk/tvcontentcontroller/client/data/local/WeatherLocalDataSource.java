@@ -1,14 +1,14 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.data.local;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeatherDao;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.WeatherRoomDatabase;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.AppExecutors;
 
@@ -75,7 +75,9 @@ public class WeatherLocalDataSource implements WeatherDataSource {
 
     @Override
     public void insertWeather(List<MyWeather> weatherList) {
-        Runnable clearPostsRunnable = () -> {for(MyWeather w: weatherList)myWeatherDao.insert(w);};
+        Runnable clearPostsRunnable = () -> {
+            for (MyWeather w : weatherList) myWeatherDao.insert(w);
+        };
         appExecutors.diskIO().execute(clearPostsRunnable);
     }
 

@@ -2,10 +2,11 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.connect;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
-import com.oleksandr.havryliuk.tvcontentcontroller.client.TestParseActivity;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.TestParseActivity;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.local.PostsLocalDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.auth.Auth;
 

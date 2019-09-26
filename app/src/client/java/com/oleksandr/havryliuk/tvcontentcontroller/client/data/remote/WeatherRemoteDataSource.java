@@ -1,6 +1,6 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
@@ -9,7 +9,6 @@ import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.APIInt
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.api.RetrofitClient;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.remote.models.Data;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
-import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
 import java.util.List;
 
