@@ -7,12 +7,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.oleksandr.havryliuk.tvcontentcontroller.R;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentContract;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.ScheduleDayAdapter;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.model.Schedule;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.image_manager.ImageManager;
@@ -47,7 +50,8 @@ public class ContentView implements ContentContract.IContentView {
     private Fragment fragment;
     private View root;
 
-    private ViewGroup adPostView, newsPostView, imagePostView, textPostView, weatherPostView;
+    private ViewGroup adPostView, newsPostView, imagePostView, textPostView, weatherPostView,
+            schedulePostView;
     private ImageView adPostImage, imagePostImage, newsPostImage, emptyImage;
     private TextView textPostText, adPostText, newsPostText;
 
@@ -70,6 +74,15 @@ public class ContentView implements ContentContract.IContentView {
     private List<MyWeather> weatherList;
     private boolean showWeatherState;
 
+    private List<Schedule> scheduleList;
+    private boolean showScheduleState;
+    private Schedule currentSchedule;
+
+    // for main loop
+    private boolean isScheduleShowed = false;
+    private boolean isWeatherShowed = false;
+
+
     @Override
     public void init(Fragment fragment, View root) {
         this.fragment = fragment;
@@ -86,6 +99,7 @@ public class ContentView implements ContentContract.IContentView {
         imagePostView = root.findViewById(R.id.post_image);
         textPostView = root.findViewById(R.id.post_text);
         weatherPostView = root.findViewById(R.id.post_weather_forecast);
+        schedulePostView = root.findViewById(R.id.post_schedule);
 
 
         adPostImage = root.findViewById(R.id.ad_post_image);
@@ -175,6 +189,28 @@ public class ContentView implements ContentContract.IContentView {
 
         hideAll();
         weatherPostView.setVisibility(View.VISIBLE);
+    }
+
+    private void showSchedule() {
+
+        if (scheduleList == null || scheduleList.isEmpty()) {
+            presenter.loadSchedule();
+            return;
+        }
+
+        showScheduleView(currentSchedule);
+        currentSchedule = scheduleList.get(scheduleList.indexOf(currentSchedule) + 1);
+
+        hideAll();
+        schedulePostView.setVisibility(View.VISIBLE);
+    }
+
+    private void showScheduleView(Schedule schedule) {
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_1)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(0)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_2)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(1)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_3)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(2)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_4)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(3)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_5)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(4)));
     }
 
     private void showMainWeather() {
@@ -268,6 +304,17 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     @Override
+    public void setSchedule(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
+    }
+
+    @Override
+    public void setScheduleShowingState(boolean showSchedule) {
+        this.showScheduleState = showSchedule;
+        Log.i(TAG, (showSchedule ? "add" : "remove") + " scheduler list");
+    }
+
+    @Override
     public void setADShowingState(boolean showAD) {
         this.showADState = showAD;
         if (showAD) {
@@ -290,6 +337,7 @@ public class ContentView implements ContentContract.IContentView {
     @Override
     public void setPresenter(ContentContract.IContentPresenter presenter) {
         this.presenter = presenter;
+        presenter.loadSchedule();    //TODO : do this after get configuration
     }
 
     private void showADPost(Post post) {
@@ -336,6 +384,7 @@ public class ContentView implements ContentContract.IContentView {
         imagePostView.setVisibility(View.GONE);
         textPostView.setVisibility(View.GONE);
         weatherPostView.setVisibility(View.GONE);
+        schedulePostView.setVisibility(View.GONE);
     }
 
     @Override
@@ -412,31 +461,82 @@ public class ContentView implements ContentContract.IContentView {
     }
 
     private long displayPost() {
-        if ((posts != null && !posts.isEmpty()) && postIndex != LOAD) {
-            Post post;
-            if (postIndex < posts.size()) {
-                post = posts.get(postIndex);
-                postIndex++;
-            } else {
-                postIndex = 0;
+        if (isPostReadyToShow()) {
+            return showPostOrDefaultInfo();
+        } else {
+            return displayEmptyPost();
+        }
+    }
 
-                if (showWeatherState) {
-                    showWeatherForecast();
-                    return 10 * 1000;
+    private long showPostOrDefaultInfo() {
+        if (postIndex < posts.size()) {
+            return displayNextPost();
+        } else {
+            return displayDefaultInfoAndResetPostsIndex();
+        }
+    }
+
+    private long displayNextPost() {
+        Post post = posts.get(postIndex);
+        postIndex++;
+        return displayOnePost(post);
+    }
+
+    private long displayDefaultInfoAndResetPostsIndex() {
+        if (!isWeatherShowed) {
+            if (showWeatherState) {
+                showWeatherForecast();
+                isWeatherShowed = true;
+                return 10 * 1000;
+            } else {
+                isWeatherShowed = true;
+            }
+        }
+
+        if (isWeatherShowed && !isScheduleShowed) {
+            if (showScheduleState) {
+                if (currentSchedule == null) {
+                    if (!scheduleList.isEmpty()) {
+                        currentSchedule = scheduleList.get(1);
+                    }
                 }
 
-                post = posts.get(postIndex);
+                if (!scheduleList.isEmpty() && scheduleList.indexOf(currentSchedule) == scheduleList.size() - 1) {
+                    isScheduleShowed = true;
+                }
 
+                showSchedule();
+
+                return 10 * 1000;
+            } else {
+                isScheduleShowed = true;
             }
-
-            showPost(post);
-            Log.i(TAG, "display post : " + post);
-            return post.getDuration() * 1000;
-        } else {
-            showEmptyScreen();
-            Log.i(TAG, "show empty screen");
-            return 10 * 1000;
         }
+
+        if (isScheduleShowed && isScheduleShowed) {
+            isScheduleShowed = false;
+            isWeatherShowed = false;
+            postIndex = 0;
+            return 0;
+        }
+
+        return 0;
+    }
+
+    private boolean isPostReadyToShow() {
+        return (posts != null && !posts.isEmpty()) && postIndex != LOAD;
+    }
+
+    private long displayEmptyPost() {
+        showEmptyScreen();
+        Log.i(TAG, "show empty screen");
+        return 10 * 1000;
+    }
+
+    private long displayOnePost(Post post) {
+        showPost(post);
+        Log.i(TAG, "display post : " + post);
+        return post.getDuration() * 1000;
     }
 
     private void showEmptyScreen() {

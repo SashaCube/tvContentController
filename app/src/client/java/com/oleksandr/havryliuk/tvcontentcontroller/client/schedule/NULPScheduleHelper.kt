@@ -2,6 +2,7 @@ package com.oleksandr.havryliuk.tvcontentcontroller.client.schedule
 
 import android.util.Log
 import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.model.*
+import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -23,17 +24,27 @@ object NULPScheduleHelper {
     private const val LESSON = "stud_schedule"
     private const val GROUP = "week_color"
 
+    val scheduleList = mutableListOf<Schedule>()
+
+    fun init(){
+        scheduleList.add(Schedule("КН-303", getGroupSchedule("КН-303")))
+        scheduleList.add(Schedule("КН-302", getGroupSchedule("КН-302")))
+        scheduleList.add(Schedule("КН-301", getGroupSchedule("КН-301")))
+    }
+
     fun getGroupSchedule(groupName: String): List<ScheduleDay> {
         val daysList = MutableList(5) { index -> ScheduleDay(index, mutableListOf()) }
 
-        getGroupDocument(groupName)?.getElementsByClass(DAY)?.map { day ->
+        doAsync {
+            getGroupDocument(groupName)?.getElementsByClass(DAY)?.map { day ->
 
-            val dayIndex = getIndexOfDay(day)
+                val dayIndex = getIndexOfDay(day)
 
-            daysList.add(
-                    dayIndex,
-                    ScheduleDay(dayIndex, getLessonsOfTheDay(day))
-            )
+                daysList.add(
+                        dayIndex,
+                        ScheduleDay(dayIndex, getLessonsOfTheDay(day))
+                )
+            }
         }
 
         Log.d(TAG, "schedule for group - $groupName, daysList - $daysList")
@@ -44,14 +55,16 @@ object NULPScheduleHelper {
     fun getTeacherSchedule(teacher: String): List<ScheduleDay> {
         val daysList = MutableList(5) { index -> ScheduleDay(index, mutableListOf()) }
 
-        getTeacherDocument(teacher)?.getElementsByClass(DAY)?.map { day ->
+        doAsync {
+            getTeacherDocument(teacher)?.getElementsByClass(DAY)?.map { day ->
 
-            val dayIndex = getIndexOfDay(day)
+                val dayIndex = getIndexOfDay(day)
 
-            daysList.add(
-                    dayIndex,
-                    ScheduleDay(dayIndex, getLessonsOfTheDay(day))
-            )
+                daysList.add(
+                        dayIndex,
+                        ScheduleDay(dayIndex, getLessonsOfTheDay(day))
+                )
+            }
         }
 
         Log.d(TAG, "schedule for teacher - $teacher, daysList - $daysList")

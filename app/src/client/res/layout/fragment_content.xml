@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="@color/dark_purple"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/dark_purple"
+        android:gravity="center">
 
         <ImageView
-            android:layout_gravity="center_vertical|center_horizontal"
             android:id="@+id/empty_image_view"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_television"/>
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:src="@drawable/ic_television" />
 
     </LinearLayout>
 
     <include
         android:id="@+id/post_ad"
-        layout="@layout/post_ad">
-    </include>
+        layout="@layout/post_ad"/>
+
     <include
         android:id="@+id/post_news"
-        layout="@layout/post_news">
-    </include>
+        layout="@layout/post_news"/>
+
     <include
         android:id="@+id/post_image"
-        layout="@layout/post_image">
-    </include>
+        layout="@layout/post_image"/>
+
     <include
         android:id="@+id/post_text"
-        layout="@layout/post_text">
-    </include>
+        layout="@layout/post_text"/>
+
     <include
         android:id="@+id/post_weather_forecast"
-        layout="@layout/post_weather_forecast">
-    </include>
+        layout="@layout/post_weather_forecast"/>
+
+    <include
+        android:id="@+id/post_schedule"
+        layout="@layout/post_schedule"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

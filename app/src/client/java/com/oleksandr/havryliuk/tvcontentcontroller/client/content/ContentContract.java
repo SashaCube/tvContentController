@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepositoryObserver;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.model.Schedule;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
 
@@ -29,7 +30,11 @@ public interface ContentContract {
 
         void setWeather(List<MyWeather> weatherList);
 
+        void setSchedule(List<Schedule> scheduleList);
+
         void setWeatherShowingState(boolean showWeather);
+
+        void setScheduleShowingState(boolean showSchedule);
 
         void setADShowingState(boolean showWeather);
     }
@@ -42,6 +47,6 @@ public interface ContentContract {
 
         void loadWeather();
 
-
+        void loadSchedule();
     }
 }

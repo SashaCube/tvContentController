@@ -4,12 +4,17 @@ import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.NULPScheduleHelper;
+import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.model.Schedule;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.Post;
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsDataSource;
 import com.oleksandr.havryliuk.tvcontentcontroller.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import kotlinx.coroutines.GlobalScope;
 
 public class ContentPresenter implements ContentContract.IContentPresenter {
 
@@ -102,5 +107,12 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     public void loadWeather() {
         weatherRepository.loadWeather(weatherCity, null);
         Log.i(TAG, "load Weather city " + weatherCity);
+    }
+
+    @Override
+    public void loadSchedule() {
+        view.setScheduleShowingState(true); // TODO: 26.09.19 Oleksandr : set to real value from firebase
+
+        view.setSchedule(NULPScheduleHelper.INSTANCE.getScheduleList());
     }
 }
