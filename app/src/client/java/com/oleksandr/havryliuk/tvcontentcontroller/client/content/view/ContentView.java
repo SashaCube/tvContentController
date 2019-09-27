@@ -199,18 +199,24 @@ public class ContentView implements ContentContract.IContentView {
         }
 
         showScheduleView(currentSchedule);
-        currentSchedule = scheduleList.get(scheduleList.indexOf(currentSchedule) + 1);
 
         hideAll();
         schedulePostView.setVisibility(View.VISIBLE);
     }
 
     private void showScheduleView(Schedule schedule) {
-        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_1)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(0)));
-        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_2)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(1)));
-        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_3)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(2)));
-        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_4)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(3)));
-        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_5)).setAdapter(new ScheduleDayAdapter(schedule.getDays().get(4)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_1))
+                .setAdapter(new ScheduleDayAdapter(schedule.getDays().get(0)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_2))
+                .setAdapter(new ScheduleDayAdapter(schedule.getDays().get(1)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_3))
+                .setAdapter(new ScheduleDayAdapter(schedule.getDays().get(2)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_4))
+                .setAdapter(new ScheduleDayAdapter(schedule.getDays().get(3)));
+        ((RecyclerView) schedulePostView.findViewById(R.id.recycler_view_5))
+                .setAdapter(new ScheduleDayAdapter(schedule.getDays().get(4)));
+
+        ((TextView) schedulePostView.findViewById(R.id.tv_group_name)).setText(schedule.getName());
     }
 
     private void showMainWeather() {
@@ -497,12 +503,16 @@ public class ContentView implements ContentContract.IContentView {
             if (showScheduleState) {
                 if (currentSchedule == null) {
                     if (!scheduleList.isEmpty()) {
-                        currentSchedule = scheduleList.get(1);
+                        currentSchedule = scheduleList.get(0);
                     }
+                    return 10 * 1000;
                 }
 
-                if (!scheduleList.isEmpty() && scheduleList.indexOf(currentSchedule) == scheduleList.size() - 1) {
+                if (!scheduleList.isEmpty() && scheduleList.indexOf(currentSchedule) >= scheduleList.size() - 1) {
                     isScheduleShowed = true;
+                    currentSchedule = scheduleList.get(0);
+                } else {
+                    currentSchedule = scheduleList.get(scheduleList.indexOf(currentSchedule) + 1);
                 }
 
                 showSchedule();
