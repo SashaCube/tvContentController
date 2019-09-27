@@ -24,9 +24,10 @@ object NULPScheduleHelper {
     private const val LESSON = "stud_schedule"
     private const val GROUP = "week_color"
 
-    val scheduleList = mutableListOf<Schedule>()
+    lateinit var scheduleList: MutableList<Schedule>
 
-    fun init(){
+    fun init() {
+        scheduleList = mutableListOf()
         scheduleList.add(Schedule("КН-303", getGroupSchedule("КН-303")))
         scheduleList.add(Schedule("КН-302", getGroupSchedule("КН-302")))
         scheduleList.add(Schedule("КН-301", getGroupSchedule("КН-301")))
