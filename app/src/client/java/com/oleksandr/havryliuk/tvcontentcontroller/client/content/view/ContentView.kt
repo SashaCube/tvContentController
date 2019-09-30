@@ -171,7 +171,6 @@ class ContentView : ContentContract.IContentView {
 
     override fun setPresenter(presenter: ContentContract.IContentPresenter) {
         this.presenter = presenter
-        presenter.loadSchedule()    //TODO : do this after get configuration
     }
 
     private fun showADPost(post: Post) {
@@ -302,8 +301,8 @@ class ContentView : ContentContract.IContentView {
     }
 
     private fun displaySchedule(scheduleList: List<Schedule>?) {
-        if (showScheduleState) {
-            scheduleList!!.map {
+        if (showScheduleState && scheduleList != null) {
+            scheduleList.map {
                 runOnUiThread { showSchedule(it) }
                 sleep(DEFAULT_DURATION)
             }

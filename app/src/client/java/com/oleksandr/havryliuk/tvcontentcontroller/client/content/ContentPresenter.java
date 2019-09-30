@@ -1,5 +1,7 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.WeatherRepository;
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import kotlinx.coroutines.GlobalScope;
-
 public class ContentPresenter implements ContentContract.IContentPresenter {
 
     private final static String TAG = ContentPresenter.class.getName();
@@ -24,11 +24,14 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     private PostsDataSource postsRepository;
     private WeatherRepository weatherRepository;
     private volatile String weatherCity = "";
+    private List<Schedule> scheduleList = new ArrayList<>();
+    private Context context;
 
-    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
+    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository, Context context) {
         this.view = view;
         this.postsRepository = repository;
         this.weatherRepository = weatherRepository;
+        this.context = context;
     }
 
     @Override
@@ -55,16 +58,26 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         Boolean showAD = (Boolean) configurations.get(Constants.SHOW_AD_CONF);
         if (showAD != null) {
             view.setADShowingState(showAD);
+            Log.i(TAG, "setScheduleShowingState " + showAD);
         }
+
+        (new LoadScheduleTask()).execute(configurations);
 
         Boolean showWeather = (Boolean) configurations.get(Constants.SHOW_WEATHER_CONF);
         if (showWeather != null) {
             view.setWeatherShowingState(showWeather);
+            Log.i(TAG, "setScheduleShowingState " + showWeather);
         }
 
         String newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);
         if (newWeatherCity == null) {
             newWeatherCity = "Lviv";
+        }
+
+        Boolean showSchedule = (Boolean) configurations.get(Constants.SHOW_SCHEDULE_CONF);
+        if (showSchedule != null) {
+            view.setScheduleShowingState(showSchedule);
+            Log.i(TAG, "setScheduleShowingState " + showSchedule);
         }
 
         if (!weatherCity.equals(newWeatherCity)) {
@@ -111,8 +124,41 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
 
     @Override
     public void loadSchedule() {
-        view.setScheduleShowingState(true); // TODO: 26.09.19 Oleksandr : set to real value from firebase
+    }
 
-        view.setSchedule(NULPScheduleHelper.INSTANCE.getScheduleList());
+    class LoadScheduleTask extends AsyncTask<Map<String, Object>, Integer, List<Schedule>> {
+
+        @Override
+        protected List<Schedule> doInBackground(Map<String, Object>... configurations) {
+            List<String> teacherScheduler = new ArrayList<>();
+            teacherScheduler.addAll((List<String>) configurations[0].get(Constants.SCHEDULE_TEACHER_CONF));
+            if (teacherScheduler != null) {
+                for (String s : teacherScheduler) {
+                    scheduleList.add(new Schedule(s, NULPScheduleHelper.INSTANCE.getTeacherSchedule(s)));
+                }
+            }
+            Log.i(TAG, "Schedule Load Teachers " + teacherScheduler);
+
+            List<String> groupScheduler = new ArrayList<>();
+            groupScheduler.addAll((List<String>) configurations[0].get(Constants.SCHEDULE_GROUP_CONF));
+            if (groupScheduler != null) {
+                for (String s : groupScheduler) {
+                    scheduleList.add(new Schedule(s, NULPScheduleHelper.INSTANCE.getGroupSchedule(s)));
+                }
+            }
+            Log.i(TAG, "Schedule Load Groups " + teacherScheduler);
+
+            return scheduleList;
+        }
+
+        @Override
+        protected void onPostExecute(List<Schedule> schedules) {
+            super.onPostExecute(schedules);
+
+            if (!schedules.isEmpty()) {
+                view.setSchedule(schedules);
+            }
+            Log.i(TAG, "All Schedules " + scheduleList);
+        }
     }
 }

@@ -1,9 +1,12 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.editor.main.configuration;
 
-import androidx.fragment.app.Fragment;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
+
 import com.oleksandr.havryliuk.tvcontentcontroller.data.source.PostsRepositoryObserver;
+
+import java.util.List;
 
 public interface ConfigurationContract {
 
@@ -18,11 +21,18 @@ public interface ConfigurationContract {
         void setShowingWeatherView(boolean showWeather);
 
         void setShowingADView(boolean showAD);
+
+        void setScheduleShowing(boolean showSchedule);
+
+        void setScheduleNames(List<String> names);
+
     }
 
     interface IConfigurationPresenter extends PostsRepositoryObserver {
 
         void setAdShowing(boolean showAd);
+
+        void setScheduleShowing(boolean showSchedule);
 
         void setWeatherShowing(boolean showWeather);
 
@@ -31,5 +41,9 @@ public interface ConfigurationContract {
         void start();
 
         void stop();
+
+        void addSchedulerName(String scheduleName);
+
+        void deleteSchedulerName(String scheduleName);
     }
 }

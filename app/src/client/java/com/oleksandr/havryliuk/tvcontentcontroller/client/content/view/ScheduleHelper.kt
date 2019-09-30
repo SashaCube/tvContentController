@@ -12,5 +12,5 @@ fun showScheduleView(schedule: Schedule, root: View) {
     root.recycler_view_4.adapter = ScheduleDayAdapter(schedule.days[3])
     root.recycler_view_5.adapter = ScheduleDayAdapter(schedule.days[4])
 
-    root.tv_group_name.text = schedule.name
+    root.tv_group_name.text = schedule.name.replace("+", " ")
 }
