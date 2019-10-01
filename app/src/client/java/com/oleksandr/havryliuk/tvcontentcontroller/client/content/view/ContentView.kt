@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentActivity
 import com.oleksandr.havryliuk.tvcontentcontroller.R
 import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentContract
 import com.oleksandr.havryliuk.tvcontentcontroller.client.content.ContentPresenter
-import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.*
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.ContentViewUtils.*
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.WeatherHelper
+import com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.showScheduleView
 import com.oleksandr.havryliuk.tvcontentcontroller.client.data.local.room.MyWeather
 import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.model.Schedule
 import com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.isUpToDate
@@ -40,8 +42,22 @@ class ContentView : ContentContract.IContentView {
     private var adPostText: TextView? = null
     private var newsPostText: TextView? = null
 
-    private var displayPostThread: Thread? = null
+    private val displayingRunnable by lazy {
+        Runnable {
+            try {
+                while (Thread.currentThread().isAlive) {
+                    mainDisplaying()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "thread exception ${e.message}")
+            }
+        }
+    }
+
+    private var displayingThread = MainLoopThread(displayingRunnable)
+
     private var postIndex = LOAD
+    private val posts = mutableListOf<Post>()
 
     //for AD
     private var allPosts: List<Post>? = null
@@ -51,16 +67,7 @@ class ContentView : ContentContract.IContentView {
     private lateinit var weatherHelper: WeatherHelper
 
     private var scheduleList: List<Schedule>? = null
-    private var currentSchedule: Schedule? = null
     private var showScheduleState: Boolean = false
-
-    // for main loop
-    private var isScheduleShowed = false
-    private var isWeatherShowed = false
-
-    private val isPostReadyToShow: Boolean
-        get() = posts != null && posts!!.isNotEmpty() && postIndex != LOAD
-
 
     override fun init(fragment: Fragment, root: View) {
         this.fragment = fragment
@@ -108,6 +115,7 @@ class ContentView : ContentContract.IContentView {
             return false
         }
 
+        Log.i(TAG, "displaying weather")
         weatherHelper.showMainWeather()
         weatherHelper.showMainTemperature()
         weatherHelper.showFutureWeather()
@@ -125,6 +133,7 @@ class ContentView : ContentContract.IContentView {
         }
 
         showScheduleView(schedule, root!!)
+        Log.i(TAG, "schedule ${schedule.name} displayed")
 
         hideAll()
         schedulePostView!!.visibility = View.VISIBLE
@@ -160,12 +169,15 @@ class ContentView : ContentContract.IContentView {
     }
 
     private fun removeAD() {
-        posts = getActivePostsWithoutAD(allPosts)
+        posts.clear()
+        posts.addAll(getActivePostsWithoutAD(allPosts))
         Log.i(TAG, "remove AD posts")
     }
 
     private fun addAD() {
-        posts = getActivePosts(allPosts)
+
+        posts.clear()
+        posts.addAll(getActivePosts(allPosts))
         Log.i(TAG, "add AD posts")
     }
 
@@ -174,6 +186,7 @@ class ContentView : ContentContract.IContentView {
     }
 
     private fun showADPost(post: Post) {
+        Log.i(TAG, "display AD post ${post.title}")
         ImageManager.loadInto(root!!.context, post.imagePath, adPostImage, null)
 
         if (post.text.isEmpty()) {
@@ -188,6 +201,7 @@ class ContentView : ContentContract.IContentView {
     }
 
     private fun showNewsPost(post: Post) {
+        Log.i(TAG, "display news post ${post.title}")
         ImageManager.loadInto(root!!.context, post.imagePath, newsPostImage, null)
         newsPostText!!.text = post.text
 
@@ -197,6 +211,7 @@ class ContentView : ContentContract.IContentView {
 
 
     private fun showTextPost(post: Post) {
+        Log.i(TAG, "display text post ${post.title}")
         textPostText!!.text = post.text
 
         hideAll()
@@ -205,6 +220,7 @@ class ContentView : ContentContract.IContentView {
 
 
     private fun showImagePost(post: Post) {
+        Log.i(TAG, "display image post ${post.title}")
         ImageManager.loadInto(root!!.context, post.imagePath, imagePostImage, null)
 
         hideAll()
@@ -245,41 +261,40 @@ class ContentView : ContentContract.IContentView {
     }
 
     override fun startDisplayPosts() {
-        Log.i(TAG, "start display posts")
-        initDisplayPostThread()
-        displayPostThread!!.start()
+        Log.i(TAG, "++ start displaying ++")
+
+        if (displayingThread.isAlive) {
+            displayingThread.interrupt()
+        }
+
+        displayingThread = MainLoopThread(displayingRunnable)
+        displayingThread.start()
     }
 
     override fun stopDisplayPosts() {
-        Log.i(TAG, "stop display posts")
-        if (isActive) {
-            displayPostThread!!.interrupt()
-        }
-    }
-
-    private fun initDisplayPostThread() {
-        displayPostThread = object : Thread() {
-            override fun run() {
-                try {
-                    while (!isInterrupted) {
-                        if (isActive) {
-                            mainDisplaying()
-                        } else {
-                            interrupt()
-                        }
-                    }
-                } catch (e: InterruptedException) {
-
-                }
-
-            }
+        Log.i(TAG, "++ stop displaying ++")
+        if (displayingThread.isAlive) {
+            displayingThread.interrupt()
         }
     }
 
     private fun mainDisplaying() {
-        displayPosts(posts!!)
-        displayWeather(weatherHelper)
-        displaySchedule(scheduleList)
+        Log.i(TAG, " -> Start new Loop")
+        if (isViewReadyToDisplaying()) {
+            displayPosts(posts)
+            displayWeather(weatherHelper)
+            displaySchedule(scheduleList)
+        } else {
+            Log.i(TAG, "view is not ready to displaying -> sleep")
+            sleep(DEFAULT_DURATION)
+        }
+    }
+
+    private fun isViewReadyToDisplaying(): Boolean {
+        return !allPosts.isNullOrEmpty() ||
+                !scheduleList.isNullOrEmpty() ||
+                showScheduleState ||
+                weatherHelper.isShowWeatherState
     }
 
     private fun runOnUiThread(runnable: () -> Unit) {
@@ -287,25 +302,42 @@ class ContentView : ContentContract.IContentView {
     }
 
     private fun displayPosts(posts: List<Post>) {
-        posts.map {
-            runOnUiThread { showPost(it) }
-            sleep(it.duration * 1000)
+        Log.i(TAG, "Displaying Posts --------------------------------------")
+        if (!posts.isNullOrEmpty()) {
+            Log.i(TAG, "display ${posts.size}")
+            posts.map {
+                runOnUiThread { showPost(it) }
+                sleep(it.duration * 1000)
+            }
+        } else {
+            Log.i(TAG, "posts null or empty")
         }
     }
 
     private fun displayWeather(weatherHelper: WeatherHelper) {
+        Log.i(TAG, "Displaying Weather ------------------------------------")
         if (weatherHelper.isShowWeatherState) {
+            Log.i(TAG, "weather displaying state is true")
             runOnUiThread { showWeatherForecast(weatherHelper) }
             sleep(DEFAULT_DURATION)
+        } else {
+            Log.i(TAG, "weather displaying state is false")
         }
     }
 
     private fun displaySchedule(scheduleList: List<Schedule>?) {
-        if (showScheduleState && scheduleList != null) {
+        Log.i(TAG, "Displaying Schedule -----------------------------------")
+        if (showScheduleState && !scheduleList.isNullOrEmpty()) {
+            Log.i(TAG, "schedule displaying state is true -> display ${scheduleList.size} schedules")
             scheduleList.map {
                 runOnUiThread { showSchedule(it) }
                 sleep(DEFAULT_DURATION)
             }
+        } else {
+            Log.i(TAG, "schedule displaying state is " +
+                    if (showScheduleState) "true but, schedule list is " +
+                            (if (scheduleList == null) "null " else "empty ")
+                    else "false")
         }
     }
 
@@ -313,7 +345,5 @@ class ContentView : ContentContract.IContentView {
         private val TAG = ContentPresenter::class.java.name
         private const val LOAD = -1
         private const val DEFAULT_DURATION = (10 * 1000).toLong()
-        @Volatile
-        private var posts: List<Post>? = null
     }
 }

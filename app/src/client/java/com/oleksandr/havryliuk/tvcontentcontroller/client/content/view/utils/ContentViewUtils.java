@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -34,13 +34,13 @@ public class ContentViewUtils {
         scale.start();
     }
 
-    public static String getIconUrl(String iconId) {
+    static String getIconUrl(String iconId) {
         return APIInterface.BASE_URL + "img/w/" + iconId + ".png";
     }
 
     public static List<Post> getActivePostsWithoutAD(List<Post> allPosts) {
 
-        if(allPosts == null){
+        if (allPosts == null) {
             return null;
         }
 
@@ -59,7 +59,7 @@ public class ContentViewUtils {
 
     public static List<Post> getActivePosts(List<Post> allPosts) {
 
-        if(allPosts == null){
+        if (allPosts == null) {
             return null;
         }
 

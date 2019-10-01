@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils
 
 import android.view.View
 import com.oleksandr.havryliuk.tvcontentcontroller.client.schedule.ScheduleDayAdapter

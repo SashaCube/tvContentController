@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils;
 
 import android.content.Context;
 import android.view.View;
@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getFutureWeather;
-import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.ContentViewUtils.getIconUrl;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.ContentViewUtils.getFutureWeather;
+import static com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.ContentViewUtils.getIconUrl;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyDay;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getOnlyTime;
 import static com.oleksandr.havryliuk.tvcontentcontroller.client.utils.Utils.getUpToDateWeather;
@@ -41,7 +41,7 @@ public class WeatherHelper {
         initWeatherForecastView(root);
     }
 
-    void initWeatherForecastView(View root) {
+    private void initWeatherForecastView(View root) {
         //main weather
         mainWeatherImage = root.findViewById(R.id.main_weather_image_view);
         aboutWeatherText = root.findViewById(R.id.about_weather_text_view);
@@ -97,7 +97,7 @@ public class WeatherHelper {
         futuresImages.add(root.findViewById(R.id.future_weather_image_3));
     }
 
-    void showMainWeather() {
+    public void showMainWeather() {
         MyWeather weather = getUpToDateWeather(weatherList, new Date());
 
         assert weather != null;
@@ -114,7 +114,7 @@ public class WeatherHelper {
         Glide.with(context).load(getIconUrl(weather.getIconId())).into(mainWeatherImage);
     }
 
-    void showMainTemperature() {
+    public void showMainTemperature() {
         MyWeather weather = getUpToDateWeather(weatherList, new Date());
         int startTemp, endTemp, index, i = 0, minTemp, maxTemp;
 
@@ -154,7 +154,7 @@ public class WeatherHelper {
         }
     }
 
-    void showFutureWeather() {
+    public void showFutureWeather() {
         if (weatherList == null || weatherList.isEmpty()) {
             return;
         }

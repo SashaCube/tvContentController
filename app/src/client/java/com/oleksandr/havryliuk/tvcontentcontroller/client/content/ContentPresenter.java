@@ -1,6 +1,5 @@
 package com.oleksandr.havryliuk.tvcontentcontroller.client.content;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,13 +24,11 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
     private WeatherRepository weatherRepository;
     private volatile String weatherCity = "";
     private List<Schedule> scheduleList = new ArrayList<>();
-    private Context context;
 
-    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository, Context context) {
+    public ContentPresenter(ContentContract.IContentView view, PostsDataSource repository, WeatherRepository weatherRepository) {
         this.view = view;
         this.postsRepository = repository;
         this.weatherRepository = weatherRepository;
-        this.context = context;
     }
 
     @Override
@@ -58,7 +55,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         Boolean showAD = (Boolean) configurations.get(Constants.SHOW_AD_CONF);
         if (showAD != null) {
             view.setADShowingState(showAD);
-            Log.i(TAG, "setScheduleShowingState " + showAD);
+            Log.i(TAG, "setADShowingState " + showAD);
         }
 
         (new LoadScheduleTask()).execute(configurations);
@@ -66,7 +63,7 @@ public class ContentPresenter implements ContentContract.IContentPresenter {
         Boolean showWeather = (Boolean) configurations.get(Constants.SHOW_WEATHER_CONF);
         if (showWeather != null) {
             view.setWeatherShowingState(showWeather);
-            Log.i(TAG, "setScheduleShowingState " + showWeather);
+            Log.i(TAG, "setWeatherShowingState " + showWeather);
         }
 
         String newWeatherCity = (String) configurations.get(Constants.CITY_WEATHER_CONF);

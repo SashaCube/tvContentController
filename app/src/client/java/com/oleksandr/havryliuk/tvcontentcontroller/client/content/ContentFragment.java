@@ -40,7 +40,7 @@ public class ContentFragment extends Fragment {
     private void initPresenter() {
         presenter = new ContentPresenter(view,
                 PostsRepository.getInstance(Objects.requireNonNull(getContext())),
-                WeatherRepository.getInstance(getContext()), getContext());
+                WeatherRepository.getInstance(getContext()));
         view.setPresenter(presenter);
     }
 

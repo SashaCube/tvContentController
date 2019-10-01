@@ -1,4 +1,4 @@
-package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view;
+package com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -30,7 +30,7 @@ public class TemperatureView extends View {
             topPartColor = a.getInteger(R.styleable.TemperatureView_topPartColor, 255);
             bottomPartColor = a.getInteger(R.styleable.TemperatureView_bottomPartColor, 0);
             separatorColor = a.getInteger(R.styleable.TemperatureView_separatorColor, 0);
-            textColor =  a.getInteger(R.styleable.TemperatureView_textColor, 0);
+            textColor = a.getInteger(R.styleable.TemperatureView_textColor, 0);
 
             textSize = a.getDimension(R.styleable.TemperatureView_textSize, 0);
             startValue = a.getInt(R.styleable.TemperatureView_startValue, 0);

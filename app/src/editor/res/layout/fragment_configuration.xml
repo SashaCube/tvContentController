@@ -38,6 +38,10 @@
 
         </LinearLayout>
 
+        <View
+            style="@style/Separator"
+            android:layout_width="match_parent" />
+
         <LinearLayout
             android:id="@+id/weather_state_layout"
             android:layout_width="match_parent"
@@ -66,6 +70,7 @@
                 android:textSize="@dimen/large_text_size" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,6 +106,9 @@
 
         </LinearLayout>
 
+        <View
+            style="@style/Separator"
+            android:layout_width="match_parent" />
 
         <LinearLayout
             android:id="@+id/scheduler_state_layout"
@@ -131,6 +139,19 @@
 
         </LinearLayout>
 
+
+
+        <View
+            style="@style/Separator"
+            android:layout_width="match_parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/schedule_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
         <TextView
             android:id="@+id/add_button"
             style="@style/ButtonLight"
@@ -143,27 +164,6 @@
             android:padding="@dimen/default_dimen"
             android:text="@string/add_schedule"
             android:textSize="@dimen/default_text_size" />
-
-
-        <View
-            style="@style/Separator"
-            android:layout_width="match_parent" />
-
-
-        <View
-            style="@style/Separator"
-            android:layout_width="match_parent" />
-
-        <View
-            style="@style/Separator"
-            android:layout_width="match_parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/schedule_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
 

@@ -135,7 +135,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -160,7 +160,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -186,7 +186,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -212,7 +212,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -238,7 +238,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -263,7 +263,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -288,7 +288,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -314,7 +314,7 @@
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.TemperatureView
+            <com.oleksandr.havryliuk.tvcontentcontroller.client.content.view.utils.TemperatureView
                 android:id="@+id/tv8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
